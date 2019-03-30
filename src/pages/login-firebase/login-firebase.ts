@@ -1,21 +1,31 @@
+import { Usuario } from './../../models/usuario';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-/**
- * Generated class for the LoginFirebasePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
-@IonicPage()
+@IonicPage({
+  name: 'LoginFirebasePage',
+  segment: 'login'
+})
 @Component({
   selector: 'page-login-firebase',
   templateUrl: 'login-firebase.html',
 })
 export class LoginFirebasePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  usuario = {} as Usuario;
+
+  loginForm: FormGroup;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public formBuilder: FormBuilder) {
+    let emailRegex = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+
+      this.loginForm = this.formBuilder.group({
+        email: ['', Validators.compose([Validators.required, Validators.pattern(emailRegex)])],
+        senha: ['', [Validators.required, Validators.minLength(6)]]
+      });
+
   }
 
   ionViewDidLoad() {
