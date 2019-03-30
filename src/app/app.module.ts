@@ -13,7 +13,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 /* Import do Firebase */
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { firebaseConfig } from './credentials';
+import { firebaseConfig } from './.credentials';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireStorageModule } from '@angular/fire/storage';
