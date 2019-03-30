@@ -1,4 +1,4 @@
-import { Usuario } from './../../models/usuario';
+import { User } from '../../models/user';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -13,7 +13,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class LoginFirebasePage {
 
-  usuario = {} as Usuario;
+  user = {} as User;
 
   loginForm: FormGroup;
 
@@ -24,7 +24,7 @@ export class LoginFirebasePage {
 
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.compose([Validators.required, Validators.pattern(emailRegex)])],
-      senha: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
 
   }
@@ -38,7 +38,7 @@ export class LoginFirebasePage {
   }
 
   openRegister(){
-    this.navCtrl.push('RegisterPage');
+    this.navCtrl.push('RegisterFirebasePage');
   }
 
 }

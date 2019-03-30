@@ -18,6 +18,8 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 
+import { AuthService } from '../providers/auth-service';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -42,7 +44,8 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AngularFireDatabase,
-    AngularFireAuth
+    AngularFireAuth,
+    AuthService
   ]
 })
 export class AppModule {}

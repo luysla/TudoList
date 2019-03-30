@@ -6,7 +6,7 @@
       <ion-label>
         <ion-icon name="mail"></ion-icon>
       </ion-label>
-      <ion-input type="email" [(ngModel)]="usuario.email" formControlName="email" placeholder="E-mail" required></ion-input>
+      <ion-input type="email" [(ngModel)]="user.email" formControlName="email" placeholder="E-mail" required></ion-input>
     </ion-item>
 
     <br>
@@ -15,7 +15,7 @@
       <ion-label>
         <ion-icon name="lock"></ion-icon>
       </ion-label>
-      <ion-input type="password" [(ngModel)]="usuario.senha" formControlName="senha" placeholder="Senha" required></ion-input>
+      <ion-input type="password" [(ngModel)]="user.password" formControlName="password" placeholder="Senha" required></ion-input>
     </ion-item>
 
     <a (click)="resetPassword()"><p style="text-align: right; text-decoration: underline">Esqueceu sua senha?</p></a>
@@ -23,6 +23,6 @@
     <button ion-button class="bt-default" full type="submit" [disabled]="!loginForm.valid">Entrar</button>
   </form>
 
-  <p class="texto-pag">Não possui conta? <a (click)="openRegister()" style="text-decoration: underline">Cadastre-se</a></p>
+  <p class="text-pag">Não possui conta? <a (click)="openRegister()" style="text-decoration: underline">Cadastre-se</a></p>
 
 </ion-content>
