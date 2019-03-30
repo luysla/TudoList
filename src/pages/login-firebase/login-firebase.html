@@ -18,11 +18,11 @@
       <ion-input type="password" [(ngModel)]="usuario.senha" formControlName="senha" placeholder="Senha" required></ion-input>
     </ion-item>
 
-    <a><p style="text-align: right; text-decoration: underline">Esqueceu sua senha?</p></a>
+    <a (click)="resetPassword()"><p style="text-align: right; text-decoration: underline">Esqueceu sua senha?</p></a>
 
     <button ion-button class="bt-default" full type="submit" [disabled]="!loginForm.valid">Entrar</button>
   </form>
 
-  <p class="texto-pag">Não possui conta? <a style="text-decoration: underline">Cadastre-se</a></p>
+  <p class="texto-pag">Não possui conta? <a (click)="openRegister()" style="text-decoration: underline">Cadastre-se</a></p>
 
 </ion-content>

@@ -33,4 +33,12 @@ export class LoginFirebasePage {
     console.log('ionViewDidLoad LoginFirebasePage');
   }
 
+  resetPassword(){
+
+  }
+
+  openRegister(){
+    this.navCtrl.push('RegisterPage');
+  }
+
 }
