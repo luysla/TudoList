@@ -1,7 +1,12 @@
-import { User } from '../../models/user';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+import { AuthService } from './../../providers/auth-service';
+
+import { User } from '../../models/user';
+
+import { TabsPage } from '../tabs/tabs';
 
 @IonicPage({
   name: 'LoginFirebasePage',
@@ -18,7 +23,7 @@ export class LoginFirebasePage {
   loginForm: FormGroup;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public formBuilder: FormBuilder) {
+    public formBuilder: FormBuilder, public authService: AuthService) {
 
     let emailRegex = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
 
@@ -29,12 +34,16 @@ export class LoginFirebasePage {
 
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginFirebasePage');
+  login(user: User): void{
+    this.authService.login(user).then(()=>{
+      this.navCtrl.setRoot(TabsPage);
+    }).catch((e)=>{
+      alert("Erro ao se logar!");
+    })
   }
 
-  resetPassword(){
-
+  resetPassword(email: string): void{
+    this.authService.resetPassword(email);
   }
 
   openRegister(){

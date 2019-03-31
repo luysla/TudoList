@@ -30,17 +30,13 @@ export class RegisterFirebasePage {
 
       this.registerForm = this.formBuilder.group({
         name: ['', [Validators.required, Validators.minLength(3)]],
-        email: ['', Validators.compose([Validators.required, Validators.pattern(emailRegex)])],
         username: ['', [Validators.required, Validators.minLength(3)]],
+        email: ['', Validators.compose([Validators.required, Validators.pattern(emailRegex)])],
         password: ['', [Validators.required, Validators.minLength(6)]],
         password_confirmation: ['', [Validators.required]]
       })
 
     }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad RegisterFirebasePage');
-  }
 
   registerUser(user: User, profile: Profile){
     this.authService.newUser(user).then(()=>{

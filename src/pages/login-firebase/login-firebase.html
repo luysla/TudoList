@@ -20,7 +20,7 @@
 
     <a (click)="resetPassword()"><p style="text-align: right; text-decoration: underline">Esqueceu sua senha?</p></a>
 
-    <button ion-button class="bt-default" full type="submit" [disabled]="!loginForm.valid">Entrar</button>
+    <button ion-button class="bt-default" full type="submit" (click)="login(user)" [disabled]="!loginForm.valid">Entrar</button>
   </form>
 
   <p class="text-pag">Não possui conta? <a (click)="openRegister()" style="text-decoration: underline">Cadastre-se</a></p>
