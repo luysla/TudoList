@@ -17,7 +17,7 @@ export class HomePage {
   logout(): void{
     this.authService.logout().then(()=>{
       this.platform.exitApp();
-      this.app.getRootNav().setRoot('LoginFirebasePage');
+      this.app.getRootNavs()[0].setRoot('LoginFirebasePage');
     }).catch((e)=>{
       alert("Erro ao sair do aplicativo!");
     })
