@@ -4,7 +4,8 @@ import { NavController, Platform, App, IonicPage } from 'ionic-angular';
 import { AuthService } from './../../providers/auth-service';
 
 @IonicPage({
-  name: 'HomePage'
+  name: 'HomePage',
+  segment: 'home'
 })
 @Component({
   selector: 'page-home',
@@ -23,6 +24,10 @@ export class HomePage {
     }).catch((e)=>{
       alert("Erro ao sair do aplicativo!");
     })
+  }
+
+  openAddProject(): void{
+    this.navCtrl.push('AddProjectPage');
   }
 
 }

@@ -6,10 +6,10 @@ import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-/* Import das paginas */
+/* Imports das paginas */
 import { TabsPage } from '../pages/tabs/tabs';
 
-/* Import do Firebase */
+/* Imports do Firebase */
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { firebaseConfig } from './.credentials';
@@ -18,6 +18,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { AuthService } from '../providers/auth-service';
+import { ProjectService } from '../providers/project-service';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { AuthService } from '../providers/auth-service';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AngularFireDatabase,
     AngularFireAuth,
-    AuthService
+    AuthService,
+    ProjectService
   ]
 })
 export class AppModule {}
