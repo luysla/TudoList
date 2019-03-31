@@ -6,6 +6,9 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { User } from './../models/user';
 import { Profile } from './../models/profile';
 
+import * as firebase from 'firebase';
+import 'firebase/auth';
+
 @NgModule({providers: [forwardRef(() => AuthService)]})
 export class AuthServiceModule {
 }
@@ -32,7 +35,13 @@ export class AuthService {
     return this.afAuth.auth.signOut();
   }
 
-  resetPassword(email: string){
+  sendEmailVerification(){
+    return firebase.auth().onAuthStateChanged(function(user) {
+      user.sendEmailVerification();
+    });
+  }
+
+  resetPassword(email: string): Promise<any>{
     return this.afAuth.auth.sendPasswordResetEmail(email);
   }
 

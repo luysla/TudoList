@@ -46,8 +46,9 @@ export class RegisterFirebasePage {
     this.authService.newUser(user).then(()=>{
 
       profile.user_uid = firebase.auth().currentUser.uid;
-
       this.authService.setProfile(profile);
+
+      this.authService.sendEmailVerification();
 
       alert("Conta criada com sucesso!");
       this.navCtrl.pop();
