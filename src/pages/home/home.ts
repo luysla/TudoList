@@ -4,8 +4,7 @@ import { NavController, Platform, App, IonicPage } from 'ionic-angular';
 import { AuthService } from './../../providers/auth-service';
 
 @IonicPage({
-  name: 'HomePage',
-  segment: 'home'
+  name: 'HomePage'
 })
 @Component({
   selector: 'page-home',
