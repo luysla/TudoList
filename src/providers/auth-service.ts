@@ -23,12 +23,13 @@ export class AuthService {
     return this.afAuth.auth.signInWithEmailAndPassword(user.email,user.password);
   }
 
+  logout(): Promise<any>{
+    return this.afAuth.auth.signOut();
+  }
+
   resetPassword(email: string){
     return this.afAuth.auth.sendPasswordResetEmail(email);
   }
 
-  logout(): Promise<any>{
-    return this.afAuth.auth.signOut();
-  }
 
 }

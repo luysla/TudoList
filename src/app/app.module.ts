@@ -7,7 +7,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 /* Import das paginas */
-import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
 /* Import do Firebase */
@@ -23,7 +22,6 @@ import { AuthService } from '../providers/auth-service';
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
     TabsPage
   ],
   imports: [
@@ -36,7 +34,6 @@ import { AuthService } from '../providers/auth-service';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
     TabsPage
   ],
   providers: [

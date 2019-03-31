@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, Platform, App } from 'ionic-angular';
+import { NavController, Platform, App, IonicPage } from 'ionic-angular';
 
 import { AuthService } from './../../providers/auth-service';
 
+@IonicPage({
+  name: 'HomePage',
+  segment: 'home'
+})
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -11,7 +15,6 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, public authService: AuthService,
     public platform: Platform, public app: App) {
-
   }
 
   logout(): void{
