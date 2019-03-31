@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Novo projeto</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="projectForm">
+    <ion-item>
+      <ion-label stacked>Nome do projeto</ion-label>
+      <ion-input type="text" [(ngModel)]="project.name" formControlName="name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Descrição</ion-label>
+      <ion-input type="text" [(ngModel)]="project.description" formControlName="description"></ion-input>
+    </ion-item>
+
+    <br>
+
+    <button ion-button class="bt-default" full (click)="addProject(project)" [disabled]="!projectForm.valid">Ok</button>
+  </form>
+</ion-content>
+

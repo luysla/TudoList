@@ -8,6 +8,9 @@ import { Profile } from '../../models/profile';
 
 import { AuthService } from '../../providers/auth-service';
 
+import * as firebase from 'firebase';
+import 'firebase/auth';
+
 @IonicPage({
   name: 'RegisterFirebasePage',
   segment: 'cadastro'
@@ -39,8 +42,16 @@ export class RegisterFirebasePage {
     }
 
   registerUser(user: User, profile: Profile){
+
     this.authService.newUser(user).then(()=>{
+
+      profile.user_uid = firebase.auth().currentUser.uid;
+
+      this.authService.setProfile(profile);
+
       alert("Conta criada com sucesso!");
+      this.navCtrl.pop();
+
     }).catch((e)=>{
       alert("Erro ao criar conta: " + e);
     })
