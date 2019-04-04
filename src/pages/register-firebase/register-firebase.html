@@ -5,43 +5,43 @@
 </ion-header>
 
 <ion-content padding>
-  <form [formGroup]="registerForm">
+  <form style="margin-top: 100px;" [formGroup]="registerForm">
     <ion-item>
       <ion-label>
         <ion-icon name="person"></ion-icon>
       </ion-label>
-      <ion-input type="text" [(ngModel)]="profile.name" [formControl]="registerForm.controls['name']" placeholder="Nome" required></ion-input>
+      <ion-input type="text" [(ngModel)]="profile.name" [formControl]="registerForm.controls['name']" placeholder="Nome*" required></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label>
         <ion-icon name="at"></ion-icon>
       </ion-label>
-      <ion-input type="text" [(ngModel)]="profile.username" [formControl]="registerForm.controls['username']" placeholder="Nome de usuário" required></ion-input>
+      <ion-input type="text" [(ngModel)]="profile.username" [formControl]="registerForm.controls['username']" placeholder="Nome de usuário*" required></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label>
         <ion-icon name="mail"></ion-icon>
       </ion-label>
-      <ion-input type="email" [(ngModel)]="user.email" [formControl]="registerForm.controls['email']" placeholder="E-mail" required></ion-input>
+      <ion-input type="email" [(ngModel)]="user.email" [formControl]="registerForm.controls['email']" placeholder="E-mail*" required></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label>
         <ion-icon name="lock"></ion-icon>
       </ion-label>
-      <ion-input type="password" [(ngModel)]="user.password" [formControl]="registerForm.controls['password']" placeholder="Senha" required></ion-input>
+      <ion-input type="password" [(ngModel)]="user.password" [formControl]="registerForm.controls['password']" placeholder="Senha*" required></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label>
         <ion-icon name="lock"></ion-icon>
       </ion-label>
-      <ion-input type="password" [(ngModel)]="user.password_confirmation" [formControl]="registerForm.controls['password_confirmation']" placeholder="Confirme sua senha" required></ion-input>
+      <ion-input type="password" [(ngModel)]="user.password_confirmation" [formControl]="registerForm.controls['password_confirmation']" placeholder="Confirme sua senha*" required></ion-input>
       </ion-item>
-      <p style="color:red" *ngIf="registerForm.get('password').value != registerForm.get('password_confirmation').value">Atenção: As senhas não coincidem</p>
+      <p style="color:red" *ngIf="registerForm.get('password').value != registerForm.get('password_confirmation').value">*Atenção: As senhas não coincidem</p>
     <br>
-    <button ion-button class="bt-default" type="submit" full item-right (click)="registerUser(user,profile)" [disabled]="!registerForm.valid">Pronto</button>
+    <button ion-button class="bt-default" type="submit" full item-right (click)="registerUser(user,profile)" [disabled]="!registerForm.valid">Pronto :)</button>
   </form>
 </ion-content>
