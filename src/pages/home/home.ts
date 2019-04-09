@@ -1,11 +1,14 @@
 import { AngularFireAuth } from 'angularfire2/auth';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, Platform, App, IonicPage } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 
 import { AuthService } from './../../providers/auth-service';
 
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
+
+import * as firebase from 'firebase';
+import 'firebase/auth';
 
 @IonicPage({
   name: 'HomePage',
@@ -15,12 +18,10 @@ import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/fires
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
   projectCollection: AngularFirestoreCollection<any[]>;
   projects: Observable<any[]>;
-
-  user_uid: any;
 
   constructor(public navCtrl: NavController, public authService: AuthService,
     public platform: Platform, public app: App, public afs: AngularFirestore,
@@ -28,12 +29,12 @@ export class HomePage {
 
     }
 
-  ionViewDidEnter(){
+  ngOnInit(){
 
-    this.afAuth.authState.subscribe(auth=>{
-      this.projectCollection = this.afs.collection(`projects`,ref => ref.where('user_admin', '==', auth.uid));
-      this.projects = this.projectCollection.valueChanges();
-    })
+    let user_uid = firebase.auth().currentUser.uid;
+
+    this.projectCollection = this.afs.collection(`projects`,ref => ref.where('user_admin', '==', user_uid));
+    this.projects = this.projectCollection.valueChanges();
 
   }
 

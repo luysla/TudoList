@@ -62,16 +62,22 @@ export class LoginFirebasePage {
         ]
     });
 
+
+
+
     this.authService.login(user).then(function(user){
       if(user){
-        firebase.auth().onAuthStateChanged(user=>{
-          if(user.emailVerified == true){
+
+        _this.emailVerified = firebase.auth().currentUser.emailVerified;
+
+        //firebase.auth().onAuthStateChanged(user=>{
+          if(_this.emailVerified == true){
             _this.navCtrl.setRoot(TabsPage);
           }else{
             alert.present();
             _this.navCtrl.setRoot('LoginFirebasePage');
           }
-        })
+        //})
       }else{
         console.log("Usuário não existe!");
       }
