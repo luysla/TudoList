@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AuthService } from './../../providers/auth-service';
@@ -30,7 +30,7 @@ export class LoginFirebasePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public formBuilder: FormBuilder, public authService: AuthService,
-    public afAuth: AngularFireAuth) {
+    public afAuth: AngularFireAuth, public alertCtrl: AlertController) {
 
     let emailRegex = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
 
@@ -45,21 +45,38 @@ export class LoginFirebasePage {
 
     let _this = this;
 
+    const alert = this.alertCtrl.create({
+      title: 'Atenção',
+      message: "Você precisa verificar seu e-mail antes do login! Caso queira receber o e-mail de verificação novamente, clique no botão de Reenviar e-mail",
+      buttons: [
+        {
+          text: 'Reenviar e-mail',
+          handler: data => {
+            this.authService.sendEmailVerification();
+            }
+          },
+          {
+            text: 'Ok',
+            role: 'cancel'
+          }
+        ]
+    });
+
     this.authService.login(user).then(function(user){
       if(user){
         firebase.auth().onAuthStateChanged(user=>{
           if(user.emailVerified == true){
             _this.navCtrl.setRoot(TabsPage);
           }else{
-            alert("Você precisa verificar seu e-mail antes de se logar!");
+            alert.present();
             _this.navCtrl.setRoot('LoginFirebasePage');
           }
         })
       }else{
-        alert("Usuário não existe!");
+        console.log("Usuário não existe!");
       }
     }).catch((e)=>{
-      alert("Erro ao se logar!");
+      console.log("Erro ao se logar!");
     });
   }
 

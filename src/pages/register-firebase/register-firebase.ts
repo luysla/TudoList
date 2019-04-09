@@ -43,15 +43,17 @@ export class RegisterFirebasePage {
 
   registerUser(user: User, profile: Profile){
 
+    let _this = this;
+
     this.authService.newUser(user).then(()=>{
 
       profile.user_uid = firebase.auth().currentUser.uid;
-      this.authService.setProfile(profile);
+      _this.authService.setProfile(profile);
 
-      this.authService.sendEmailVerification();
+      _this.authService.sendEmailVerification();
 
       alert("Conta criada com sucesso!");
-      this.navCtrl.pop();
+      _this.navCtrl.pop();
 
     }).catch((e)=>{
       alert("Erro ao criar conta: " + e);
