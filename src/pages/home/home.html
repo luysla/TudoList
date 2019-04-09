@@ -5,6 +5,23 @@
 </ion-header>
 
 <ion-content padding>
+
+
+  <ion-card *ngFor="let project of projects | async">
+    <button ion-button class="bt-tarefas" icon-only clear item-end style="float: right">
+      <ion-icon name="star" [color]="project.favorito ? 'yellow' : 'white'"></ion-icon>
+    </button>
+    <ion-card-header class="card-header">
+      {{ project.name }}
+    </ion-card-header>
+
+    <ion-card-content>
+      {{ project.description }}
+    </ion-card-content>
+  </ion-card>
+
+
+
   <button ion-button class="bt-default" (click)="logout()" full>SAIR</button>
 
   <ion-fab right bottom (click)="openAddProject()">

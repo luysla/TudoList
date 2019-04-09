@@ -6,6 +6,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Project } from './../../models/project';
 
+import * as firebase from 'firebase';
+import 'firebase/auth';
+
 @IonicPage({
   name: 'AddProjectPage',
   segment: 'novo-projeto'
@@ -32,6 +35,9 @@ export class AddProjectPage {
   }
 
   addProject(project: Project): void{
+
+    project.user_admin = firebase.auth().currentUser.uid;
+
     this.projectService.newProject(project).then(()=>{
       alert("Projeto criado com sucesso!");
       this.navCtrl.pop();
