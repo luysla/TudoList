@@ -46,4 +46,8 @@ export class AddProjectPage {
     })
   }
 
+  openSearchUser(){
+    this.navCtrl.push('SearchUserPage');
+  }
+
 }

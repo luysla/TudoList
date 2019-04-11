@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar>
+    <ion-searchbar *ngIf="!mostraIcone" [(ngModel)]="searchTerm"
+    placeholder = "Pesquisar usuários"
+    (ionInput)="getItem($event)">
+  </ion-searchbar>
+</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list *ngFor="let user of usersSearch">
+    <ion-item-sliding>
+      <ion-item>
+        <ion-avatar item-start>
+          <img [src]="user.foto || '../../../../assets/imgs/no-photo.jpg'">
+        </ion-avatar>
+        <h2>{{ user.nome }} (@{{ user.username }})</h2>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+
+  <p *ngIf="usersSearch == 0">Nenhum usuário com esse nome foi encontrado...</p>
+
+</ion-content>

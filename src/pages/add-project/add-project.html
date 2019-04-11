@@ -18,6 +18,15 @@
 
     <br>
 
+  <ion-item no-lines>
+    <ion-label>Grupo</ion-label>
+    <button ion-button class="bt-tarefas" icon-only clear item-end (click)="openSearchUser()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-item>
+
+  <br>
+
     <button ion-button class="bt-default" full (click)="addProject(project)" [disabled]="!projectForm.valid">Ok</button>
   </form>
 </ion-content>

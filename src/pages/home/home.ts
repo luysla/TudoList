@@ -18,7 +18,7 @@ import 'firebase/auth';
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage implements OnInit {
+export class HomePage {
 
   projectCollection: AngularFirestoreCollection<any[]>;
   projects: Observable<any[]>;
@@ -27,16 +27,15 @@ export class HomePage implements OnInit {
     public platform: Platform, public app: App, public afs: AngularFirestore,
     public afAuth: AngularFireAuth) {
 
+      //let user_uid = firebase.auth().currentUser.uid;
+
+      this.afAuth.authState.subscribe(auth=>{
+        this.projectCollection = this.afs.collection(`projects`,ref => ref.where('user_admin', '==', auth.uid));
+        this.projects = this.projectCollection.valueChanges();
+      })
+
+
     }
-
-  ngOnInit(){
-
-    let user_uid = firebase.auth().currentUser.uid;
-
-    this.projectCollection = this.afs.collection(`projects`,ref => ref.where('user_admin', '==', user_uid));
-    this.projects = this.projectCollection.valueChanges();
-
-  }
 
   logout(): void{
     this.authService.logout().then(()=>{
