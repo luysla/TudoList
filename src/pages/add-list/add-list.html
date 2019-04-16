@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Nova lista</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <form [formGroup]="listForm">
+    <ion-item>
+      <ion-label stacked>Nome da lista</ion-label>
+      <ion-input type="text" [(ngModel)]="list.name" formControlName="name"></ion-input>
+    </ion-item>
+
+    <br>
+
+    <button ion-button class="bt-default" full (click)="addList(list)" [disabled]="!listForm.valid">Ok</button>
+  </form>
+
+</ion-content>

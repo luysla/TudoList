@@ -1,14 +1,12 @@
-import { AngularFireAuth } from 'angularfire2/auth';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, Platform, App, IonicPage } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 
 import { AuthService } from './../../providers/auth-service';
 
+import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 
-import * as firebase from 'firebase';
-import 'firebase/auth';
 
 @IonicPage({
   name: 'HomePage',
@@ -39,8 +37,8 @@ export class HomePage {
 
   logout(): void{
     this.authService.logout().then(()=>{
-      this.platform.exitApp();
       this.app.getRootNavs()[0].setRoot('LoginFirebasePage');
+      this.platform.exitApp();
     }).catch((e)=>{
       alert("Erro ao sair do aplicativo!");
     })
@@ -48,6 +46,12 @@ export class HomePage {
 
   openAddProject(): void{
     this.navCtrl.push('AddProjectPage');
+  }
+
+  openListPage(id_project: string): void{
+    this.navCtrl.push('ListsPage',{
+      idProject: id_project
+    });
   }
 
 }

@@ -1,3 +1,4 @@
+import { AngularFirestore } from 'angularfire2/firestore';
 import { ProjectService } from './../../providers/project-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
@@ -22,10 +23,13 @@ export class AddProjectPage {
 
   project = {} as Project;
 
+  idProject: string;
+
   projectForm: FormGroup;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public formBuilder: FormBuilder, public projectService: ProjectService) {
+    public formBuilder: FormBuilder, public projectService: ProjectService,
+    public afs: AngularFirestore) {
 
       this.projectForm = this.formBuilder.group({
         name: ['', [Validators.required, Validators.minLength(3)]],
@@ -38,12 +42,19 @@ export class AddProjectPage {
 
     project.user_admin = firebase.auth().currentUser.uid;
 
-    this.projectService.newProject(project).then(()=>{
+    this.projectService.newProject(project).then((doc)=>{
+
+      this.afs.collection('projects').doc(`${doc.id}`).update({
+        id_project: doc.id
+      });
+      this.idProject = doc.id;
       alert("Projeto criado com sucesso!");
       this.navCtrl.pop();
-    }).catch((e)=>{
+
+    }).catch(function(e){
       alert("Erro ao criar projeto!" + e);
     })
+
   }
 
   openSearchUser(){

@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Listas do projeto</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-item *ngFor="let list of lists | async">
+    {{ list.name }}
+  </ion-item>
+
+  <ion-fab right bottom (click)="openAddList()">
+    <button class="bt-default" ion-fab mini><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+
+</ion-content>

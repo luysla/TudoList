@@ -19,6 +19,8 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { AuthService } from '../providers/auth-service';
 import { ProjectService } from '../providers/project-service';
+import { ListService } from '../providers/list-service';
+
 
 @NgModule({
   declarations: [
@@ -44,7 +46,8 @@ import { ProjectService } from '../providers/project-service';
     AngularFireDatabase,
     AngularFireAuth,
     AuthService,
-    ProjectService
+    ProjectService,
+    ListService
   ]
 })
 export class AppModule {}

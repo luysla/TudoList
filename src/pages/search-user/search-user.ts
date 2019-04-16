@@ -7,7 +7,7 @@ import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/fires
 
 @IonicPage({
   name: 'SearchUserPage',
-  segment: 'procurar-usuario'
+  segment: 'pesquisar-usuario'
 })
 
 @Component({
@@ -61,11 +61,6 @@ export class SearchUserPage implements OnInit {
       this.usersCollection = this.afs.collection(`usuarios`);
       return this.users = this.usersCollection.valueChanges();
     }
-
-  }
-
-  ionViewDidLoad() {
-
   }
 
 }
