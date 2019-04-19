@@ -17,9 +17,11 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 
+/* Imports dos Providers */
 import { AuthService } from '../providers/auth-service';
 import { ProjectService } from '../providers/project-service';
 import { ListService } from '../providers/list-service';
+import { GroupService } from '../providers/group-service';
 
 
 @NgModule({
@@ -47,7 +49,8 @@ import { ListService } from '../providers/list-service';
     AngularFireAuth,
     AuthService,
     ProjectService,
-    ListService
+    ListService,
+    GroupService
   ]
 })
 export class AppModule {}

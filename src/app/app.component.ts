@@ -15,6 +15,8 @@ import { TabsPage } from '../pages/tabs/tabs';
 })
 export class MyApp {
 
+  rootPage: any = 'LoginFirebasePage';
+
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
     public afAuth: AngularFireAuth,public app: App) {
 

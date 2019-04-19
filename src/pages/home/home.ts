@@ -48,9 +48,10 @@ export class HomePage {
     this.navCtrl.push('AddProjectPage');
   }
 
-  openListPage(id_project: string): void{
+  openListPage(id_project: string, project_name: string): void{
     this.navCtrl.push('ListsPage',{
-      idProject: id_project
+      idProject: id_project,
+      nameProject: project_name
     });
   }
 

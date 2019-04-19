@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-searchbar *ngIf="!mostraIcone" [(ngModel)]="searchTerm"
+    <ion-searchbar [(ngModel)]="searchTerm"
     placeholder = "Pesquisar usuários"
     (ionInput)="getItem($event)">
   </ion-searchbar>

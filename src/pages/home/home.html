@@ -10,7 +10,7 @@
     <button ion-button class="bt-tarefas" icon-only clear item-end style="float: right">
       <ion-icon name="star" [color]="project.favorito ? 'yellow' : 'white'"></ion-icon>
     </button>
-    <ion-card-header class="card-header" (click)="openListPage(project.id_project)">
+    <ion-card-header class="card-header" (click)="openListPage(project.id_project,project.name)">
       {{ project.name }}
     </ion-card-header>
 

@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Novo grupo</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="groupForm">
+    <ion-item>
+      <ion-label stacked>Nome do grupo*</ion-label>
+      <ion-input type="text" [(ngModel)]="group.name" formControlName="name"></ion-input>
+    </ion-item>
+
+    <br>
+
+    <button ion-button class="bt-default" full (click)="addGroup(group)" [disabled]="!groupForm.valid">Ok</button>
+  </form>
+</ion-content>

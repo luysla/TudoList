@@ -1,17 +1,51 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Listas do projeto</ion-title>
+    <ion-title>{{ project_name }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="openAddGroup()">
+        <ion-icon name="people" color="light"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
+
+  <ion-toolbar>
+    <ion-segment style="color:black" [(ngModel)]="view">
+      <ion-segment-button value="lists">
+        Listas
+      </ion-segment-button>
+      <ion-segment-button value="group">
+        Grupo
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
 </ion-header>
 
 <ion-content padding>
 
-  <ion-item *ngFor="let list of lists | async">
-    {{ list.name }}
-  </ion-item>
+  <div [ngSwitch]="view">
 
-  <ion-fab right bottom (click)="openAddList()">
-    <button class="bt-default" ion-fab mini><ion-icon name="add"></ion-icon></button>
-  </ion-fab>
+  <ion-list *ngSwitchCase="'lists'">
 
+    <p *ngIf="lists == null">Crie uma lista para o projeto!</p>
+
+    <ion-item *ngFor="let list of lists | async">
+      {{ list.name }}
+    </ion-item>
+
+    <ion-fab right bottom (click)="openAddList()">
+      <button class="bt-default" ion-fab mini><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+  </ion-list>
+
+  <div *ngSwitchCase="'group'">
+    <ion-item *ngFor="let group of groups | async" no-lines>
+      <h2>Grupo</h2>
+      {{ group.name }}
+      <br>
+      <h2>Participantes</h2>
+    </ion-item>
+  </div>
+
+</div>
 </ion-content>

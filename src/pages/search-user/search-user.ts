@@ -5,6 +5,8 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Rx';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 
+import { GroupService } from './../../providers/group-service';
+
 @IonicPage({
   name: 'SearchUserPage',
   segment: 'pesquisar-usuario'
@@ -29,8 +31,13 @@ export class SearchUserPage implements OnInit {
   usersCollection: AngularFirestoreCollection<any[]>;
   users: Observable<any[]>;
 
+  id_project: string;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public afs: AngularFirestore) {
+    public afs: AngularFirestore, public groupService: GroupService) {
+
+      this.id_project = this.navParams.get('idProject');
+
   }
 
   ngOnInit(){
@@ -41,7 +48,7 @@ export class SearchUserPage implements OnInit {
     })
   }
 
-  firequery(start,end){
+  firequery(start,end): Observable<any>{
     this.usersCollection = this.afs.collection(`users`,ref =>
       ref
       .orderBy(`username`)
@@ -52,7 +59,7 @@ export class SearchUserPage implements OnInit {
       return this.users =  this.usersCollection.valueChanges();
   }
 
-  getItem(ev: any){
+  getItem(ev: any): Observable<any>{
     let q = ev.target.value;
     if (q != '' && q != undefined) {
       this.startAt.next(q);
