@@ -32,12 +32,13 @@ export class SearchUserPage implements OnInit {
   users: Observable<any[]>;
 
   id_project: string;
+  id_group: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public afs: AngularFirestore, public groupService: GroupService) {
 
       this.id_project = this.navParams.get('idProject');
-
+      this.id_group = this.navParams.get('idGroup');
   }
 
   ngOnInit(){
@@ -68,6 +69,15 @@ export class SearchUserPage implements OnInit {
       this.usersCollection = this.afs.collection(`usuarios`);
       return this.users = this.usersCollection.valueChanges();
     }
+  }
+
+  addMemberGroup(user_uid: string,user_name: string){
+    this.groupService.addMemberGroup(this.id_group,user_uid,user_name).then(()=>{
+      alert('Membro adicionado!');
+      this.navCtrl.pop();
+    }).catch((e)=>{
+      alert('Erro ao adicionar membro!' + e);
+    })
   }
 
 }

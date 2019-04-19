@@ -8,6 +8,9 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Group } from '../../models/group';
 
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+
 @IonicPage({
   name: 'AddGroupPage',
   segment: 'novo-grupo'
@@ -41,13 +44,15 @@ export class AddGroupPage {
 
         this.afs.collection('groups').doc(`${doc.id}`).update({
           id_group: doc.id,
-          id_project: this.id_project
+          id_project: this.id_project,
+          user_admin: firebase.auth().currentUser.uid
         });
 
         console.log('Grupo criado com sucesso!');
 
         this.navCtrl.push('SearchUserPage',{
-          idProject: this.id_project
+          idProject: this.id_project,
+          idGroup: doc.id
         });
       }).catch((e)=>{
         console.log('Erro ao criar grupo!' + e);

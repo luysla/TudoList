@@ -1,11 +1,6 @@
 <ion-header>
   <ion-navbar>
     <ion-title>{{ project_name }}</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="openAddGroup()">
-        <ion-icon name="people" color="light"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 
   <ion-toolbar>
@@ -44,7 +39,20 @@
       {{ group.name }}
       <br>
       <h2>Participantes</h2>
+
+      <div *ngIf="group.members!=null">
+          <div *ngFor="let member of group.members">
+            <p style="font-weight: bold">{{ member.member_name }}</p>
+          </div>
+        </div>
+
+      <button ion-button class="bt-default" (click)="openSearchUser(group.id_group)">Adicionar membro</button>
     </ion-item>
+
+    <button ion-button class="bt-default" (click)="openAddGroup()" full>Adicionar grupo</button>
+
+    <button ion-button class="bt-default" *ngIf="groups == null" (click)="openAddGroup()">Criar grupo</button>
+
   </div>
 
 </div>

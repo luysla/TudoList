@@ -52,9 +52,10 @@ export class ListsPage {
     });
   }
 
-  openSearchUser(): void{
+  openSearchUser(id_group: string): void{
     this.navCtrl.push('SearchUserPage',{
-      idProjet: this.id_project
+      idProjet: this.id_project,
+      idGroup: id_group
     });
   }
 
