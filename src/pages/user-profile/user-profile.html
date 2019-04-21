@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Perfil</ion-title>
+    <ion-buttons end>
+      <button ion-button *ngIf="edit==false" (click)="showEdit()" icon-only>
+        <ion-icon name="create" color="light"></ion-icon>
+      </button>
+
+      <button ion-button *ngIf="edit==true" (click)="showEdit()" icon-only>
+        <ion-icon name="close" color="light"></ion-icon>
+      </button>
+
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div *ngFor="let user of userDoc | async">
+    <ion-avatar>
+      <img class="round-perfil" [src]="user.photo || '../../../../assets/imgs/no-photo.jpg'">
+    </ion-avatar>
+
+    <br>
+
+    <div *ngIf="edit==false">
+      <h2 text-center>{{ user.name }}</h2>
+      <p text-center>@{{ user.username }}</p>
+    </div>
+
+    <div *ngIf="edit==true">
+
+      <p>Escolha uma nova foto:</p>
+
+      <ion-item>
+        <ion-icon name="image" item-left></ion-icon>
+        <input type="file" (change)="uploadPhoto($event)">
+      </ion-item>
+
+      <br>
+
+    </div>
+
+    <button ion-button class="bt-default" *ngIf="edit==true" (click)="saveChange(user)" full>Salvar</button>
+  </div>
+
+</ion-content>

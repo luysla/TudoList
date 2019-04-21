@@ -27,6 +27,11 @@ export class AuthService {
     return this.afs.doc(`users/${profile.user_uid}`).set(profile);
   }
 
+  setProfilePhoto(file: File,user_uid: string): firebase.storage.UploadTask {
+    const ref = firebase.storage().ref();
+    return ref.child(`/users/${user_uid}`).put(file);
+  }
+
   login(user: User): Promise<any>{
     return this.afAuth.auth.signInWithEmailAndPassword(user.email,user.password);
   }

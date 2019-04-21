@@ -10,6 +10,8 @@ import { Project } from './../../models/project';
 import * as firebase from 'firebase';
 import 'firebase/auth';
 
+import moment from "moment";
+
 @IonicPage({
   name: 'AddProjectPage',
   segment: 'novo-projeto'
@@ -45,7 +47,9 @@ export class AddProjectPage {
     this.projectService.newProject(project).then((doc)=>{
 
       this.afs.collection('projects').doc(`${doc.id}`).update({
-        id_project: doc.id
+        id_project: doc.id,
+        date_hour_create: moment().format('DD/MM/YYYY, h:mm:ss a'),
+        star: 0
       });
       this.idProject = doc.id;
       alert("Projeto criado com sucesso!");

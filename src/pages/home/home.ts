@@ -3,10 +3,10 @@ import { NavController, Platform, App, IonicPage } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 
 import { AuthService } from './../../providers/auth-service';
+import { ProjectService } from './../../providers/project-service';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
-
 
 @IonicPage({
   name: 'HomePage',
@@ -21,9 +21,11 @@ export class HomePage {
   projectCollection: AngularFirestoreCollection<any[]>;
   projects: Observable<any[]>;
 
+  star_project: number = 0;
+
   constructor(public navCtrl: NavController, public authService: AuthService,
     public platform: Platform, public app: App, public afs: AngularFirestore,
-    public afAuth: AngularFireAuth) {
+    public afAuth: AngularFireAuth, public projectService: ProjectService) {
 
       //let user_uid = firebase.auth().currentUser.uid;
 
@@ -31,7 +33,6 @@ export class HomePage {
         this.projectCollection = this.afs.collection(`projects`,ref => ref.where('user_admin', '==', auth.uid));
         this.projects = this.projectCollection.valueChanges();
       })
-
 
     }
 
@@ -53,6 +54,16 @@ export class HomePage {
       idProject: id_project,
       nameProject: project_name
     });
+  }
+
+  addStarProject(id_project: string): void{
+    if(this.star_project == 0){
+      this.projectService.starProject(id_project,1);
+      this.star_project = 1;
+    }else{
+      this.projectService.starProject(id_project,0);
+      this.star_project = 0;
+    }
   }
 
 }

@@ -3,7 +3,7 @@
     <ion-title>{{ project_name }}</ion-title>
   </ion-navbar>
 
-  <ion-toolbar>
+  <ion-toolbar color="light">
     <ion-segment style="color:black" [(ngModel)]="view">
       <ion-segment-button value="lists">
         Listas
@@ -35,15 +35,18 @@
 
   <div *ngSwitchCase="'group'">
     <ion-item *ngFor="let group of groups | async" no-lines>
-      <h2>Grupo</h2>
-      {{ group.name }}
+      <h1 text-center>{{ group.name }}</h1>
       <br>
+
       <h2>Participantes</h2>
 
       <div *ngIf="group.members!=null">
-          <div *ngFor="let member of group.members">
-            <p style="font-weight: bold">{{ member.member_name }}</p>
-          </div>
+          <ion-item *ngFor="let member of group.members">
+              <ion-avatar item-start>
+                  <img [src]="member.foto || '../../../../assets/imgs/no-photo.jpg'">
+                </ion-avatar>
+            <h2>{{ member.member_name }}</h2>
+          </ion-item>
         </div>
 
       <button ion-button class="bt-default" (click)="openSearchUser(group.id_group)">Adicionar membro</button>

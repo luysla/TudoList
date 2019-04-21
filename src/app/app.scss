@@ -31,3 +31,13 @@
 ion-header ion-icon.back-button-icon.icon {
   color: #FFFFFF;
 }
+
+.round-perfil{
+  border-radius: 50%;
+  margin: 25px auto 0 auto;
+  width: 140px;
+  height: 135px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}

@@ -7,8 +7,8 @@
 <ion-content padding>
 
   <ion-card *ngFor="let project of projects | async">
-    <button ion-button class="bt-tarefas" icon-only clear item-end style="float: right">
-      <ion-icon name="star" [color]="project.favorito ? 'yellow' : 'white'"></ion-icon>
+    <button ion-button class="bt-tarefas" (click)="addStarProject(project.id_project)" icon-only clear item-end style="float: right">
+      <ion-icon name="star" [color]="project.star ? 'yellow' : 'white'"></ion-icon>
     </button>
     <ion-card-header class="card-header" (click)="openListPage(project.id_project,project.name)">
       {{ project.name }}

@@ -6,8 +6,8 @@ import { Component } from '@angular/core';
 export class TabsPage {
 
   tab1Root = 'HomePage';
-  tab2Root = 'HomePage';
-  tab3Root = 'HomePage';
+  tab2Root = 'StarProjectsPage';
+  tab3Root = 'UserProfilePage';
 
   constructor() {
 

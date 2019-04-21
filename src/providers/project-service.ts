@@ -17,4 +17,11 @@ export class ProjectService {
   newProject(project: Project): Promise<any>{
     return this.afs.collection(`projects`).add(project);
   }
+
+  starProject(id_project: string, flag: number): Promise<any>{
+    return this.afs.collection(`projects`).doc(`${id_project}`).update({
+      star: flag
+    });
+  }
+
 }
