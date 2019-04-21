@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 
@@ -20,11 +20,14 @@ export class StarProjectsPage {
   starProjects: Observable<any[]>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public afs: AngularFirestore, public projectService: ProjectService) {
+    public afs: AngularFirestore, public projectService: ProjectService,
+    public cdr: ChangeDetectorRef) {
+  }
 
+  ionViewDidEnter(){
     this.projectCollection = this.afs.collection('projects', ref => ref.where('star', '==', 1));
     this.starProjects = this.projectCollection.valueChanges();
-
+    this.cdr.detectChanges();
   }
 
   deleteStarProject(id_project: string): void{

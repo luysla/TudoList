@@ -21,13 +21,9 @@ export class HomePage {
   projectCollection: AngularFirestoreCollection<any[]>;
   projects: Observable<any[]>;
 
-  star_project: number = 0;
-
   constructor(public navCtrl: NavController, public authService: AuthService,
     public platform: Platform, public app: App, public afs: AngularFirestore,
     public afAuth: AngularFireAuth, public projectService: ProjectService) {
-
-      //let user_uid = firebase.auth().currentUser.uid;
 
       this.afAuth.authState.subscribe(auth=>{
         this.projectCollection = this.afs.collection(`projects`,ref => ref.where('user_admin', '==', auth.uid));
@@ -56,13 +52,11 @@ export class HomePage {
     });
   }
 
-  addStarProject(id_project: string): void{
-    if(this.star_project == 0){
+  addStarProject(id_project: string, star: number): void{
+    if(star == 0){
       this.projectService.starProject(id_project,1);
-      this.star_project = 1;
     }else{
       this.projectService.starProject(id_project,0);
-      this.star_project = 0;
     }
   }
 
