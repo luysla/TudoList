@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { NavController, Platform, App, IonicPage } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
+import { Subject } from 'rxjs/Subject';
 
 import { AuthService } from './../../providers/auth-service';
 import { ProjectService } from './../../providers/project-service';
@@ -16,21 +17,67 @@ import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/fires
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage {
+export class HomePage implements OnInit{
+
+  search: boolean = false;
+  searchTerm: string;
+
+  startAt = new Subject();
+  endAt = new Subject();
+
+  startobs = this.startAt.asObservable();
+  endobs = this.endAt.asObservable();
 
   projectCollection: AngularFirestoreCollection<any[]>;
   projects: Observable<any[]>;
 
+  projectsSearch: any;
+
   constructor(public navCtrl: NavController, public authService: AuthService,
     public platform: Platform, public app: App, public afs: AngularFirestore,
-    public afAuth: AngularFireAuth, public projectService: ProjectService) {
-
-      this.afAuth.authState.subscribe(auth=>{
-        this.projectCollection = this.afs.collection(`projects`,ref => ref.where('user_admin', '==', auth.uid));
-        this.projects = this.projectCollection.valueChanges();
-      })
+    public afAuth: AngularFireAuth, public projectService: ProjectService,
+    public cdr: ChangeDetectorRef) {
 
     }
+
+    ngOnInit(){
+      Observable.combineLatest(this.startobs, this.endobs).subscribe((value) => {
+        this.firequery(value[0], value[1]).subscribe((projects) => {
+          this.projectsSearch = projects;
+        })
+      })
+    }
+
+  ionViewDidEnter(){
+    this.afAuth.authState.subscribe(auth=>{
+      this.projectCollection = this.afs.collection(`projects`,ref => ref.where('user_admin', '==', auth.uid));
+      this.projects = this.projectCollection.valueChanges();
+      this.cdr.detectChanges();
+    })
+  }
+
+  firequery(start,end){
+    this.projectCollection = this.afs.collection(`projects`, ref =>
+      ref
+      .orderBy(`name`)
+      .limit(5)
+      .startAt(start)
+      .endAt(end))
+
+      return this.projects =  this.projectCollection.valueChanges();
+  }
+
+  getItem(ev: any){
+    let q = ev.target.value;
+    if (q != '' && q != undefined) {
+      this.startAt.next(q);
+      this.endAt.next(q + "\uf8ff");
+    }else{
+      this.projectCollection = this.afs.collection(`projects`);
+      return this.projects = this.projectCollection.valueChanges();
+    }
+
+  }
 
   logout(): void{
     this.authService.logout().then(()=>{
@@ -58,6 +105,15 @@ export class HomePage {
     }else{
       this.projectService.starProject(id_project,0);
     }
+  }
+
+  showSearch(): void{
+    this.search = !this.search;
+    this.cdr.detectChanges();
+  }
+
+  cancelSearch(): void{
+    this.navCtrl.setRoot('HomePage');
   }
 
 }
