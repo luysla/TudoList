@@ -9,6 +9,9 @@ import { ProjectService } from './../../providers/project-service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+
 @IonicPage({
   name: 'HomePage',
   segment: 'home'
@@ -49,11 +52,14 @@ export class HomePage implements OnInit{
     }
 
   ionViewDidEnter(){
-    this.afAuth.authState.subscribe(auth=>{
-      this.projectCollection = this.afs.collection(`projects`,ref => ref.where('user_admin', '==', auth.uid));
-      this.projects = this.projectCollection.valueChanges();
-      this.cdr.detectChanges();
-    })
+    const unsubscribe = firebase.auth().onAuthStateChanged(user=>{
+      if(user){
+        this.projectCollection = this.afs.collection(`projects`,ref => ref.where('user_admin', '==', user.uid));
+        this.projects = this.projectCollection.valueChanges();
+        this.cdr.detectChanges();
+        unsubscribe();
+      }
+    });
   }
 
   firequery(start,end){
@@ -77,15 +83,6 @@ export class HomePage implements OnInit{
       return this.projects = this.projectCollection.valueChanges();
     }
 
-  }
-
-  logout(): void{
-    this.authService.logout().then(()=>{
-      this.app.getRootNavs()[0].setRoot('LoginFirebasePage');
-      this.platform.exitApp();
-    }).catch((e)=>{
-      alert("Erro ao sair do aplicativo!");
-    })
   }
 
   openAddProject(): void{

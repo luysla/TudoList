@@ -1,5 +1,8 @@
 <ion-header>
   <ion-navbar>
+    <button ion-button *ngIf="search==false" menuToggle>
+      <ion-icon name="menu" color="light"></ion-icon>
+    </button>
     <button ion-button *ngIf="search==true" icon-only clear (click)="cancelSearch()">
       <ion-icon name="arrow-back" color="light"></ion-icon>
     </button>
@@ -32,8 +35,6 @@
   </ion-card>
 
   <p *ngIf="projectsSearch == 0 && search==true">Nenhum projeto com esse nome foi encontrado...</p>
-
-  <button ion-button class="bt-default" (click)="logout()" full>SAIR</button>
 
   <ion-fab right bottom (click)="openAddProject()">
     <button class="bt-default" ion-fab mini><ion-icon name="add"></ion-icon></button>

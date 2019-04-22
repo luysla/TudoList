@@ -1,1 +1,49 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-menu color="dark" [content]="content">
+    <ion-header>
+    </ion-header>
+
+    <ion-content>
+      <div *ngFor="let user of userDoc | async">
+        <ion-thumbnail item-start>
+          <ion-avatar>
+            <img class="round-menu" [src]="user.photo || '../assets/imgs/no-photo.jpg'">
+            <p text-center style="font-weight: bold">@{{ user.username }}</p>
+          </ion-avatar>
+        </ion-thumbnail>
+
+
+      <ion-item-divider>
+        MENU
+      </ion-item-divider>
+
+      <ion-list no-lines>
+        <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+          {{ p.name }}
+          <ion-icon color="dark" item-left [name]="p.icon"></ion-icon>
+          <!-- <ion-badge *ngIf="perfil.qtdMinhasTarefas!=0 && p.name == 'Minhas tarefas'" color="vinho" style="border-radius: 45%" item-end>{{ perfil.qtdMinhasTarefas }}</ion-badge> -->
+        </button>
+      </ion-list>
+    </div>
+
+      <ion-item-divider>
+        CONTA
+      </ion-item-divider>
+
+      <ion-list>
+        <button menuClose ion-item *ngFor="let p of pagesConfig" (click)="openPage(p)">
+          {{ p.name }}
+          <ion-icon color="dark" item-left [name]="p.icon"></ion-icon>
+        </button>
+      </ion-list>
+
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar color="white">
+        <button ion-button menuClose clear style="background-color: transparent; float: right" (click)="logout()">
+          <ion-title><ion-icon color="dark" name="exit"></ion-icon>
+          </ion-title>
+        </button>
+      </ion-toolbar>
+    </ion-footer>
+  </ion-menu>
+<ion-nav #content [root]="rootPage"></ion-nav>
