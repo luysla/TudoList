@@ -6,4 +6,9 @@
 
 <ion-content padding>
 
+  <ion-item  no-lines *ngFor="let task of tasksCompleted | async">
+    <ion-label class="label-task">{{ task.name }}</ion-label>
+    <ion-checkbox color="dark" (click)="restore(task.id_task)"></ion-checkbox>
+  </ion-item>
+
 </ion-content>

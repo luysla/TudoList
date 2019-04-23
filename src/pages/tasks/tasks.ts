@@ -1,6 +1,6 @@
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -33,7 +33,8 @@ export class TasksPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public formBuilder: FormBuilder, public taskService: TaskService,
-    public afs: AngularFirestore, public cdr: ChangeDetectorRef) {
+    public afs: AngularFirestore, public cdr: ChangeDetectorRef,
+    public alertCtrl: AlertController) {
 
     this.id_list = this.navParams.get("idList");
 
@@ -43,7 +44,7 @@ export class TasksPage {
 
     const unsubscribe = firebase.auth().onAuthStateChanged(user=>{
       if(user){
-        this.taskCollection = this.afs.collection('tasks',ref => ref.where('id_list','==',this.id_list));
+        this.taskCollection = this.afs.collection('tasks',ref => ref.where('id_list','==',this.id_list).where('done','==',0));
         this.taskDoc = this.taskCollection.valueChanges();
         this.cdr.detectChanges();
         unsubscribe();
@@ -77,6 +78,34 @@ export class TasksPage {
     this.navCtrl.push('DetailsTaskPage',{
       idTask: id_task
     });
+  }
+
+  doneTask(id_task: string, subtask: number){
+
+    console.log(subtask);
+
+    let alert = this.alertCtrl.create({
+      title: 'Atenção!',
+      message: 'Existem sub tarefas vinculadas que não foram concluídas ainda. Para continuar é necessário concluí-las',
+      buttons: [
+        {
+          text: 'Excluir mesmo assim',
+          handler: data => {
+            this.taskService.doneTask(id_task);
+          }
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    if(subtask==0){
+      this.taskService.doneTask(id_task);
+    }else{
+      alert.present();
+    }
   }
 
 }

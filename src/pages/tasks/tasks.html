@@ -24,7 +24,7 @@
 
   <ion-item #card no-lines *ngFor="let task of taskDoc | async">
     <ion-label>{{ task.name }}</ion-label>
-    <ion-checkbox color="dark"></ion-checkbox>
+    <ion-checkbox color="dark" (click)="doneTask(task.id_task,task.subtask)"></ion-checkbox>
 
     <button ion-button *ngIf="task.priority!=null" [ngStyle]="{'background-color':tarefa.corBtPrioridade}" item-end round> <!-- (click)="addPrioridade(task.id_task)" -->
       {{ task.priority }}

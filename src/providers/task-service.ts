@@ -19,5 +19,16 @@ export class TaskService {
     return this.afs.collection('tasks').add(task);
   }
 
+  doneTask(id_task: string): Promise<any>{
+    return this.afs.collection('tasks').doc(`${id_task}`).update({
+      done: 1
+    })
+  }
+
+  restoreTask(id_task: string): Promise<any>{
+    return this.afs.collection('tasks').doc(`${id_task}`).update({
+      done: 0
+    });
+  }
 
 }
