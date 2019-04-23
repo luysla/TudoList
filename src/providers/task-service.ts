@@ -31,4 +31,11 @@ export class TaskService {
     });
   }
 
+  addPriorityTask(id_task: string, priority: number, color: string): Promise<any>{
+    return this.afs.collection('tasks').doc(`${id_task}`).update({
+      priority: priority,
+      color_priority: color
+    });
+  }
+
 }

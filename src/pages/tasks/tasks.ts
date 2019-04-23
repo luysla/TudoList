@@ -24,6 +24,8 @@ export class TasksPage {
 
   id_list: string;
 
+  color_priority: string;
+
   task = {} as Task;
 
   taskForm: FormGroup;
@@ -106,6 +108,52 @@ export class TasksPage {
     }else{
       alert.present();
     }
+  }
+
+  addPriority(id_task: string): void{
+
+    let alert = this.alertCtrl.create();
+    alert.setTitle('Prioridade da tarefa');
+
+    alert.addInput({
+      type: 'radio',
+      label: 'Alta',
+      value: '1',
+      checked: true
+    });
+
+    alert.addInput({
+      type: 'radio',
+      label: 'Média',
+      value: '2',
+      checked: false
+    });
+
+    alert.addInput({
+      type: 'radio',
+      label: 'Baixa',
+      value: '3',
+      checked: false
+    });
+
+    alert.addButton('Cancel');
+    alert.addButton({
+      text: 'OK',
+      handler: data => {
+
+        if(data==1){
+          this.color_priority = '#FF4500';
+        }if(data==2){
+          this.color_priority = '#FF8C00';
+        }if(data==3){
+          this.color_priority = '#FFD700';
+        }
+
+        this.taskService.addPriorityTask(id_task,data,this.color_priority);
+
+      }
+    });
+    alert.present();
   }
 
 }

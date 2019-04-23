@@ -19,12 +19,12 @@
 
       <h2 class="titulo">Prioridade:</h2>
 
-      <button ion-button class="bt-default" *ngIf="task.priority==null" icon-start>  <!-- (click)="addPrioridade(tarefa.id_tarefa)" -->
+      <button ion-button class="bt-default" *ngIf="task.priority==null" icon-start (click)="addPriority(task.id_task)">
         <ion-icon name="podium"></ion-icon>
         Adicionar prioridade
       </button>
 
-      <button ion-button round *ngIf="task.priority!=null" [ngStyle]="{'background-color':task.colorBtPriority}"> <!-- (click)="addPrioridade(tarefa.id_tarefa)" -->
+      <button ion-button round *ngIf="task.priority!=null" [ngStyle]="{'background-color':task.color_priority}" (click)="addPriority(task.id_task)">
         {{ task.priority }}
       </button>
 
