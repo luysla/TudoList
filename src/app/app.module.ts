@@ -22,6 +22,7 @@ import { AuthService } from '../providers/auth-service';
 import { ProjectService } from '../providers/project-service';
 import { ListService } from '../providers/list-service';
 import { GroupService } from '../providers/group-service';
+import { TaskService } from '../providers/task-service';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { GroupService } from '../providers/group-service';
     AuthService,
     ProjectService,
     ListService,
-    GroupService
+    GroupService,
+    TaskService
   ]
 })
 export class AppModule {}

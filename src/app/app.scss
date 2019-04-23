@@ -32,6 +32,23 @@ ion-header ion-icon.back-button-icon.icon {
   color: #FFFFFF;
 }
 
+.round-menu{
+  border-radius: 50%;
+  width: 105px;
+  height: 105px;
+  margin: 25px auto 0 auto;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+ion-thumbnail{
+  //height: 155px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: #EAEBED;
+}
+
 .round-perfil{
   border-radius: 50%;
   margin: 25px auto 0 auto;

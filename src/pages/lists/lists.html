@@ -24,7 +24,7 @@
 
     <p *ngIf="lists == null">Crie uma lista para o projeto!</p>
 
-    <ion-item *ngFor="let list of lists | async">
+    <ion-item *ngFor="let list of lists | async" (click)="openTaskPage(list.id_list)">
       {{ list.name }}
     </ion-item>
 

@@ -65,4 +65,10 @@ export class ListsPage {
     })
   }
 
+  openTaskPage(id_list: string): void{
+    this.navCtrl.push('TasksPage',{
+      idList: id_list
+    });
+  }
+
 }

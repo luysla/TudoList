@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Tarefas</ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="openCompletedTasks()" icon-only>
+        <ion-icon name="checkbox-outline" color="light"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="taskForm">
+    <ion-item>
+      <ion-input type="text" [(ngModel)]="task.name" formControlName="name"></ion-input>
+      <button class="bt-tarefas" ion-button icon-only clear item-end (click)="addTask(task)" [disabled]="task.name==null">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-item>
+  </form>
+  <br>
+
+  <ion-item #card no-lines *ngFor="let task of taskDoc | async">
+    <ion-label>{{ task.name }}</ion-label>
+    <ion-checkbox color="dark"></ion-checkbox>
+
+    <button ion-button *ngIf="task.priority!=null" [ngStyle]="{'background-color':tarefa.corBtPrioridade}" item-end round> <!-- (click)="addPrioridade(task.id_task)" -->
+      {{ task.priority }}
+    </button>
+
+    <button ion-button class="bt-tarefas" *ngFor="let lembrete of task.lembrete" clear item-end> <!-- (click)="excluirLembrete(tarefa.id_tarefa, lembrete)" -->
+      {{ lembrete.df }}
+    </button>
+
+    <button ion-button class="bt-tarefas" clear icon-only item-end (click)="openDetailsTask(task.id_task)">
+      <ion-icon name="arrow-round-forward"></ion-icon>
+    </button>
+  </ion-item>
+
+</ion-content>
