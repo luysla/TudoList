@@ -6,4 +6,69 @@
 
 <ion-content padding>
 
+  <ion-card>
+    <ion-item no-lines *ngFor="let task of taskDoc | async">
+
+      <!-- <button ion-button class="bt-tarefas" style="float: right" icon-only clear>
+        <ion-icon name="flag" color="danger"></ion-icon>
+      </button> -->
+
+      <h2 class="title" style="text-align: center"> {{ task.name }} </h2>
+
+      <br>
+
+      <h2 class="titulo">Prioridade:</h2>
+
+      <button ion-button class="bt-default" *ngIf="task.priority==null" icon-start>  <!-- (click)="addPrioridade(tarefa.id_tarefa)" -->
+        <ion-icon name="podium"></ion-icon>
+        Adicionar prioridade
+      </button>
+
+      <button ion-button round *ngIf="task.priority!=null" [ngStyle]="{'background-color':task.colorBtPriority}"> <!-- (click)="addPrioridade(tarefa.id_tarefa)" -->
+        {{ task.priority }}
+      </button>
+
+      <br *ngIf="task.reminder==null">
+
+      <h2 class="titulo" *ngIf="task.reminder==null">Lembrete:</h2>
+
+      <button ion-button class="bt-default" *ngIf="task.reminder==null" icon-start> <!-- (click)="addLembrete(tarefa.id_tarefa)" -->
+        <ion-icon name="alarm"></ion-icon>
+        Adicionar lembrete
+      </button>
+
+      <br>
+
+      <h2 class="titulo">Tarefas vinculadas:</h2>
+      <button ion-button class="bt-default" *ngIf="task.subtask==0" icon-start> <!-- (click)="abrirSubTarefa(tarefa.id_tarefa,tarefa.qtdSubTarefas)" -->
+        <ion-icon name="list"></ion-icon>
+        Adicionar subtarefas
+      </button>
+
+      <button ion-button class="bt-default" *ngIf="task.subtask!=0"> <!-- (click)="abrirSubTarefa(tarefa.id_tarefa,tarefa.qtdSubTarefas)" -->>
+        {{ task.subtask }}
+      </button>
+
+      <h2 class="titulo">Colaborador:</h2>
+      <button ion-button class="bt-default" *ngIf="task.collaborator==null" icon-start> <!-- (click)="addColaborador(tarefa.id_tarefa,tarefa.nome, tarefa.prioridade, tarefa.data_final_lembrete)"> -->
+        <ion-icon name="person-add"></ion-icon>
+        Adicionar colaborador
+      </button>
+
+      <div *ngIf="task.collaborator!=null">
+        <!-- <div *ngFor="let colaborador of tarefa.colaboradores">
+          <p style="font-weight: bold" (click)="addColaborador(tarefa.id_tarefa)">@{{ colaborador.username_colaborador }}</p>
+        </div> -->
+      </div>
+
+      <div *ngIf="task.reminder!=null">
+        <div *ngFor="let reminder of task.reminder">
+          <h2 class="titulo">Lembrete:</h2>
+          <p>{{ reminder.df }}</p>
+        </div>
+      </div>
+
+    </ion-item>
+  </ion-card>
+
 </ion-content>
