@@ -22,7 +22,7 @@
   </form>
   <br>
 
-  <ion-item #card no-lines *ngFor="let task of taskDoc | async">
+  <ion-item no-lines *ngFor="let task of taskDoc | async" text-wrap>
     <ion-label>{{ task.name }}</ion-label>
     <ion-checkbox color="dark" (click)="doneTask(task.id_task,task.subtask)"></ion-checkbox>
 

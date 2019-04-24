@@ -13,7 +13,7 @@
         <ion-icon name="flag" color="danger"></ion-icon>
       </button> -->
 
-      <h2 class="title" style="text-align: center"> {{ task.name }} </h2>
+      <h2 class="title" text-wrap> {{ task.name }} </h2>
 
       <br>
 
@@ -32,7 +32,7 @@
 
       <h2 class="titulo" *ngIf="task.reminder==null">Lembrete:</h2>
 
-      <button ion-button class="bt-default" *ngIf="task.reminder==null" icon-start> <!-- (click)="addLembrete(tarefa.id_tarefa)" -->
+      <button ion-button class="bt-default" *ngIf="task.reminder==null" icon-start (click)="addReminder(task.id_task)">
         <ion-icon name="alarm"></ion-icon>
         Adicionar lembrete
       </button>
@@ -40,12 +40,12 @@
       <br>
 
       <h2 class="titulo">Tarefas vinculadas:</h2>
-      <button ion-button class="bt-default" *ngIf="task.subtask==0" icon-start> <!-- (click)="abrirSubTarefa(tarefa.id_tarefa,tarefa.qtdSubTarefas)" -->
+      <button ion-button class="bt-default" *ngIf="task.subtask==0" icon-start (click)="openSubtask(task.id_task,task.subtask)">
         <ion-icon name="list"></ion-icon>
         Adicionar subtarefas
       </button>
 
-      <button ion-button class="bt-default" *ngIf="task.subtask!=0"> <!-- (click)="abrirSubTarefa(tarefa.id_tarefa,tarefa.qtdSubTarefas)" -->>
+      <button ion-button class="bt-default" *ngIf="task.subtask!=0" (click)="openSubtask(task.id_task,task.subtask)">
         {{ task.subtask }}
       </button>
 

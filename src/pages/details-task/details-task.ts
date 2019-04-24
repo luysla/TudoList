@@ -7,6 +7,10 @@ import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/fires
 
 import { TaskService } from '../../providers/task-service';
 
+import { Calendar } from '@ionic-native/calendar';
+
+import moment from "moment";
+
 @IonicPage({
   name: 'DetailsTaskPage',
   segment: 'detalhes-tarefa'
@@ -28,57 +32,127 @@ export class DetailsTaskPage {
     public afs: AngularFirestore, public taskService: TaskService,
     public alertCtrl: AlertController) {
 
-    this.id_task = this.navParams.get('idTask');
+      this.id_task = this.navParams.get('idTask');
 
-    this.taskColletion = this.afs.collection('tasks', ref => ref.where('id_task','==',this.id_task));
-    this.taskDoc = this.taskColletion.valueChanges();
+      this.taskColletion = this.afs.collection('tasks', ref => ref.where('id_task','==',this.id_task));
+      this.taskDoc = this.taskColletion.valueChanges();
 
-  }
+    }
 
-  addPriority(id_task: string): void{
+    addPriority(id_task: string): void{
 
-    let alert = this.alertCtrl.create();
-    alert.setTitle('Prioridade da tarefa');
+      let alert = this.alertCtrl.create();
+      alert.setTitle('Prioridade da tarefa');
 
-    alert.addInput({
-      type: 'radio',
-      label: 'Alta',
-      value: '1',
-      checked: true
-    });
+      alert.addInput({
+        type: 'radio',
+        label: 'Alta',
+        value: '1',
+        checked: true
+      });
 
-    alert.addInput({
-      type: 'radio',
-      label: 'Média',
-      value: '2',
-      checked: false
-    });
+      alert.addInput({
+        type: 'radio',
+        label: 'Média',
+        value: '2',
+        checked: false
+      });
 
-    alert.addInput({
-      type: 'radio',
-      label: 'Baixa',
-      value: '3',
-      checked: false
-    });
+      alert.addInput({
+        type: 'radio',
+        label: 'Baixa',
+        value: '3',
+        checked: false
+      });
 
-    alert.addButton('Cancel');
-    alert.addButton({
-      text: 'OK',
-      handler: data => {
+      alert.addButton('Cancel');
+      alert.addButton({
+        text: 'OK',
+        handler: data => {
 
-        if(data==1){
-          this.color_priority = '#FF4500';
-        }if(data==2){
-          this.color_priority = '#FF8C00';
-        }if(data==3){
-          this.color_priority = '#FFD700';
+          if(data==1){
+            this.color_priority = '#FF4500';
+          }if(data==2){
+            this.color_priority = '#FF8C00';
+          }if(data==3){
+            this.color_priority = '#FFD700';
+          }
+
+          this.taskService.addPriorityTask(id_task,data,this.color_priority);
+
         }
+      });
+      alert.present();
+    }
 
-        this.taskService.addPriorityTask(id_task,data,this.color_priority);
+    addReminder(id_task: string): void{
 
-      }
-    });
-    alert.present();
+      let options = { calendarName: 'TudoList', firstReminderMinutes: 15 };
+
+      let alertReminder = this.alertCtrl.create({
+        subTitle: "Lembrete criado com sucesso!",
+        buttons: ['OK']
+      });
+
+      const alert = this.alertCtrl.create({
+        title: 'Lembrete',
+        inputs: [
+          {
+            name: 'name',
+            placeholder: 'Nome*',
+            type: 'text'
+          },
+          {
+            name: 'description',
+            placeholder: 'Descrição(opcional)',
+            type: 'text'
+          },
+          {
+            name: 'local',
+            placeholder: 'Local(opcional)',
+            type: 'text'
+          },
+          {
+            name: 'initial_date',
+            placeholder: 'Data inicial*',
+            type: 'date'
+          },
+          {
+            name: 'final_date',
+            placeholder: 'Data final*',
+            type: 'date'
+          },
+        ],
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel'
+          },
+          {
+            text: 'Ok',
+            handler: data => {
+
+              Calendar.createEventInteractivelyWithOptions(data.name,data.local,data.description,moment(data.inicial_date).toDate(),moment(data.final_date).toDate(),options).
+              then(()=>{
+                this.taskService.addReminder(id_task,data.name,data.local,data.description,data.initial_date,data.final_date);
+                alertReminder.present();
+              }).catch((e)=>{
+                alertReminder.setSubTitle("Erro ao criar o lembrete! Tente novamente...");
+                alertReminder.setMessage(e);
+                alertReminder.present();
+              })
+            }
+          }
+        ]
+      });
+      alert.present();
+    }
+
+    openSubtask(id_task: string, subtask: number): void{
+      this.navCtrl.push('SubtasksPage',{
+        idTask: id_task,
+        subtask: subtask
+      })
+    }
+
   }
-
-}

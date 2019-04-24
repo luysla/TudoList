@@ -23,7 +23,7 @@ import { ProjectService } from '../providers/project-service';
 import { ListService } from '../providers/list-service';
 import { GroupService } from '../providers/group-service';
 import { TaskService } from '../providers/task-service';
-
+import { SubtaskService } from '../providers/subtask-service';
 
 @NgModule({
   declarations: [
@@ -52,7 +52,8 @@ import { TaskService } from '../providers/task-service';
     ProjectService,
     ListService,
     GroupService,
-    TaskService
+    TaskService,
+    SubtaskService
   ]
 })
 export class AppModule {}
