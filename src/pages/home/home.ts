@@ -63,13 +63,19 @@ export class HomePage implements OnInit{
   }
 
   firequery(start,end){
-    this.projectCollection = this.afs.collection(`projects`, ref =>
-      ref
-      .orderBy(`name`)
-      .limit(5)
-      .startAt(start)
-      .endAt(end))
+    const unsubscribe = firebase.auth().onAuthStateChanged(user=>{
+      if(user){
 
+        this.projectCollection = this.afs.collection(`projects`, ref =>
+        ref
+        .orderBy(`name`)
+        .limit(5)
+        .startAt(start)
+        .endAt(end).where('user_admin','==',user.uid));
+
+        unsubscribe();
+      }
+    });
       return this.projects =  this.projectCollection.valueChanges();
   }
 

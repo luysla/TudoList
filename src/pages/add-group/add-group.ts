@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { GroupService } from './../../providers/group-service';
 
@@ -29,7 +29,7 @@ export class AddGroupPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public groupService: GroupService, public afs: AngularFirestore,
-    public formBuilder: FormBuilder) {
+    public formBuilder: FormBuilder, public toastCtrl: ToastController) {
 
       this.groupForm = this.formBuilder.group({
         name: ['', [Validators.required, Validators.minLength(3)]]
@@ -40,6 +40,12 @@ export class AddGroupPage {
 
     addGroup(group: Group): void{
 
+      const toast = this.toastCtrl.create({
+        message: 'Grupo criado com sucesso!',
+        duration: 3000,
+        position: 'top'
+      });
+
       this.groupService.addGroup(group).then((doc)=>{
 
         this.afs.collection('groups').doc(`${doc.id}`).update({
@@ -48,14 +54,15 @@ export class AddGroupPage {
           user_admin: firebase.auth().currentUser.uid
         });
 
-        console.log('Grupo criado com sucesso!');
+        toast.present();
 
         this.navCtrl.push('SearchUserPage',{
           idProject: this.id_project,
           idGroup: doc.id
         });
       }).catch((e)=>{
-        console.log('Erro ao criar grupo!' + e);
+        toast.setMessage("Erro ao criar grupo! Tente novamente...");
+        toast.present();
       })
     }
 

@@ -74,5 +74,4 @@ export class UserProfilePage {
       this.cdr.detectChanges();
     }
 
-
   }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AuthService } from './../../providers/auth-service';
@@ -30,7 +30,8 @@ export class LoginFirebasePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public formBuilder: FormBuilder, public authService: AuthService,
-    public afAuth: AngularFireAuth, public alertCtrl: AlertController) {
+    public afAuth: AngularFireAuth, public alertCtrl: AlertController,
+    public toastCtrl: ToastController) {
 
     let emailRegex = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
 
@@ -61,9 +62,6 @@ export class LoginFirebasePage {
           }
         ]
     });
-
-
-
 
     this.authService.login(user).then(function(user){
       if(user){

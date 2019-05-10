@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 
 import { AngularFirestore } from 'angularfire2/firestore';
 
@@ -26,7 +26,8 @@ export class AddListPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public alertCtrl: AlertController, public listService: ListService,
-    public afs: AngularFirestore, public formBuilder: FormBuilder) {
+    public afs: AngularFirestore, public formBuilder: FormBuilder,
+    public toastCtrl: ToastController) {
 
     this.id_project = this.navParams.get('idProject');
 
@@ -37,17 +38,24 @@ export class AddListPage {
   }
 
   addList(list: List): void{
+
+    const toast = this.toastCtrl.create({
+      message: 'Lista criada com sucesso!',
+      duration: 3000,
+      position: 'top'
+    });
+
     this.listService.newList(list).then((doc)=>{
 
       this.afs.collection(`lists`).doc(`${doc.id}`).update({
         id_list: doc.id,
         id_project: this.id_project
-      })
-
-      alert("Lista criada com sucesso!");
+      });
+      toast.present();
       this.navCtrl.pop();
     }).catch((e)=>{
-      console.log("Erro ao criar lista" + e);
+      toast.setMessage("Erro ao criar lista! Tente novamente...");
+      toast.present();
     })
   }
 

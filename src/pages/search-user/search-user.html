@@ -11,9 +11,9 @@
 
   <ion-list *ngFor="let user of usersSearch">
     <ion-item-sliding>
-      <ion-item (click)="addMemberGroup(user.user_uid, user.name)">
+      <ion-item (click)="addMemberGroup(user.user_uid, user.name, user.photo)">
         <ion-avatar item-start>
-          <img [src]="user.foto || '../../../../assets/imgs/no-photo.jpg'">
+          <img [src]="user.photo || '../../../../assets/imgs/no-photo.jpg'">
         </ion-avatar>
         <h2>{{ user.name }} (@{{ user.username }})</h2>
       </ion-item>

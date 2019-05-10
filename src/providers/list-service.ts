@@ -18,4 +18,15 @@ export class ListService {
   newList(list: List): Promise<any>{
     return this.afs.collection(`lists`).add(list);
   }
+
+  editList(id_list: string, new_name: string): Promise<any>{
+    return this.afs.collection(`lists`).doc(`${id_list}`).update({
+      name: new_name
+    })
+  }
+
+  deleteList(id_list: string): Promise<any>{
+    return this.afs.collection(`lists`).doc(`${id_list}`).delete();
+  }
+
 }

@@ -15,7 +15,7 @@
 </ion-header>
 
 <ion-content padding>
-  <div *ngFor="let user of userDoc | async">
+  <div class="screen" *ngFor="let user of userDoc | async">
     <ion-avatar>
       <img class="round-perfil" [src]="user.photo || '../../../../assets/imgs/no-photo.jpg'">
     </ion-avatar>

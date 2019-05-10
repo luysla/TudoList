@@ -14,7 +14,7 @@
 <ion-content padding>
   <form [formGroup]="taskForm">
     <ion-item>
-      <ion-input type="text" [(ngModel)]="task.name" formControlName="name"></ion-input>
+      <ion-input type="text" [(ngModel)]="task.name" formControlName="name" placeholder="Nova tarefa"></ion-input>
       <button class="bt-tarefas" ion-button icon-only clear item-end (click)="addTask(task)" [disabled]="task.name==null">
         <ion-icon name="add"></ion-icon>
       </button>

@@ -66,13 +66,13 @@ export class SearchUserPage implements OnInit {
       this.startAt.next(q);
       this.endAt.next(q + "\uf8ff");
     }else{
-      this.usersCollection = this.afs.collection(`usuarios`);
+      this.usersCollection = this.afs.collection(`users`);
       return this.users = this.usersCollection.valueChanges();
     }
   }
 
-  addMemberGroup(user_uid: string,user_name: string){
-    this.groupService.addMemberGroup(this.id_group,user_uid,user_name).then(()=>{
+  addMemberGroup(user_uid: string,user_name: string, user_photo: string){
+    this.groupService.addMemberGroup(this.id_group,user_uid,user_name,user_photo).then(()=>{
       alert('Membro adicionado!');
       this.navCtrl.pop();
     }).catch((e)=>{

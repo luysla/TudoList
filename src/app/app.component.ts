@@ -25,8 +25,8 @@ export class MyApp {
   userCollection: AngularFirestoreCollection<any[]>;
   userDoc: Observable<any[]>;
 
-  pages: Array<{name: string, component: any, icon: any}>;
-  pagesConfig: Array<{name: string, component: any, icon: any}>;
+  pages: Array<{name: string, component: any, icon: any, index: number}>;
+  pagesConfig: Array<{name: string, component: any, icon: any, index: number}>;
 
   constructor(public platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
     public afAuth: AngularFireAuth,public app: App, public afs: AngularFirestore,
@@ -45,13 +45,13 @@ export class MyApp {
       })
 
       this.pages = [
-        { name: 'Home'  , component: TabsPage, icon: 'md-home' },
-        { name: 'Minhas tarefas', component: 'HomePage', icon: 'list' },
-        { name: 'Meus projetos', component: 'HomePage', icon: 'md-folder-open' }
+        { name: 'Home'  , component: TabsPage, icon: 'md-home', index: 0 },
+        { name: 'Minhas tarefas', component: 'MyTasksPage', icon: 'list', index: 4 },
+        { name: 'Meus projetos', component: 'HomePage', icon: 'md-folder-open', index: 5 }
       ];
 
       this.pagesConfig = [
-        { name: 'Configurações', component: 'UserProfilePage', icon: 'settings' }
+        { name: 'Configurações', component: 'UserProfilePage', icon: 'settings', index: 3 }
       ];
 
       platform.ready().then(() => {
@@ -71,8 +71,21 @@ export class MyApp {
     }
 
     openPage(page): void{
-      this.nav.setRoot(page.component);
-      console.log(page.nome);
+      let params = {};
+      if (page.index) {
+        params = { index: page.index };
+      }
+
+      if (this.nav.getActiveChildNav() && page.index != undefined) {
+        this.nav.getActiveChildNav().select(page.index);
+      } else {
+        // Tabs are not active, so reset the root page
+        // In this case: moving to or from SpecialPage
+        this.nav.setRoot(page.component, params);
+      }
+      /* this.nav.setRoot(TabsPage, {componentFromNavParams: page.component});
+      //this.nav.setRoot(page.component);
+      console.log(page.nome); */
     }
 
 

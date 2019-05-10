@@ -1,11 +1,6 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Subtarefas</ion-title>
-    <ion-buttons end>
-        <button ion-button icon-only> <!-- (click)="openCompletedSubtasks()" -->
-          <ion-icon name="checkbox-outline" color="light"></ion-icon>
-        </button>
-      </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -13,7 +8,7 @@
 
     <form [formGroup]="subtaskForm">
         <ion-item>
-          <ion-input type="text" [(ngModel)]="subtask.name" formControlName="name"></ion-input>
+          <ion-input type="text" [(ngModel)]="subtask.name" formControlName="name" placeholder="Nova subtarefa"></ion-input>
           <button class="bt-tarefas" ion-button icon-only clear item-end (click)="addSubtask(subtask)" [disabled]="subtask.name==null">
             <ion-icon name="add"></ion-icon>
           </button>
@@ -22,9 +17,9 @@
 
       <br>
 
-      <ion-item  no-lines *ngFor="let subtask of subtaskDoc | async" text-wrap>
+      <ion-item  no-lines *ngFor="let subtask of subtaskDoc | async">
 
-        <ion-label>{{ subtask.name }}</ion-label>
+        <ion-label text-wrap>{{ subtask.name }}</ion-label>
         <ion-checkbox color="dark" (click)="doneSubtask(subtask.id_subtask)"></ion-checkbox>
 
         <button ion-button class="bt-default" *ngIf="subtask.priority==null" [ngStyle]="{'background-color':subtask.color_priority}" item-end round (click)="addPriority(subtask.id_subtask)">
@@ -35,8 +30,12 @@
           {{ subtask.priority }}
         </button>
 
-        <button ion-button class="bt-tarefas" *ngIf="subtask.reminder==null" icon-only clear item-end> <!-- (click)="addLembrete(subTarefa.id_subTarefa)" -->
+        <!-- <button ion-button class="bt-tarefas" *ngIf="subtask.reminder==null" icon-only clear item-end>  (click)="addLembrete(subTarefa.id_subTarefa)"
           <ion-icon name="md-alarm"></ion-icon>
+        </button> -->
+
+        <button ion-button class="bt-tarefas" item-end clear> <!-- (click)="excluirLembrete(subTarefa.id_subTarefa,lembrete)" -->
+          15 ABR
         </button>
 
         <button ion-button class="bt-tarefas" *ngFor="let reminder of subtask.reminder" item-end > <!-- (click)="excluirLembrete(subTarefa.id_subTarefa,lembrete)" -->

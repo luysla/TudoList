@@ -1,6 +1,6 @@
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 
 import { Subtask } from './../../models/subtask';
 
@@ -21,6 +21,8 @@ export class SubtasksPage {
   id_task: string;
   subtask_number: number;
 
+  subtask_number_up: number;
+
   subtask = {} as Subtask;
 
   subtaskForm: FormGroup;
@@ -32,10 +34,13 @@ export class SubtasksPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public subtaskService: SubtaskService, public afs: AngularFirestore,
-    public formBuilder: FormBuilder, public alertCtrl: AlertController ) {
+    public formBuilder: FormBuilder, public alertCtrl: AlertController,
+    public toastCtrl: ToastController ) {
 
       this.id_task = this.navParams.get('idTask');
       this.subtask_number = this.navParams.get('subtask');
+
+
 
       this.subtaskForm = this.formBuilder.group({
         name: ['', [Validators.required, Validators.minLength(3)]]
@@ -56,11 +61,16 @@ export class SubtasksPage {
       })
     })
 
-    this.subtask_number++;
+    this.subtask_number_up = this.subtask_number++;
 
     this.afs.collection('tasks').doc(`${this.id_task}`).update({
       subtask: this.subtask_number
     })
+
+    this.subtaskForm.reset();
+
+    console.log(this.subtask_number_up);
+
 
   }
 
@@ -90,7 +100,7 @@ export class SubtasksPage {
       checked: false
     });
 
-    alert.addButton('Cancel');
+    alert.addButton('Cancelar');
     alert.addButton({
       text: 'OK',
       handler: data => {
@@ -111,7 +121,16 @@ export class SubtasksPage {
   }
 
   doneSubtask(id_subtask: string): void{
+
     this.subtaskService.doneSubtask(id_subtask);
+
+    this.subtask_number_up = this.subtask_number_up - 1;
+
+    this.afs.collection('tasks').doc(`${this.id_task}`).update({
+      subtask: this.subtask_number_up
+    })
+
+
   }
 
 }

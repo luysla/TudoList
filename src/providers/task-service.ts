@@ -1,3 +1,4 @@
+import { Profile } from './../models/profile';
 import { Injectable, forwardRef, NgModule } from '@angular/core';
 
 import { AngularFirestore } from 'angularfire2/firestore';
@@ -52,6 +53,17 @@ export class TaskService {
         fd: moment(final_date).format("DD MMM")
       }]
     });
+  }
+
+  addUserCollaborator(id_task: string, user: Profile): Promise<any>{
+    return this.afs.collection('tasks').doc(`${id_task}`).update({
+      collaborator: [{
+        uid: user.user_uid,
+        name: user.name,
+        username: user.username,
+        photo: user.photo
+      }]
+    })
   }
 
 }

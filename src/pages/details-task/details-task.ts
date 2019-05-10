@@ -22,6 +22,7 @@ import moment from "moment";
 export class DetailsTaskPage {
 
   id_task: string;
+  id_project: string;
 
   color_priority: string;
 
@@ -33,6 +34,7 @@ export class DetailsTaskPage {
     public alertCtrl: AlertController) {
 
       this.id_task = this.navParams.get('idTask');
+      this.id_project = this.navParams.get('idProject');
 
       this.taskColletion = this.afs.collection('tasks', ref => ref.where('id_task','==',this.id_task));
       this.taskDoc = this.taskColletion.valueChanges();
@@ -65,7 +67,7 @@ export class DetailsTaskPage {
         checked: false
       });
 
-      alert.addButton('Cancel');
+      alert.addButton('Cancelar');
       alert.addButton({
         text: 'OK',
         handler: data => {
@@ -153,6 +155,13 @@ export class DetailsTaskPage {
         idTask: id_task,
         subtask: subtask
       })
+    }
+
+    addCollaborator(id_task: string): void{
+      this.navCtrl.push('SearchUserCollaboratorPage',{
+        idTask: id_task,
+        idProject: this.id_project
+      });
     }
 
   }

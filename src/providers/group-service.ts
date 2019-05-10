@@ -21,12 +21,16 @@ export class GroupService {
     return this.afs.collection('groups').add(group);
   }
 
-  addMemberGroup(id_group: string, member_uid: string, member_name: string): Promise<any>{
+  addMemberGroup(id_group: string, member_uid: string, member_name: string, member_photo: string): Promise<any>{
 
     return this.afs.collection('groups').doc(`${id_group}`).update({
-      members: firebase.firestore.FieldValue.arrayUnion({'member_uid': member_uid, 'member_name': member_name})
+      members: firebase.firestore.FieldValue.arrayUnion({'member_uid': member_uid, 'member_name': member_name, 'member_photo': member_photo})
     });
 
+  }
+
+  deleteGroup(id_group: string): Promise<any>{
+    return this.afs.collection(`groups`).doc(`${id_group}`).delete();
   }
 
 }

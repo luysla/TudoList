@@ -1,6 +1,16 @@
 <ion-header>
   <ion-navbar>
     <ion-title>{{ project_name }}</ion-title>
+    <ion-buttons end>
+        <button ion-button *ngIf="edit==false" icon-only (click)="showEdit()">
+          <ion-icon name="create" color="light"></ion-icon>
+        </button>
+
+        <button ion-button *ngIf="edit==true" icon-only (click)="showEdit()">
+            <ion-icon name="close" color="light"></ion-icon>
+          </button>
+
+        </ion-buttons>
   </ion-navbar>
 
   <ion-toolbar color="light">
@@ -22,10 +32,20 @@
 
   <ion-list *ngSwitchCase="'lists'">
 
-    <p *ngIf="lists == null">Crie uma lista para o projeto!</p>
+    <ion-item *ngFor="let list of lists | async" >
+    <ion-label (click)="openTaskPage(list.id_list)">  {{ list.name }}</ion-label>
 
-    <ion-item *ngFor="let list of lists | async" (click)="openTaskPage(list.id_list)">
-      {{ list.name }}
+    <button ion-button class="bt-tarefas" *ngIf="edit==false" icon-only clear item-end>
+        <ion-icon name="list" style="color:black"></ion-icon>
+      </button>
+
+      <button ion-button class="bt-tarefas" *ngIf="edit==true" (click)="editList(list.id_list)" icon-only clear item-end>
+        <ion-icon name="create" style="color:black"></ion-icon>
+      </button>
+
+      <button ion-button class="bt-tarefas" *ngIf="edit==true" (click)="deleteList(list.id_list, list.name)" icon-only clear item-end>
+        <ion-icon name="trash" color="danger"></ion-icon>
+      </button>
     </ion-item>
 
     <ion-fab right bottom (click)="openAddList()">
@@ -34,29 +54,44 @@
   </ion-list>
 
   <div *ngSwitchCase="'group'">
-    <ion-item *ngFor="let group of groups | async" no-lines>
-      <h1 text-center>{{ group.name }}</h1>
-      <br>
+    <div *ngFor="let group of groups | async">
 
-      <h2>Participantes</h2>
+      <ion-label text-center><h3>{{ group.name }}</h3></ion-label>
 
       <div *ngIf="group.members!=null">
-          <ion-item *ngFor="let member of group.members">
+          <ion-item *ngFor="let member of group.members" no-lines>
               <ion-avatar item-start>
-                  <img [src]="member.foto || '../../../../assets/imgs/no-photo.jpg'">
+                  <img [src]="member.member_photo || '../../../../assets/imgs/no-photo.jpg'">
                 </ion-avatar>
             <h2>{{ member.member_name }}</h2>
+
+            <button ion-button class="bt-tarefas" *ngIf="edit==true" icon-only clear item-end>
+              <ion-icon name="trash" color="danger"></ion-icon>
+            </button>
           </ion-item>
         </div>
+        <br>
 
-      <button ion-button class="bt-default" (click)="openSearchUser(group.id_group)">Adicionar membro</button>
-    </ion-item>
+        <button ion-button color="danger" *ngIf="edit==true" (click)="deleteGroup(group.id_group)" icon-start full>
+          <ion-icon name="trash"></ion-icon>
+          Excluir grupo
+        </button>
 
-    <button ion-button class="bt-default" (click)="openAddGroup()" full>Adicionar grupo</button>
+      <!-- <button ion-button class="bt-default" (click)="openSearchUser(group.id_group)" icon-start>
+        <ion-icon name="person-add"></ion-icon>
+        Adicionar membro
+      </button> -->
+      <ion-fab right bottom (click)="openSearchUser(group.id_group)">
+          <button class="bt-default" ion-fab mini><ion-icon name="person-add"></ion-icon></button>
+        </ion-fab>
+    </div>
 
-    <button ion-button class="bt-default" *ngIf="groups == null" (click)="openAddGroup()">Criar grupo</button>
+    <!-- <ion-fab *ngIf="groupCollection==null" right bottom (click)="openAddGroup()">
+        <button class="bt-default" ion-fab mini><ion-icon name="add"></ion-icon></button>
+      </ion-fab> -->
 
-  </div>
+
+   </div>
 
 </div>
 </ion-content>
