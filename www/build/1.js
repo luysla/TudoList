@@ -8088,13 +8088,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var SearchUserCollaboratorPage = /** @class */ (function () {
-    function SearchUserCollaboratorPage(navCtrl, navParams, afs, taskService, cdr) {
+    function SearchUserCollaboratorPage(navCtrl, navParams, afs, taskService, cdr, toastCtrl) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.afs = afs;
         this.taskService = taskService;
         this.cdr = cdr;
+        this.toastCtrl = toastCtrl;
         this.search = false;
         this.startAt = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Subject"]();
         this.endAt = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Subject"]();
@@ -8136,23 +8137,29 @@ var SearchUserCollaboratorPage = /** @class */ (function () {
     };
     SearchUserCollaboratorPage.prototype.addCollaborator = function (user) {
         var _this = this;
+        var toast = this.toastCtrl.create({
+            message: 'Colaborador adicionado com sucesso!',
+            duration: 3000,
+            position: 'top'
+        });
         this.taskService.addUserCollaborator(this.id_task, user).then(function () {
-            alert("Colaborador adicionado com sucesso!");
+            toast.present();
             _this.navCtrl.pop();
         }).catch(function (e) {
-            console.log("Erro ao adicionar colaborador" + e);
+            toast.setMessage("Erro ao adicionar colaborador");
+            toast.present();
         });
     };
     SearchUserCollaboratorPage.prototype.showSearch = function () {
         this.search = !this.search;
         this.cdr.detectChanges();
     };
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f;
     SearchUserCollaboratorPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-search-user-collaborator',template:/*ion-inline-start:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/search-user-collaborator/search-user-collaborator.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Colaborador</ion-title>\n    <ion-buttons end>\n      <button ion-button icon-only *ngIf="search==false" (click)="showSearch()">\n        <ion-icon name="search" color="light"></ion-icon>\n      </button>\n      <ion-searchbar *ngIf="search==true"\n      [(ngModel)]="searchTerm"\n      placeholder = "Pesquisar usuários"\n      (ionInput)="getItem($event)">\n    </ion-searchbar>\n  </ion-buttons>\n</ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  \n  <div *ngIf="search==true">\n    <ion-list *ngFor="let user of usersSearch">\n      <ion-item-sliding>\n        <ion-item (click)="addCollaborator(user)">\n          <ion-avatar item-start>\n            <img [src]="user.photo || \'../../../../assets/imgs/no-photo.jpg\'">\n          </ion-avatar>\n          <h2>{{ user.name }} (@{{ user.username }})</h2>\n        </ion-item>\n      </ion-item-sliding>\n    </ion-list>\n  </div>\n  \n  <p *ngIf="usersSearch == 0 && search==true">Nenhum usuario com esse nome foi encontrado...</p>\n  \n  <div *ngIf="search==false">\n    <ion-item *ngFor="let group of group | async" no-lines>\n      <p>{{ group.name }}</p>\n      <div *ngIf="group.members!=null">\n        <ion-item *ngFor="let member of group.members" no-lines (click)="addCollaborator(member)">\n          <ion-avatar item-start>\n            <img [src]="member.photo || \'../../../../assets/imgs/no-photo.jpg\'">\n          </ion-avatar>\n          <h2>{{ member.name }}</h2>\n        </ion-item>\n      </div>\n    </ion-item>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/search-user-collaborator/search-user-collaborator.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" ? _a : Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" ? _b : Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore__["AngularFirestore"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore__["AngularFirestore"]) === "function" ? _c : Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__providers_task_service__["a" /* TaskService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__providers_task_service__["a" /* TaskService */]) === "function" ? _d : Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* ChangeDetectorRef */]) === "function" ? _e : Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" ? _a : Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" ? _b : Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore__["AngularFirestore"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore__["AngularFirestore"]) === "function" ? _c : Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__providers_task_service__["a" /* TaskService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__providers_task_service__["a" /* TaskService */]) === "function" ? _d : Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* ChangeDetectorRef */]) === "function" ? _e : Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */]) === "function" ? _f : Object])
     ], SearchUserCollaboratorPage);
     return SearchUserCollaboratorPage;
 }());

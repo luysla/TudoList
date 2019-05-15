@@ -48,6 +48,8 @@
       </button>
     </ion-item>
 
+    <p *ngIf="(lists | async)?.length==0">Comece criando uma lista para o seu projeto!</p>
+
     <ion-fab right bottom (click)="openAddList()">
       <button class="bt-default" ion-fab mini><ion-icon name="add"></ion-icon></button>
     </ion-fab>
@@ -77,6 +79,7 @@
           Excluir grupo
         </button>
   
+        <p *ngIf="(groups | async)?.length==0">Crie um grupo para o seu projeto!</p>
         <ion-fab *ngIf="(groups | async)?.length != 0" right bottom (click)="openSearchUser(group.id_group)">
             <button class="bt-default" ion-fab mini><ion-icon name="person-add"></ion-icon></button>
           </ion-fab>

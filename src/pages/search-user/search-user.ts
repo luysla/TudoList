@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Rx';
@@ -36,7 +36,8 @@ export class SearchUserPage implements OnInit {
   id_group: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public afs: AngularFirestore, public groupService: GroupService) {
+    public afs: AngularFirestore, public groupService: GroupService,
+    public toastCtrl: ToastController) {
 
       this.id_project = this.navParams.get('idProject');
       this.id_group = this.navParams.get('idGroup');
@@ -73,11 +74,17 @@ export class SearchUserPage implements OnInit {
   }
 
   addMemberGroup(user: Profile){
+    const toast = this.toastCtrl.create({
+      message: 'Membro adicionado!',
+      duration: 3000,
+      position: 'top'
+    });
     this.groupService.addMemberGroup(this.id_group,user).then(()=>{
-      alert('Membro adicionado!');
+      toast.present();
       this.navCtrl.pop();
     }).catch((e)=>{
-      alert('Erro ao adicionar membro!' + e);
+      toast.setMessage('Erro ao adicionar membro!');
+      toast.present();
     })
   }
 

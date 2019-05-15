@@ -1,5 +1,5 @@
 import { OnInit, Component, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { Subject, Observable } from 'rxjs/Rx';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { TaskService } from '../../providers/task-service';
@@ -38,7 +38,7 @@ export class SearchUserCollaboratorPage implements OnInit {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public afs: AngularFirestore, public taskService: TaskService,
-    public cdr: ChangeDetectorRef) {
+    public cdr: ChangeDetectorRef, public toastCtrl: ToastController) {
 
     this.id_task = this.navParams.get('idTask');
     this.id_project = this.navParams.get('idProject');
@@ -79,11 +79,17 @@ export class SearchUserCollaboratorPage implements OnInit {
   }
 
   addCollaborator(user: Profile): void{
+    const toast = this.toastCtrl.create({
+      message: 'Colaborador adicionado com sucesso!',
+      duration: 3000,
+      position: 'top'
+    });
     this.taskService.addUserCollaborator(this.id_task,user).then(()=>{
-      alert("Colaborador adicionado com sucesso!");
+      toast.present();
       this.navCtrl.pop();
     }).catch((e)=>{
-      console.log("Erro ao adicionar colaborador" + e);
+      toast.setMessage("Erro ao adicionar colaborador");
+      toast.present();
     })
   }
 

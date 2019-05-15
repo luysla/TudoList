@@ -36,6 +36,8 @@
 
   <p *ngIf="projectsSearch == 0 && search==true">Nenhum projeto com esse nome foi encontrado...</p>
 
+  <p *ngIf="(projects | async)?.length==0">Comece criando um novo projeto!</p>
+
   <ion-fab right bottom (click)="openAddProject()">
     <button class="bt-default" ion-fab mini><ion-icon name="add"></ion-icon></button>
   </ion-fab>

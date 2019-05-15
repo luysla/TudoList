@@ -1,7 +1,7 @@
 import { AngularFirestore } from 'angularfire2/firestore';
 import { ProjectService } from './../../providers/project-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -31,7 +31,7 @@ export class AddProjectPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public formBuilder: FormBuilder, public projectService: ProjectService,
-    public afs: AngularFirestore) {
+    public afs: AngularFirestore, public toastCtrl: ToastController) {
 
       this.projectForm = this.formBuilder.group({
         name: ['', [Validators.required, Validators.minLength(3)]],
@@ -41,6 +41,12 @@ export class AddProjectPage {
   }
 
   addProject(project: Project): void{
+
+    const toast = this.toastCtrl.create({
+      message: 'Projeto criado com sucesso!',
+      duration: 3000,
+      position: 'top'
+    });
 
     project.user_admin = firebase.auth().currentUser.uid;
 
@@ -52,11 +58,12 @@ export class AddProjectPage {
         star: 0
       });
       this.idProject = doc.id;
-      alert("Projeto criado com sucesso!");
+      toast.present();
       this.navCtrl.pop();
-
+      
     }).catch(function(e){
-      alert("Erro ao criar projeto!" + e);
+      toast.setMessage("Erro ao criar projeto!");
+      toast.present();
     })
 
   }

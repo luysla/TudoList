@@ -34,12 +34,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var AddProjectPage = /** @class */ (function () {
-    function AddProjectPage(navCtrl, navParams, formBuilder, projectService, afs) {
+    function AddProjectPage(navCtrl, navParams, formBuilder, projectService, afs, toastCtrl) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.formBuilder = formBuilder;
         this.projectService = projectService;
         this.afs = afs;
+        this.toastCtrl = toastCtrl;
         this.project = {};
         this.projectForm = this.formBuilder.group({
             name: ['', [__WEBPACK_IMPORTED_MODULE_4__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_4__angular_forms__["f" /* Validators */].minLength(3)]],
@@ -48,6 +49,11 @@ var AddProjectPage = /** @class */ (function () {
     }
     AddProjectPage.prototype.addProject = function (project) {
         var _this = this;
+        var toast = this.toastCtrl.create({
+            message: 'Projeto criado com sucesso!',
+            duration: 3000,
+            position: 'top'
+        });
         project.user_admin = __WEBPACK_IMPORTED_MODULE_5_firebase__["auth"]().currentUser.uid;
         this.projectService.newProject(project).then(function (doc) {
             _this.afs.collection('projects').doc("" + doc.id).update({
@@ -56,22 +62,22 @@ var AddProjectPage = /** @class */ (function () {
                 star: 0
             });
             _this.idProject = doc.id;
-            alert("Projeto criado com sucesso!");
+            toast.present();
             _this.navCtrl.pop();
         }).catch(function (e) {
-            alert("Erro ao criar projeto!" + e);
+            toast.setMessage("Erro ao criar projeto!");
+            toast.present();
         });
     };
     AddProjectPage.prototype.openSearchUser = function () {
         this.navCtrl.push('SearchUserPage');
     };
+    var _a, _b, _c, _d, _e, _f;
     AddProjectPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
             selector: 'page-add-project',template:/*ion-inline-start:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/add-project/add-project.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Novo projeto</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <form [formGroup]="projectForm">\n    <ion-item>\n      <ion-label stacked>Nome do projeto*</ion-label>\n      <ion-input type="text" [(ngModel)]="project.name" formControlName="name"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Descrição*</ion-label>\n      <ion-input type="text" [(ngModel)]="project.description" formControlName="description"></ion-input>\n    </ion-item>\n\n    <br>\n\n    <button ion-button class="bt-default" full (click)="addProject(project)" [disabled]="!projectForm.valid">Ok</button>\n  </form>\n</ion-content>\n\n'/*ion-inline-end:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/add-project/add-project.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_1__providers_project_service__["a" /* ProjectService */],
-            __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__["AngularFirestore"]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["h" /* NavController */]) === "function" ? _a : Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["i" /* NavParams */]) === "function" ? _b : Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormBuilder */]) === "function" ? _c : Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1__providers_project_service__["a" /* ProjectService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__providers_project_service__["a" /* ProjectService */]) === "function" ? _d : Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__["AngularFirestore"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__["AngularFirestore"]) === "function" ? _e : Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["k" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["k" /* ToastController */]) === "function" ? _f : Object])
     ], AddProjectPage);
     return AddProjectPage;
 }());
