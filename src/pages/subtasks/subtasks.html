@@ -30,15 +30,11 @@
           {{ subtask.priority }}
         </button>
 
-        <!-- <button ion-button class="bt-tarefas" *ngIf="subtask.reminder==null" icon-only clear item-end>  (click)="addLembrete(subTarefa.id_subTarefa)"
+        <button ion-button class="bt-tarefas" *ngIf="subtask.reminder==null" icon-only clear item-end (click)="addReminder(subtask.id_subtask)">  
           <ion-icon name="md-alarm"></ion-icon>
-        </button> -->
+        </button> 
 
-        <button ion-button class="bt-tarefas" item-end clear> <!-- (click)="excluirLembrete(subTarefa.id_subTarefa,lembrete)" -->
-          15 ABR
-        </button>
-
-        <button ion-button class="bt-tarefas" *ngFor="let reminder of subtask.reminder" item-end > <!-- (click)="excluirLembrete(subTarefa.id_subTarefa,lembrete)" -->
+        <button ion-button class="bt-tarefas" *ngFor="let reminder of subtask.reminder" item-end> <!-- (click)="excluirLembrete(subTarefa.id_subTarefa,lembrete)" -->
           {{ reminder.fd }}
         </button>
 <!--

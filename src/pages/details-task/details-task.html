@@ -30,12 +30,12 @@
 
       <br *ngIf="task.reminder==null">
 
-      <!--<h2 class="titulo" *ngIf="task.reminder==null">Lembrete:</h2>
+      <h2 class="titulo" *ngIf="task.reminder==null">Lembrete:</h2>
 
        <button ion-button class="bt-default" *ngIf="task.reminder==null" icon-start (click)="addReminder(task.id_task)">
         <ion-icon name="alarm"></ion-icon>
         Adicionar lembrete
-      </button> -->
+      </button> 
 
       <h2 class="titulo">Tarefas vinculadas:</h2>
       <button ion-button class="bt-default" *ngIf="task.subtask==0" icon-start (click)="openSubtask(task.id_task,task.subtask)">
@@ -73,10 +73,6 @@
           <p>{{ reminder.df }}</p>
         </div>
       </div>
-
-      <h2 class="titulo">Lembrete:</h2>
-      <p>15 Abr</p>
-
     </ion-item>
   </ion-card>
 

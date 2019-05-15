@@ -8,6 +8,10 @@ import { SubtaskService } from './../../providers/subtask-service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 
+import { Calendar } from '@ionic-native/calendar/ngx';
+
+import moment from "moment";
+
 @IonicPage({
   name: 'SubtasksPage',
   segment: 'subtarefas'
@@ -35,11 +39,10 @@ export class SubtasksPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public subtaskService: SubtaskService, public afs: AngularFirestore,
     public formBuilder: FormBuilder, public alertCtrl: AlertController,
-    public toastCtrl: ToastController ) {
+    public toastCtrl: ToastController, public calendar: Calendar ) {
 
       this.id_task = this.navParams.get('idTask');
       this.subtask_number = this.navParams.get('subtask');
-
 
 
       this.subtaskForm = this.formBuilder.group({
@@ -119,6 +122,71 @@ export class SubtasksPage {
     });
     alert.present();
   }
+
+
+  addReminder(id_subtask: string): void{
+    let options = { calendarName: 'TudoList', firstReminderMinutes: 15 };
+
+      let alertReminder = this.alertCtrl.create({
+        subTitle: "Lembrete criado com sucesso!",
+        buttons: ['OK']
+      });
+
+      const alert = this.alertCtrl.create({
+        title: 'Lembrete',
+        inputs: [
+          {
+            name: 'name',
+            placeholder: 'Nome*',
+            type: 'text'
+          },
+          {
+            name: 'description',
+            placeholder: 'Descrição(opcional)',
+            type: 'text'
+          },
+          {
+            name: 'local',
+            placeholder: 'Local(opcional)',
+            type: 'text'
+          },
+          {
+            name: 'initial_date',
+            placeholder: 'Data inicial*',
+            type: 'date'
+          },
+          {
+            name: 'final_date',
+            placeholder: 'Data final*',
+            type: 'date'
+          },
+        ],
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel'
+          },
+          {
+            text: 'Ok',
+            handler: data => {
+
+              this.calendar.createEventInteractivelyWithOptions(data.name,data.local,data.description,moment(data.inicial_date).toDate(),moment(data.final_date).toDate(),options).
+              then(()=>{
+                this.subtaskService.addReminderSubtask(id_subtask,data.name,data.local,data.description,data.initial_date,data.final_date);
+                alertReminder.present();
+              }).catch((e)=>{
+                alertReminder.setSubTitle("Erro ao criar o lembrete! Tente novamente...");
+                alertReminder.setMessage(e);
+                alertReminder.present();
+              })
+            }
+          }
+        ]
+      });
+      alert.present();
+
+  }
+
 
   doneSubtask(id_subtask: string): void{
 

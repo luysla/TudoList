@@ -7,7 +7,7 @@ import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/fires
 
 import { TaskService } from '../../providers/task-service';
 
-import { Calendar } from '@ionic-native/calendar';
+import { Calendar } from '@ionic-native/calendar/ngx';
 
 import moment from "moment";
 
@@ -31,7 +31,7 @@ export class DetailsTaskPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public afs: AngularFirestore, public taskService: TaskService,
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController, public calendar: Calendar) {
 
       this.id_task = this.navParams.get('idTask');
       this.id_project = this.navParams.get('idProject');
@@ -134,7 +134,7 @@ export class DetailsTaskPage {
             text: 'Ok',
             handler: data => {
 
-              Calendar.createEventInteractivelyWithOptions(data.name,data.local,data.description,moment(data.inicial_date).toDate(),moment(data.final_date).toDate(),options).
+              this.calendar.createEventInteractivelyWithOptions(data.name,data.local,data.description,moment(data.inicial_date).toDate(),moment(data.final_date).toDate(),options).
               then(()=>{
                 this.taskService.addReminder(id_task,data.name,data.local,data.description,data.initial_date,data.final_date);
                 alertReminder.present();
