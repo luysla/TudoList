@@ -30,8 +30,8 @@
       {{ task.priority }}
     </button>
 
-    <button ion-button class="bt-tarefas" *ngFor="let lembrete of task.lembrete" clear item-end> <!-- (click)="excluirLembrete(tarefa.id_tarefa, lembrete)" -->
-      {{ lembrete.df }}
+    <button ion-button class="bt-tarefas" *ngFor="let reminder of task.reminder" clear item-end> <!-- (click)="excluirLembrete(tarefa.id_tarefa, lembrete)" -->
+      {{ reminder.fd }}
     </button>
 
     <button ion-button class="bt-tarefas" clear icon-only item-end (click)="openDetailsTask(task.id_task)">

@@ -1,19 +1,19 @@
 webpackJsonp([4],{
 
-/***/ 1119:
+/***/ 1125:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SubtasksPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TasksPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(138);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_subtask_service__ = __webpack_require__(551);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_calendar_ngx__ = __webpack_require__(550);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_moment__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_task_service__ = __webpack_require__(529);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase_app__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase_app___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_firebase_app__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_firebase_auth__ = __webpack_require__(140);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -30,117 +30,105 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var SubtasksPage = /** @class */ (function () {
-    function SubtasksPage(navCtrl, navParams, subtaskService, afs, formBuilder, alertCtrl, toastCtrl, calendar) {
+var TasksPage = /** @class */ (function () {
+    function TasksPage(navCtrl, navParams, formBuilder, taskService, afs, cdr, alertCtrl) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.subtaskService = subtaskService;
-        this.afs = afs;
         this.formBuilder = formBuilder;
+        this.taskService = taskService;
+        this.afs = afs;
+        this.cdr = cdr;
         this.alertCtrl = alertCtrl;
-        this.toastCtrl = toastCtrl;
-        this.calendar = calendar;
-        this.subtask = {};
-        this.id_task = this.navParams.get('idTask');
-        this.subtask_number = this.navParams.get('subtask');
-        this.subtaskForm = this.formBuilder.group({
-            name: ['', [__WEBPACK_IMPORTED_MODULE_4__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_4__angular_forms__["f" /* Validators */].minLength(3)]]
+        this.task = {};
+        this.id_list = this.navParams.get('idList');
+        this.id_project = this.navParams.get('idProject');
+        this.taskForm = this.formBuilder.group({
+            name: ['', [__WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["f" /* Validators */].minLength(3)]]
         });
-        this.subtaskCollection = this.afs.collection('subtasks', function (ref) { return ref.where('id_task', '==', _this.id_task).where('done', '==', 0); });
-        this.subtaskDoc = this.subtaskCollection.valueChanges();
-    }
-    SubtasksPage.prototype.addSubtask = function (subtask) {
-        var _this = this;
-        this.subtaskService.newSubtask(subtask).then(function (doc) {
-            _this.afs.collection('subtasks').doc("" + doc.id).update({
-                id_subtask: doc.id,
-                id_task: _this.id_task,
-                done: 0
-            });
-        });
-        this.subtask_number_up = this.subtask_number++;
-        this.afs.collection('tasks').doc("" + this.id_task).update({
-            subtask: this.subtask_number
-        });
-        this.subtaskForm.reset();
-        console.log(this.subtask_number_up);
-    };
-    SubtasksPage.prototype.addPriority = function (id_subtask) {
-        var _this = this;
-        var alert = this.alertCtrl.create();
-        alert.setTitle('Prioridade da tarefa');
-        alert.addInput({
-            type: 'radio',
-            label: 'Alta',
-            value: '1',
-            checked: true
-        });
-        alert.addInput({
-            type: 'radio',
-            label: 'Média',
-            value: '2',
-            checked: false
-        });
-        alert.addInput({
-            type: 'radio',
-            label: 'Baixa',
-            value: '3',
-            checked: false
-        });
-        alert.addButton('Cancelar');
-        alert.addButton({
-            text: 'OK',
-            handler: function (data) {
-                if (data == 1) {
-                    _this.color_priority = '#FF4500';
-                }
-                if (data == 2) {
-                    _this.color_priority = '#FF8C00';
-                }
-                if (data == 3) {
-                    _this.color_priority = '#FFD700';
-                }
-                _this.subtaskService.addPrioritySubtask(id_subtask, data, _this.color_priority);
+        var unsubscribe = __WEBPACK_IMPORTED_MODULE_5_firebase_app__["auth"]().onAuthStateChanged(function (user) {
+            if (user) {
+                _this.taskCollection = _this.afs.collection('tasks', function (ref) { return ref.where('id_list', '==', _this.id_list).where('done', '==', 0); });
+                _this.taskDoc = _this.taskCollection.valueChanges();
+                _this.cdr.detectChanges();
+                unsubscribe();
             }
         });
-        alert.present();
-    };
-    SubtasksPage.prototype.addReminder = function (id_subtask) {
+    }
+    TasksPage.prototype.addTask = function (task) {
         var _this = this;
-        var options = { calendarName: 'TudoList', firstReminderMinutes: 15 };
-        var alertReminder = this.alertCtrl.create({
-            subTitle: "Lembrete criado com sucesso!",
-            buttons: ['OK']
+        this.taskService.newTask(task).then(function (doc) {
+            _this.afs.collection('tasks').doc("" + doc.id).update({
+                id_task: doc.id,
+                id_list: _this.id_list,
+                done: 0,
+                subtask: 0
+            });
+            _this.taskForm.reset();
+        }).catch(function (e) {
+            console.log("Erro ao criar tarefa" + e);
         });
+    };
+    TasksPage.prototype.openCompletedTasks = function () {
+        this.navCtrl.push('CompletedTasksPage', {
+            idList: this.id_list
+        });
+    };
+    TasksPage.prototype.openDetailsTask = function (id_task) {
+        this.navCtrl.push('DetailsTaskPage', {
+            idTask: id_task,
+            idProject: this.id_project
+        });
+    };
+    TasksPage.prototype.doneTask = function (id_task, subtask) {
+        var _this = this;
+        console.log(subtask);
         var alert = this.alertCtrl.create({
-            title: 'Lembrete',
+            title: 'Atenção!',
+            message: 'Existem sub tarefas vinculadas que não foram concluídas ainda. Para continuar é necessário concluí-las',
+            buttons: [
+                {
+                    text: 'Excluir mesmo assim',
+                    handler: function (data) {
+                        _this.taskService.doneTask(id_task);
+                    }
+                },
+                {
+                    text: 'Cancelar',
+                    role: 'cancel'
+                }
+            ]
+        });
+        if (subtask == 0) {
+            this.taskService.doneTask(id_task);
+        }
+        else {
+            alert.present();
+        }
+    };
+    TasksPage.prototype.addPriority = function (id_task) {
+        var _this = this;
+        var alert = this.alertCtrl.create({
+            title: 'Prioridade da tarefa',
             inputs: [
                 {
-                    name: 'name',
-                    placeholder: 'Nome*',
-                    type: 'text'
+                    type: 'radio',
+                    label: 'Alta',
+                    value: '1',
+                    checked: true
                 },
                 {
-                    name: 'description',
-                    placeholder: 'Descrição(opcional)',
-                    type: 'text'
+                    type: 'radio',
+                    label: 'Média',
+                    value: '2',
+                    checked: false
                 },
                 {
-                    name: 'local',
-                    placeholder: 'Local(opcional)',
-                    type: 'text'
-                },
-                {
-                    name: 'initial_date',
-                    placeholder: 'Data inicial*',
-                    type: 'date'
-                },
-                {
-                    name: 'final_date',
-                    placeholder: 'Data final*',
-                    type: 'date'
-                },
+                    type: 'radio',
+                    label: 'Baixa',
+                    value: '3',
+                    checked: false
+                }
             ],
             buttons: [
                 {
@@ -150,53 +138,47 @@ var SubtasksPage = /** @class */ (function () {
                 {
                     text: 'Ok',
                     handler: function (data) {
-                        _this.calendar.createEventInteractivelyWithOptions(data.name, data.local, data.description, __WEBPACK_IMPORTED_MODULE_6_moment___default()(data.inicial_date).toDate(), __WEBPACK_IMPORTED_MODULE_6_moment___default()(data.final_date).toDate(), options).
-                            then(function () {
-                            _this.subtaskService.addReminderSubtask(id_subtask, data.name, data.local, data.description, data.initial_date, data.final_date);
-                            alertReminder.present();
-                        }).catch(function (e) {
-                            alertReminder.setSubTitle("Erro ao criar o lembrete! Tente novamente...");
-                            alertReminder.setMessage(e);
-                            alertReminder.present();
-                        });
+                        if (data == 1) {
+                            _this.color_priority = '#FF4500';
+                        }
+                        if (data == 2) {
+                            _this.color_priority = '#FF8C00';
+                        }
+                        if (data == 3) {
+                            _this.color_priority = '#FFD700';
+                        }
+                        _this.taskService.addPriorityTask(id_task, data, _this.color_priority);
                     }
-                }
+                },
             ]
         });
         alert.present();
     };
-    SubtasksPage.prototype.doneSubtask = function (id_subtask) {
-        this.subtaskService.doneSubtask(id_subtask);
-        this.subtask_number_up = this.subtask_number_up - 1;
-        this.afs.collection('tasks').doc("" + this.id_task).update({
-            subtask: this.subtask_number_up
-        });
-    };
-    SubtasksPage = __decorate([
+    TasksPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* Component */])({
-            selector: 'page-subtasks',template:/*ion-inline-start:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/subtasks/subtasks.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Subtarefas</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n    <form [formGroup]="subtaskForm">\n        <ion-item>\n          <ion-input type="text" [(ngModel)]="subtask.name" formControlName="name" placeholder="Nova subtarefa"></ion-input>\n          <button class="bt-tarefas" ion-button icon-only clear item-end (click)="addSubtask(subtask)" [disabled]="subtask.name==null">\n            <ion-icon name="add"></ion-icon>\n          </button>\n        </ion-item>\n      </form>\n\n      <br>\n\n      <ion-item  no-lines *ngFor="let subtask of subtaskDoc | async">\n\n        <ion-label text-wrap>{{ subtask.name }}</ion-label>\n        <ion-checkbox color="dark" (click)="doneSubtask(subtask.id_subtask)"></ion-checkbox>\n\n        <button ion-button class="bt-default" *ngIf="subtask.priority==null" [ngStyle]="{\'background-color\':subtask.color_priority}" item-end round (click)="addPriority(subtask.id_subtask)">\n          P\n        </button>\n\n        <button ion-button *ngIf="subtask.priority!=null" [ngStyle]="{\'background-color\':subtask.color_priority}" item-end round (click)="addPriority(subtask.id_subtask)">\n          {{ subtask.priority }}\n        </button>\n\n        <button ion-button class="bt-tarefas" *ngIf="subtask.reminder==null" icon-only clear item-end (click)="addReminder(subtask.id_subtask)">  \n          <ion-icon name="md-alarm"></ion-icon>\n        </button> \n\n        <button ion-button class="bt-tarefas" *ngFor="let reminder of subtask.reminder" item-end> <!-- (click)="excluirLembrete(subTarefa.id_subTarefa,lembrete)" -->\n          {{ reminder.fd }}\n        </button>\n<!--\n        <button ion-button class="bt-tarefas" *ngIf="edit==true" (click)="editarSubTarefa(subTarefa.id_subTarefa)" icon-only clear item-end>\n          <ion-icon name="create" style="color:black"></ion-icon>\n        </button> -->\n\n        <!-- <button ion-button class="bt-tarefas" *ngIf="edit==true" (click)="excluirSubtarefa(subTarefa.id_subTarefa, subTarefa.nome)" icon-only clear item-end>\n          <ion-icon name="close" style="color:black"></ion-icon>\n        </button> -->\n\n      </ion-item>\n\n</ion-content>\n'/*ion-inline-end:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/subtasks/subtasks.html"*/,
+            selector: 'page-tasks',template:/*ion-inline-start:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/tasks/tasks.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Tarefas</ion-title>\n\n    <ion-buttons end>\n      <button ion-button (click)="openCompletedTasks()" icon-only>\n        <ion-icon name="checkbox-outline" color="light"></ion-icon>\n      </button>\n    </ion-buttons>\n\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <form [formGroup]="taskForm">\n    <ion-item>\n      <ion-input type="text" [(ngModel)]="task.name" formControlName="name" placeholder="Nova tarefa"></ion-input>\n      <button class="bt-tarefas" ion-button icon-only clear item-end (click)="addTask(task)" [disabled]="task.name==null">\n        <ion-icon name="add"></ion-icon>\n      </button>\n    </ion-item>\n  </form>\n  <br>\n\n  <ion-item no-lines *ngFor="let task of taskDoc | async" text-wrap>\n    <ion-label>{{ task.name }}</ion-label>\n    <ion-checkbox color="dark" (click)="doneTask(task.id_task,task.subtask)"></ion-checkbox>\n\n    <button ion-button *ngIf="task.priority!=null" [ngStyle]="{\'background-color\':task.color_priority}" item-end round (click)="addPriority(task.id_task)">\n      {{ task.priority }}\n    </button>\n\n    <button ion-button class="bt-tarefas" *ngFor="let reminder of task.reminder" clear item-end> <!-- (click)="excluirLembrete(tarefa.id_tarefa, lembrete)" -->\n      {{ reminder.fd }}\n    </button>\n\n    <button ion-button class="bt-tarefas" clear icon-only item-end (click)="openDetailsTask(task.id_task)">\n      <ion-icon name="arrow-round-forward"></ion-icon>\n    </button>\n  </ion-item>\n\n</ion-content>\n'/*ion-inline-end:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/tasks/tasks.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_3__providers_subtask_service__["a" /* SubtaskService */], __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__["AngularFirestore"],
-            __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["a" /* AlertController */],
-            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["k" /* ToastController */], __WEBPACK_IMPORTED_MODULE_5__ionic_native_calendar_ngx__["a" /* Calendar */]])
-    ], SubtasksPage);
-    return SubtasksPage;
+            __WEBPACK_IMPORTED_MODULE_3__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_4__providers_task_service__["a" /* TaskService */],
+            __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__["AngularFirestore"], __WEBPACK_IMPORTED_MODULE_1__angular_core__["j" /* ChangeDetectorRef */],
+            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["a" /* AlertController */]])
+    ], TasksPage);
+    return TasksPage;
 }());
 
-//# sourceMappingURL=subtasks.js.map
+//# sourceMappingURL=tasks.js.map
 
 /***/ }),
 
-/***/ 857:
+/***/ 862:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SubtasksPageModule", function() { return SubtasksPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TasksPageModule", function() { return TasksPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(138);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__subtasks__ = __webpack_require__(1119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tasks__ = __webpack_require__(1125);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -206,23 +188,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var SubtasksPageModule = /** @class */ (function () {
-    function SubtasksPageModule() {
+var TasksPageModule = /** @class */ (function () {
+    function TasksPageModule() {
     }
-    SubtasksPageModule = __decorate([
+    TasksPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__subtasks__["a" /* SubtasksPage */],
+                __WEBPACK_IMPORTED_MODULE_2__tasks__["a" /* TasksPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__subtasks__["a" /* SubtasksPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__tasks__["a" /* TasksPage */]),
             ],
         })
-    ], SubtasksPageModule);
-    return SubtasksPageModule;
+    ], TasksPageModule);
+    return TasksPageModule;
 }());
 
-//# sourceMappingURL=subtasks.module.js.map
+//# sourceMappingURL=tasks.module.js.map
 
 /***/ })
 

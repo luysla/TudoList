@@ -7,7 +7,7 @@ import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/fires
 
 import { TaskService } from '../../providers/task-service';
 
-import { Calendar } from '@ionic-native/calendar/ngx';
+import { Calendar } from '@ionic-native/calendar';
 
 import moment from "moment";
 

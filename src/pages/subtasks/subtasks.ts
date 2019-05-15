@@ -8,9 +8,9 @@ import { SubtaskService } from './../../providers/subtask-service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 
-import { Calendar } from '@ionic-native/calendar/ngx';
-
 import moment from "moment";
+
+import { Calendar } from '@ionic-native/calendar';
 
 @IonicPage({
   name: 'SubtasksPage',

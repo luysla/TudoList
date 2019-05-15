@@ -6,7 +6,7 @@ import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { Calendar } from '@ionic-native/calendar/ngx';
+import { Calendar } from '@ionic-native/calendar';
 
 /* Imports das paginas */
 import { TabsPage } from '../pages/tabs/tabs';

@@ -1,19 +1,16 @@
 webpackJsonp([14],{
 
-/***/ 1107:
+/***/ 1112:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AddGroupPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AddListPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(138);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_group_service__ = __webpack_require__(530);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase_app__ = __webpack_require__(97);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase_app___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_firebase_app__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_firebase_auth__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_list_service__ = __webpack_require__(548);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(38);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -28,69 +25,65 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-
-var AddGroupPage = /** @class */ (function () {
-    function AddGroupPage(navCtrl, navParams, groupService, afs, formBuilder, toastCtrl) {
+var AddListPage = /** @class */ (function () {
+    function AddListPage(navCtrl, navParams, alertCtrl, listService, afs, formBuilder, toastCtrl) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.groupService = groupService;
+        this.alertCtrl = alertCtrl;
+        this.listService = listService;
         this.afs = afs;
         this.formBuilder = formBuilder;
         this.toastCtrl = toastCtrl;
-        this.group = {};
-        this.groupForm = this.formBuilder.group({
+        this.list = {};
+        this.id_project = this.navParams.get('idProject');
+        this.listForm = this.formBuilder.group({
             name: ['', [__WEBPACK_IMPORTED_MODULE_4__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_4__angular_forms__["f" /* Validators */].minLength(3)]]
         });
-        this.id_project = this.navParams.get('idProject');
     }
-    AddGroupPage.prototype.addGroup = function (group) {
+    AddListPage.prototype.addList = function (list) {
         var _this = this;
         var toast = this.toastCtrl.create({
-            message: 'Grupo criado com sucesso!',
+            message: 'Lista criada com sucesso!',
             duration: 3000,
             position: 'top'
         });
-        this.groupService.addGroup(group).then(function (doc) {
-            _this.afs.collection('groups').doc("" + doc.id).update({
-                id_group: doc.id,
-                id_project: _this.id_project,
-                user_admin: __WEBPACK_IMPORTED_MODULE_5_firebase_app__["auth"]().currentUser.uid
+        this.listService.newList(list).then(function (doc) {
+            _this.afs.collection("lists").doc("" + doc.id).update({
+                id_list: doc.id,
+                id_project: _this.id_project
             });
             toast.present();
-            _this.navCtrl.push('SearchUserPage', {
-                idProject: _this.id_project,
-                idGroup: doc.id
-            });
+            _this.navCtrl.pop();
         }).catch(function (e) {
-            toast.setMessage("Erro ao criar grupo! Tente novamente...");
+            toast.setMessage("Erro ao criar lista! Tente novamente...");
             toast.present();
         });
     };
-    AddGroupPage = __decorate([
+    AddListPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-add-group',template:/*ion-inline-start:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/add-group/add-group.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Novo grupo</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <form [formGroup]="groupForm">\n    <ion-item>\n      <ion-label stacked>Nome do grupo*</ion-label>\n      <ion-input type="text" [(ngModel)]="group.name" formControlName="name"></ion-input>\n    </ion-item>\n\n    <br>\n\n    <button ion-button class="bt-default" full (click)="addGroup(group)" [disabled]="!groupForm.valid">Ok</button>\n  </form>\n</ion-content>\n'/*ion-inline-end:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/add-group/add-group.html"*/,
+            selector: 'page-add-list',template:/*ion-inline-start:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/add-list/add-list.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Nova lista</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <form [formGroup]="listForm">\n    <ion-item>\n      <ion-label stacked>Nome da lista*</ion-label>\n      <ion-input type="text" [(ngModel)]="list.name" formControlName="name"></ion-input>\n    </ion-item>\n\n    <br>\n\n    <button ion-button class="bt-default" full (click)="addList(list)" [disabled]="!listForm.valid">Ok</button>\n  </form>\n\n</ion-content>\n'/*ion-inline-end:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/add-list/add-list.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_2__providers_group_service__["a" /* GroupService */], __WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore__["AngularFirestore"],
-            __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */]])
-    ], AddGroupPage);
-    return AddGroupPage;
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_3__providers_list_service__["a" /* ListService */],
+            __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["AngularFirestore"], __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormBuilder */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */]])
+    ], AddListPage);
+    return AddListPage;
 }());
 
-//# sourceMappingURL=add-group.js.map
+//# sourceMappingURL=add-list.js.map
 
 /***/ }),
 
-/***/ 845:
+/***/ 849:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AddGroupPageModule", function() { return AddGroupPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AddListPageModule", function() { return AddListPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(138);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__add_group__ = __webpack_require__(1107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__add_list__ = __webpack_require__(1112);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -100,23 +93,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var AddGroupPageModule = /** @class */ (function () {
-    function AddGroupPageModule() {
+var AddListPageModule = /** @class */ (function () {
+    function AddListPageModule() {
     }
-    AddGroupPageModule = __decorate([
+    AddListPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__add_group__["a" /* AddGroupPage */],
+                __WEBPACK_IMPORTED_MODULE_2__add_list__["a" /* AddListPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__add_group__["a" /* AddGroupPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__add_list__["a" /* AddListPage */]),
             ],
         })
-    ], AddGroupPageModule);
-    return AddGroupPageModule;
+    ], AddListPageModule);
+    return AddListPageModule;
 }());
 
-//# sourceMappingURL=add-group.module.js.map
+//# sourceMappingURL=add-list.module.js.map
 
 /***/ })
 

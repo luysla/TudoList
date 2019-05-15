@@ -66,11 +66,15 @@
           <p style="font-weight: bold" (click)="addColaborador(tarefa.id_tarefa)">@{{ colaborador.username_colaborador }}</p>
         </div> -->
       </div>
+      
+      <div *ngIf="task.reminder!=null">
+        <br>
+      </div>
 
       <div *ngIf="task.reminder!=null">
         <div *ngFor="let reminder of task.reminder">
           <h2 class="titulo">Lembrete:</h2>
-          <p>{{ reminder.df }}</p>
+          <p>{{ reminder.fd }}</p>
         </div>
       </div>
     </ion-item>

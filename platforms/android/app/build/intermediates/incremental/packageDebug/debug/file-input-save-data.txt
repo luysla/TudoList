@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Wed May 15 10:03:27 BRT 2019
+#Wed May 15 10:33:58 BRT 2019
 60.set=ASSET
 52.set=ASSET
 53.base=/home/hinata/Documentos/2019.1/dev/TudoList/platforms/android/app/build/intermediates/assets/debug

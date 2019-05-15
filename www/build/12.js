@@ -1,21 +1,15 @@
 webpackJsonp([12],{
 
-/***/ 1109:
+/***/ 1114:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AddProjectPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_project_service__ = __webpack_require__(531);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(138);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase__ = __webpack_require__(532);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_firebase_auth__ = __webpack_require__(139);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_moment__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_moment__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CompletedTasksPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_task_service__ = __webpack_require__(529);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -29,66 +23,41 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-
-
-
-var AddProjectPage = /** @class */ (function () {
-    function AddProjectPage(navCtrl, navParams, formBuilder, projectService, afs) {
+var CompletedTasksPage = /** @class */ (function () {
+    function CompletedTasksPage(navCtrl, navParams, afs, taskService) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.formBuilder = formBuilder;
-        this.projectService = projectService;
         this.afs = afs;
-        this.project = {};
-        this.projectForm = this.formBuilder.group({
-            name: ['', [__WEBPACK_IMPORTED_MODULE_4__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_4__angular_forms__["f" /* Validators */].minLength(3)]],
-            description: ['', [__WEBPACK_IMPORTED_MODULE_4__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_4__angular_forms__["f" /* Validators */].minLength(3)]]
-        });
+        this.taskService = taskService;
+        this.tasksColletion = this.afs.collection('tasks', function (ref) { return ref.where('done', '==', 1); });
+        this.tasksCompleted = this.tasksColletion.valueChanges();
     }
-    AddProjectPage.prototype.addProject = function (project) {
-        var _this = this;
-        project.user_admin = __WEBPACK_IMPORTED_MODULE_5_firebase__["auth"]().currentUser.uid;
-        this.projectService.newProject(project).then(function (doc) {
-            _this.afs.collection('projects').doc("" + doc.id).update({
-                id_project: doc.id,
-                date_hour_create: __WEBPACK_IMPORTED_MODULE_7_moment___default()().format('DD/MM/YYYY, h:mm:ss a'),
-                star: 0
-            });
-            _this.idProject = doc.id;
-            alert("Projeto criado com sucesso!");
-            _this.navCtrl.pop();
-        }).catch(function (e) {
-            alert("Erro ao criar projeto!" + e);
-        });
+    CompletedTasksPage.prototype.restore = function (id_task) {
+        this.taskService.restoreTask(id_task);
     };
-    AddProjectPage.prototype.openSearchUser = function () {
-        this.navCtrl.push('SearchUserPage');
-    };
-    AddProjectPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["m" /* Component */])({
-            selector: 'page-add-project',template:/*ion-inline-start:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/add-project/add-project.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Novo projeto</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <form [formGroup]="projectForm">\n    <ion-item>\n      <ion-label stacked>Nome do projeto*</ion-label>\n      <ion-input type="text" [(ngModel)]="project.name" formControlName="name"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label stacked>Descrição*</ion-label>\n      <ion-input type="text" [(ngModel)]="project.description" formControlName="description"></ion-input>\n    </ion-item>\n\n    <br>\n\n    <button ion-button class="bt-default" full (click)="addProject(project)" [disabled]="!projectForm.valid">Ok</button>\n  </form>\n</ion-content>\n\n'/*ion-inline-end:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/add-project/add-project.html"*/,
+    CompletedTasksPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-completed-tasks',template:/*ion-inline-start:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/completed-tasks/completed-tasks.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Tarefas concluídas</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <ion-item  no-lines *ngFor="let task of tasksCompleted | async">\n    <ion-label class="label-task">{{ task.name }}</ion-label>\n    <ion-checkbox color="dark" (click)="restore(task.id_task)"></ion-checkbox>\n  </ion-item>\n\n</ion-content>\n'/*ion-inline-end:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/completed-tasks/completed-tasks.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_1__providers_project_service__["a" /* ProjectService */],
-            __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__["AngularFirestore"]])
-    ], AddProjectPage);
-    return AddProjectPage;
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["AngularFirestore"], __WEBPACK_IMPORTED_MODULE_3__providers_task_service__["a" /* TaskService */]])
+    ], CompletedTasksPage);
+    return CompletedTasksPage;
 }());
 
-//# sourceMappingURL=add-project.js.map
+//# sourceMappingURL=completed-tasks.js.map
 
 /***/ }),
 
-/***/ 847:
+/***/ 851:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AddProjectPageModule", function() { return AddProjectPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CompletedTasksPageModule", function() { return CompletedTasksPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(138);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__add_project__ = __webpack_require__(1109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__completed_tasks__ = __webpack_require__(1114);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -98,23 +67,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var AddProjectPageModule = /** @class */ (function () {
-    function AddProjectPageModule() {
+var CompletedTasksPageModule = /** @class */ (function () {
+    function CompletedTasksPageModule() {
     }
-    AddProjectPageModule = __decorate([
+    CompletedTasksPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__add_project__["a" /* AddProjectPage */],
+                __WEBPACK_IMPORTED_MODULE_2__completed_tasks__["a" /* CompletedTasksPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__add_project__["a" /* AddProjectPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__completed_tasks__["a" /* CompletedTasksPage */]),
             ],
         })
-    ], AddProjectPageModule);
-    return AddProjectPageModule;
+    ], CompletedTasksPageModule);
+    return CompletedTasksPageModule;
 }());
 
-//# sourceMappingURL=add-project.module.js.map
+//# sourceMappingURL=completed-tasks.module.js.map
 
 /***/ })
 
