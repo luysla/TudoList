@@ -20,7 +20,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = 'LoginFirebasePage';
+  rootPage: any;
 
   userCollection: AngularFirestoreCollection<any[]>;
   userDoc: Observable<any[]>;
@@ -34,13 +34,20 @@ export class MyApp {
 
       const unsubscribe = firebase.auth().onAuthStateChanged(user=>{
         if(user){
-          this.app.getRootNavs()[0].setRoot(TabsPage);
-          this.userCollection = this.afs.collection('users',ref => ref.where('user_uid','==',user.uid));
-          this.userDoc = this.userCollection.valueChanges();
+          //this.app.getRootNavs()[0].setRoot(TabsPage);
+          this.nav.setRoot(TabsPage);
           unsubscribe();
         }else{
-          this.app.getRootNavs()[0].setRoot('LoginFirebasePage');
+          //this.app.getRootNavs()[0].setRoot('LoginFirebasePage');
+          this.nav.setRoot('LoginFirebasePage');
           unsubscribe();
+        }
+      })
+
+      firebase.auth().onAuthStateChanged(user=>{
+        if(user){
+          this.userCollection = this.afs.collection('users',ref => ref.where('user_uid','==',user.uid));
+          this.userDoc = this.userCollection.valueChanges();    
         }
       })
 

@@ -6,6 +6,9 @@ import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/fires
 
 import { ProjectService } from './../../providers/project-service';
 
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+
 @IonicPage({
   name: 'StarProjectsPage',
   segment: 'projetos-favoritos'
@@ -25,9 +28,15 @@ export class StarProjectsPage {
   }
 
   ionViewDidEnter(){
-    this.projectCollection = this.afs.collection('projects', ref => ref.where('star', '==', 1));
-    this.starProjects = this.projectCollection.valueChanges();
-    this.cdr.detectChanges();
+    const unsubscribe = firebase.auth().onAuthStateChanged(user=>{
+      if(user){
+        this.projectCollection = this.afs.collection('projects', ref => ref.where('star', '==', 1).where('user_admin','==',user.uid));
+        this.starProjects = this.projectCollection.valueChanges();
+        this.cdr.detectChanges();
+        unsubscribe();
+      }
+    });
+    
   }
 
   deleteStarProject(id_project: string): void{
