@@ -58,22 +58,22 @@ var AddGroupPage = /** @class */ (function () {
                 user_admin: __WEBPACK_IMPORTED_MODULE_5_firebase_app__["auth"]().currentUser.uid
             });
             toast.present();
-            _this.navCtrl.pop();
-            /* this.navCtrl.push('SearchUserPage',{
-              idProject: this.id_project,
-              idGroup: doc.id
-            }); */
+            _this.navCtrl.push('SearchUserPage', {
+                idProject: _this.id_project,
+                idGroup: doc.id
+            });
         }).catch(function (e) {
             toast.setMessage("Erro ao criar grupo! Tente novamente...");
             toast.present();
         });
     };
-    var _a, _b, _c, _d, _e, _f;
     AddGroupPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-add-group',template:/*ion-inline-start:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/add-group/add-group.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Novo grupo</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <form [formGroup]="groupForm">\n    <ion-item>\n      <ion-label stacked>Nome do grupo*</ion-label>\n      <ion-input type="text" [(ngModel)]="group.name" formControlName="name"></ion-input>\n    </ion-item>\n\n    <br>\n\n    <button ion-button class="bt-default" full (click)="addGroup(group)" [disabled]="!groupForm.valid">Ok</button>\n  </form>\n</ion-content>\n'/*ion-inline-end:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/add-group/add-group.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" ? _a : Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" ? _b : Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_group_service__["a" /* GroupService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_group_service__["a" /* GroupService */]) === "function" ? _c : Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore__["AngularFirestore"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore__["AngularFirestore"]) === "function" ? _d : Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormBuilder */]) === "function" ? _e : Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */]) === "function" ? _f : Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_2__providers_group_service__["a" /* GroupService */], __WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore__["AngularFirestore"],
+            __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */]])
     ], AddGroupPage);
     return AddGroupPage;
 }());

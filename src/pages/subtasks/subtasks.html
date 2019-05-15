@@ -34,7 +34,7 @@
           <ion-icon name="md-alarm"></ion-icon>
         </button> 
 
-        <button ion-button class="bt-tarefas" *ngFor="let reminder of subtask.reminder" item-end> <!-- (click)="excluirLembrete(subTarefa.id_subTarefa,lembrete)" -->
+        <button ion-button class="bt-tarefas" *ngFor="let reminder of subtask.reminder" clear item-end> <!-- (click)="excluirLembrete(subTarefa.id_subTarefa,lembrete)" -->
           {{ reminder.fd }}
         </button>
 <!--

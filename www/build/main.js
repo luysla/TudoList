@@ -419,6 +419,11 @@ var GroupService = /** @class */ (function () {
     GroupService.prototype.deleteGroup = function (id_group) {
         return this.afs.collection("groups").doc("" + id_group).delete();
     };
+    GroupService.prototype.deleteMemberGroup = function (id_group, member) {
+        return this.afs.collection("groups").doc("" + id_group).update({
+            members: __WEBPACK_IMPORTED_MODULE_2_firebase_app__["firestore"].FieldValue.arrayRemove({ 'user_uid': member.user_uid, 'name': member.name, 'username': member.username, 'photo': member.photo })
+        });
+    };
     var _a;
     GroupService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),

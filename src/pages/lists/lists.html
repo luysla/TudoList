@@ -67,7 +67,7 @@
                 </ion-avatar>
             <h2>{{ member.name }}</h2>
 
-            <button ion-button class="bt-tarefas" *ngIf="edit==true" icon-only clear item-end>
+            <button ion-button class="bt-tarefas" *ngIf="edit==true" icon-only clear item-end (click)="deleteMember(group.id_group,member)">
               <ion-icon name="trash" color="danger"></ion-icon>
             </button>
           </ion-item>
@@ -80,6 +80,7 @@
         </button>
   
         <p *ngIf="(groups | async)?.length==0">Crie um grupo para o seu projeto!</p>
+
         <ion-fab *ngIf="(groups | async)?.length != 0" right bottom (click)="openSearchUser(group.id_group)">
             <button class="bt-default" ion-fab mini><ion-icon name="person-add"></ion-icon></button>
           </ion-fab>

@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Rx';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 
 import { GroupService } from './../../providers/group-service';
+import { Profile } from '../../models/profile';
 
 
 @IonicPage({
@@ -173,6 +174,14 @@ export class ListsPage {
       ]
     })
     alert.present();
+  }
+
+  deleteMember(id_group: string, member: Profile): void{
+    this.groupService.deleteMemberGroup(id_group,member).then(()=>{
+      console.log('Membro deletado!');
+    }).catch(()=>{
+      console.log('Erro');
+    })
   }
 }
 

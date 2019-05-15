@@ -34,4 +34,10 @@ export class GroupService {
     return this.afs.collection(`groups`).doc(`${id_group}`).delete();
   }
 
+  deleteMemberGroup(id_group: string, member: Profile): Promise<any>{
+    return this.afs.collection(`groups`).doc(`${id_group}`).update({
+      members: firebase.firestore.FieldValue.arrayRemove({'user_uid': member.user_uid, 'name': member.name, 'username': member.username, 'photo': member.photo})
+    })
+  }
+
 }

@@ -67,11 +67,6 @@ var LoginFirebasePage = /** @class */ (function () {
                 }
             ]
         });
-        var toast = this.toastCtrl.create({
-            message: 'Erro ao se logar! Verifique se inseriu seu e-mail/senha corretamente',
-            duration: 5000,
-            position: 'top'
-        });
         this.authService.login(user).then(function (user) {
             if (user) {
                 _this.emailVerified = __WEBPACK_IMPORTED_MODULE_5_firebase__["auth"]().currentUser.emailVerified;
@@ -89,54 +84,23 @@ var LoginFirebasePage = /** @class */ (function () {
                 console.log("Usuário não existe!");
             }
         }).catch(function (e) {
-            toast.present();
+            console.log("Erro ao se logar!");
         });
     };
-    LoginFirebasePage.prototype.resetPassword = function () {
-        var _this_1 = this;
-        var toast = this.toastCtrl.create({
-            message: 'Verifique seu e-mail!',
-            duration: 3000,
-            position: 'top'
-        });
-        var alert = this.alertCtrl.create({
-            title: 'Redefinir senha',
-            message: 'Digite seu e-mail cadastrado para receber o link',
-            inputs: [
-                {
-                    name: 'email',
-                    placeholder: 'E-mail'
-                },
-            ],
-            buttons: [
-                {
-                    text: 'Cancelar',
-                    role: 'cancel'
-                },
-                {
-                    text: 'Ok',
-                    handler: function (data) {
-                        _this_1.authService.resetPassword(data.email).then(function () {
-                            toast.present();
-                        }).catch(function () {
-                            toast.setMessage('Erro: E-mail não cadastrado');
-                            toast.present();
-                        });
-                    }
-                }
-            ]
-        });
-        alert.present();
+    LoginFirebasePage.prototype.resetPassword = function (email) {
+        this.authService.resetPassword(email);
     };
     LoginFirebasePage.prototype.openRegister = function () {
         this.navCtrl.push('RegisterFirebasePage');
     };
-    var _a, _b, _c, _d, _e, _f, _g;
     LoginFirebasePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-login-firebase',template:/*ion-inline-start:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/login-firebase/login-firebase.html"*/'<ion-content padding>\n  <ion-img class="logo" src="./../../assets/imgs/logo-app.png"></ion-img>\n\n  <form [formGroup]="loginForm">\n    <ion-item>\n      <ion-label>\n        <ion-icon name="mail"></ion-icon>\n      </ion-label>\n      <ion-input type="email" [(ngModel)]="user.email" formControlName="email" placeholder="E-mail" required></ion-input>\n    </ion-item>\n\n    <br>\n\n    <ion-item>\n      <ion-label>\n        <ion-icon name="lock"></ion-icon>\n      </ion-label>\n      <ion-input type="password" [(ngModel)]="user.password" formControlName="password" placeholder="Senha" required></ion-input>\n    </ion-item>\n\n    <a (click)="resetPassword()"><p style="text-align: right; text-decoration: underline">Esqueceu sua senha?</p></a>\n\n    <button ion-button class="bt-default" full type="submit" (click)="login(user)" [disabled]="!loginForm.valid">Entrar</button>\n  </form>\n\n  <p class="text-pag">Não possui conta? <a (click)="openRegister()" style="text-decoration: underline">Cadastre-se</a></p>\n\n</ion-content>\n'/*ion-inline-end:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/login-firebase/login-firebase.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" ? _a : Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" ? _b : Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */]) === "function" ? _c : Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__providers_auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__providers_auth_service__["a" /* AuthService */]) === "function" ? _d : Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_7_angularfire2_auth__["AngularFireAuth"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7_angularfire2_auth__["AngularFireAuth"]) === "function" ? _e : Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" ? _f : Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */]) === "function" ? _g : Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_3__providers_auth_service__["a" /* AuthService */],
+            __WEBPACK_IMPORTED_MODULE_7_angularfire2_auth__["AngularFireAuth"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */]])
     ], LoginFirebasePage);
     return LoginFirebasePage;
 }());

@@ -8091,12 +8091,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var SearchUserPage = /** @class */ (function () {
-    function SearchUserPage(navCtrl, navParams, afs, groupService, toastCtrl) {
+    function SearchUserPage(navCtrl, navParams, afs, groupService) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.afs = afs;
         this.groupService = groupService;
-        this.toastCtrl = toastCtrl;
         this.startAt = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["Subject"]();
         this.endAt = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["Subject"]();
         this.startobs = this.startAt.asObservable();
@@ -8133,27 +8132,21 @@ var SearchUserPage = /** @class */ (function () {
             return this.users = this.usersCollection.valueChanges();
         }
     };
-    SearchUserPage.prototype.addMemberGroup = function (user) {
+    SearchUserPage.prototype.addMemberGroup = function (user_uid, user_name, user_photo) {
         var _this = this;
-        var toast = this.toastCtrl.create({
-            message: 'Membro adicionado!',
-            duration: 3000,
-            position: 'top'
-        });
-        this.groupService.addMemberGroup(this.id_group, user).then(function () {
-            toast.present();
+        this.groupService.addMemberGroup(this.id_group, user_uid, user_name, user_photo).then(function () {
+            alert('Membro adicionado!');
             _this.navCtrl.pop();
         }).catch(function (e) {
-            toast.setMessage('Erro ao adicionar membro!');
-            toast.present();
+            alert('Erro ao adicionar membro!' + e);
         });
     };
-    var _a, _b, _c, _d, _e;
     SearchUserPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-search-user',template:/*ion-inline-start:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/search-user/search-user.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-searchbar [(ngModel)]="searchTerm"\n    placeholder = "Pesquisar usuários"\n    (ionInput)="getItem($event)">\n  </ion-searchbar>\n</ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <ion-list *ngFor="let user of usersSearch">\n    <ion-item-sliding>\n      <ion-item (click)="addMemberGroup(user)">\n        <ion-avatar item-start>\n          <img [src]="user.photo || \'../../../../assets/imgs/no-photo.jpg\'">\n        </ion-avatar>\n        <h2>{{ user.name }} (@{{ user.username }})</h2>\n      </ion-item>\n    </ion-item-sliding>\n  </ion-list>\n\n  <p *ngIf="usersSearch == 0">Nenhum usuário com esse nome foi encontrado...</p>\n\n</ion-content>\n'/*ion-inline-end:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/search-user/search-user.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" ? _a : Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" ? _b : Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4_angularfire2_firestore__["AngularFirestore"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4_angularfire2_firestore__["AngularFirestore"]) === "function" ? _c : Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_5__providers_group_service__["a" /* GroupService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__providers_group_service__["a" /* GroupService */]) === "function" ? _d : Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */]) === "function" ? _e : Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_4_angularfire2_firestore__["AngularFirestore"], __WEBPACK_IMPORTED_MODULE_5__providers_group_service__["a" /* GroupService */]])
     ], SearchUserPage);
     return SearchUserPage;
 }());
