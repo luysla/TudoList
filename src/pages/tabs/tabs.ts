@@ -10,7 +10,7 @@ export class TabsPage {
   tab2Root = 'StarProjectsPage';
   tab3Root = 'UserProfilePage';
   tab4Root = 'MyTasksPage';
-  tab5Root = 'MyTasksPage';
+  tab5Root = 'MyProjectsPage';
 
   myIndex: number;
 

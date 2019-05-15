@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu" color="light"></ion-icon>
+    </button>
+    <ion-title>Meus projetos</ion-title>
+    <ion-buttons end>
+      <button ion-button *ngIf="edit==false" (click)="viewEdit()" icon-only clear>
+        <ion-icon name="create" color="light"></ion-icon>
+      </button>
+      <button ion-button *ngIf="edit==true" (click)="viewEdit()" icon-only clear>
+        <ion-icon name="close" color="light"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-item  *ngFor="let project of projects | async">
+
+    <ion-label *ngIf="project.star==1" (click)="openListPage(project.id_project, project.name)" text-wrap>
+      {{ project.name }} <ion-icon name="star" color="yellow"></ion-icon>
+    </ion-label>
+    <ion-label *ngIf="project.star==0">{{ project.name }}</ion-label>
+    <button ion-button class="bt-tarefas" *ngIf="edit==false" icon-only clear item-end>
+      <ion-icon name="list" color="dark"></ion-icon>
+    </button>
+    <button ion-button class="bt-tarefas" *ngIf="edit==true" (click)="editProject(project.id_project)" icon-only clear item-end>
+      <ion-icon name="create" color="dark"></ion-icon>
+    </button>
+    <button ion-button class="bt-tarefas" *ngIf="edit==true" (click)="deleteProject(project.id_project, project.name)" icon-only clear item-end>
+      <ion-icon name="trash" color="danger"></ion-icon>
+    </button>
+  </ion-item>
+
+</ion-content>

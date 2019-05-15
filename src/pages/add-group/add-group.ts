@@ -56,10 +56,12 @@ export class AddGroupPage {
 
         toast.present();
 
-        this.navCtrl.push('SearchUserPage',{
+        this.navCtrl.pop();
+
+        /* this.navCtrl.push('SearchUserPage',{
           idProject: this.id_project,
           idGroup: doc.id
-        });
+        }); */
       }).catch((e)=>{
         toast.setMessage("Erro ao criar grupo! Tente novamente...");
         toast.present();

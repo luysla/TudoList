@@ -1,3 +1,4 @@
+import { Profile } from './../models/profile';
 import { Injectable, forwardRef, NgModule } from '@angular/core';
 
 import { AngularFirestore } from 'angularfire2/firestore';
@@ -21,10 +22,10 @@ export class GroupService {
     return this.afs.collection('groups').add(group);
   }
 
-  addMemberGroup(id_group: string, member_uid: string, member_name: string, member_photo: string): Promise<any>{
+  addMemberGroup(id_group: string, member: Profile): Promise<any>{
 
     return this.afs.collection('groups').doc(`${id_group}`).update({
-      members: firebase.firestore.FieldValue.arrayUnion({'member_uid': member_uid, 'member_name': member_name, 'member_photo': member_photo})
+      members: firebase.firestore.FieldValue.arrayUnion({'user_uid': member.user_uid, 'name': member.name, 'username': member.username, 'photo': member.photo})
     });
 
   }

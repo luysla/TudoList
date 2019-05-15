@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Rx';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 
 import { GroupService } from './../../providers/group-service';
+import { Profile } from '../../models/profile';
 
 @IonicPage({
   name: 'SearchUserPage',
@@ -71,8 +72,8 @@ export class SearchUserPage implements OnInit {
     }
   }
 
-  addMemberGroup(user_uid: string,user_name: string, user_photo: string){
-    this.groupService.addMemberGroup(this.id_group,user_uid,user_name,user_photo).then(()=>{
+  addMemberGroup(user: Profile){
+    this.groupService.addMemberGroup(this.id_group,user).then(()=>{
       alert('Membro adicionado!');
       this.navCtrl.pop();
     }).catch((e)=>{

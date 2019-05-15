@@ -61,9 +61,9 @@
       <div *ngIf="group.members!=null">
           <ion-item *ngFor="let member of group.members" no-lines>
               <ion-avatar item-start>
-                  <img [src]="member.member_photo || '../../../../assets/imgs/no-photo.jpg'">
+                  <img [src]="member.photo || '../../../../assets/imgs/no-photo.jpg'">
                 </ion-avatar>
-            <h2>{{ member.member_name }}</h2>
+            <h2>{{ member.name }}</h2>
 
             <button ion-button class="bt-tarefas" *ngIf="edit==true" icon-only clear item-end>
               <ion-icon name="trash" color="danger"></ion-icon>
@@ -76,19 +76,17 @@
           <ion-icon name="trash"></ion-icon>
           Excluir grupo
         </button>
-
-      <!-- <button ion-button class="bt-default" (click)="openSearchUser(group.id_group)" icon-start>
-        <ion-icon name="person-add"></ion-icon>
-        Adicionar membro
-      </button> -->
-      <ion-fab right bottom (click)="openSearchUser(group.id_group)">
-          <button class="bt-default" ion-fab mini><ion-icon name="person-add"></ion-icon></button>
-        </ion-fab>
+  
+        <ion-fab *ngIf="(groups | async)?.length != 0" right bottom (click)="openSearchUser(group.id_group)">
+            <button class="bt-default" ion-fab mini><ion-icon name="person-add"></ion-icon></button>
+          </ion-fab>
     </div>
 
-    <!-- <ion-fab *ngIf="groupCollection==null" right bottom (click)="openAddGroup()">
+    <ion-fab *ngIf="(groups | async)?.length == 0" right bottom (click)="openAddGroup()">
         <button class="bt-default" ion-fab mini><ion-icon name="add"></ion-icon></button>
-      </ion-fab> -->
+      </ion-fab>
+
+      
 
 
    </div>

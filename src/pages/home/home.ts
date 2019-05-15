@@ -85,7 +85,13 @@ export class HomePage implements OnInit{
       this.startAt.next(q);
       this.endAt.next(q + "\uf8ff");
     }else{
-      this.projectCollection = this.afs.collection(`projects`);
+      const unsubscribe = firebase.auth().onAuthStateChanged(user=>{
+        if(user){
+          this.projectCollection = this.afs.collection(`projects`, ref => 
+          ref.where('user_admin','==',user.uid));
+          unsubscribe();
+        }
+      });
       return this.projects = this.projectCollection.valueChanges();
     }
 

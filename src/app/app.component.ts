@@ -51,12 +51,12 @@ export class MyApp {
 
       this.pages = [
         { name: 'Home'  , component: TabsPage, icon: 'md-home', index: 0 },
-        { name: 'Minhas tarefas', component: 'MyTasksPage', icon: 'list', index: 4 },
-        { name: 'Meus projetos', component: 'HomePage', icon: 'md-folder-open', index: 5 }
+        { name: 'Minhas tarefas', component: 'MyTasksPage', icon: 'list', index: 3 },
+        { name: 'Meus projetos', component: 'MyProjectsPage', icon: 'md-folder-open', index: 4 }
       ];
 
       this.pagesConfig = [
-        { name: 'Configurações', component: 'UserProfilePage', icon: 'settings', index: 3 }
+        { name: 'Configurações', component: 'UserProfilePage', icon: 'settings', index: 2 }
       ];
 
       platform.ready().then(() => {

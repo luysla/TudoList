@@ -24,4 +24,15 @@ export class ProjectService {
     });
   }
 
+  editProject(id_project: string, new_name: string, new_description: string): Promise<any>{
+    return this.afs.collection(`projects`).doc(`${id_project}`).update({
+      name: new_name,
+      description: new_description
+    });
+  }
+
+  deleteProject(id_project: string): Promise<any>{
+    return this.afs.collection(`projects`).doc(`${id_project}`).delete();
+  }
+
 }

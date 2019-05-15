@@ -17,13 +17,17 @@ import { TaskService } from '../../providers/task-service';
 })
 export class CompletedTasksPage {
 
+  id_list: string;
+
   tasksColletion: AngularFirestoreCollection<any[]>;
   tasksCompleted: Observable<any[]>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public afs: AngularFirestore, public taskService: TaskService) {
 
-    this.tasksColletion = this.afs.collection('tasks', ref => ref.where('done','==',1));
+    this.id_list = this.navParams.get('idList');
+
+    this.tasksColletion = this.afs.collection('tasks', ref => ref.where('done','==',1).where('id_list','==',this.id_list));
     this.tasksCompleted = this.tasksColletion.valueChanges();
 
   }

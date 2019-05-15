@@ -1,16 +1,20 @@
 webpackJsonp([10],{
 
-/***/ 1117:
+/***/ 1130:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ListsPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__providers_list_service__ = __webpack_require__(548);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(139);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_group_service__ = __webpack_require__(545);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginFirebasePage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_auth_service__ = __webpack_require__(233);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__tabs_tabs__ = __webpack_require__(245);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase__ = __webpack_require__(554);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_firebase__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_firebase_auth__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angularfire2_auth__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angularfire2_auth___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_angularfire2_auth__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -25,167 +29,95 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var ListsPage = /** @class */ (function () {
-    function ListsPage(navCtrl, navParams, afs, groupService, alertCtrl, cdr, listService) {
-        var _this = this;
+
+
+
+var LoginFirebasePage = /** @class */ (function () {
+    function LoginFirebasePage(navCtrl, navParams, formBuilder, authService, afAuth, alertCtrl, toastCtrl) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.afs = afs;
-        this.groupService = groupService;
+        this.formBuilder = formBuilder;
+        this.authService = authService;
+        this.afAuth = afAuth;
         this.alertCtrl = alertCtrl;
-        this.cdr = cdr;
-        this.listService = listService;
-        this.edit = false;
-        this.view = 'lists';
-        this.id_project = this.navParams.get('idProject');
-        this.project_name = this.navParams.get('nameProject');
-        this.listCollection = this.afs.collection('lists', function (ref) { return ref.where('id_project', '==', _this.id_project); });
-        this.lists = this.listCollection.valueChanges();
-        this.groupCollection = this.afs.collection('groups', function (ref) { return ref.where('id_project', '==', _this.id_project); });
-        this.groups = this.groupCollection.valueChanges();
+        this.toastCtrl = toastCtrl;
+        this.user = {};
+        var emailRegex = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+        this.loginForm = this.formBuilder.group({
+            email: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].pattern(emailRegex)])],
+            password: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].minLength(6)]]
+        });
     }
-    ListsPage.prototype.openAddList = function () {
-        this.navCtrl.push('AddListPage', {
-            idProject: this.id_project
-        });
-    };
-    ListsPage.prototype.openSearchUser = function (id_group) {
-        this.navCtrl.push('SearchUserPage', {
-            idProjet: this.id_project,
-            idGroup: id_group
-        });
-    };
-    ListsPage.prototype.openAddGroup = function () {
-        this.navCtrl.push('AddGroupPage', {
-            idProject: this.id_project
-        });
-    };
-    ListsPage.prototype.openTaskPage = function (id_list) {
-        this.navCtrl.push('TasksPage', {
-            idList: id_list,
-            idProject: this.id_project
-        });
-    };
-    ListsPage.prototype.showEdit = function () {
-        this.edit = !this.edit;
-        this.cdr.detectChanges();
-    };
-    ListsPage.prototype.editList = function (idList) {
+    LoginFirebasePage.prototype.login = function (user) {
+        var _this_1 = this;
         var _this = this;
         var alert = this.alertCtrl.create({
-            title: 'Editar',
-            inputs: [
-                {
-                    name: 'new_name_list',
-                    placeholder: 'Novo nome da lista',
-                    type: 'text'
-                }
-            ],
+            title: 'Atenção',
+            message: "Você precisa verificar seu e-mail antes do login! Caso queira receber o e-mail de verificação novamente, clique no botão de Reenviar e-mail",
             buttons: [
                 {
-                    text: "Cancelar",
-                    role: "cancel"
-                },
-                {
-                    text: "Ok",
+                    text: 'Reenviar e-mail',
                     handler: function (data) {
-                        _this.listService.editList(idList, data.new_name_list);
-                    }
-                }
-            ]
-        });
-        alert.present();
-    };
-    ListsPage.prototype.deleteList = function (idList, listName) {
-        var _this = this;
-        var alertDelete = this.alertCtrl.create({
-            subTitle: "Lista deletada!",
-            buttons: ['OK']
-        });
-        var alert = this.alertCtrl.create({
-            title: 'Tem certeza que quer excluir essa lista?',
-            message: 'Ao excluir, todos os dados armazenados até agora vão ser perdidos!',
-            inputs: [
-                {
-                    name: 'list_name',
-                    placeholder: 'Digite o nome da lista pra continuar'
-                },
-            ],
-            buttons: [
-                {
-                    text: 'Excluir',
-                    handler: function (data) {
-                        if (data.list_name == listName) {
-                            _this.listService.deleteList(idList).then(function () {
-                                alertDelete.present();
-                            }).catch(function (e) {
-                                alertDelete.setSubTitle("Erro ao excluir lista!");
-                                alertDelete.present();
-                            });
-                        }
+                        _this_1.authService.sendEmailVerification();
                     }
                 },
                 {
-                    text: 'Cancelar',
+                    text: 'Ok',
                     role: 'cancel'
                 }
             ]
         });
-        alert.present();
-    };
-    ListsPage.prototype.deleteGroup = function (id_group) {
-        var _this = this;
-        var alertDelete = this.alertCtrl.create({
-            subTitle: "Grupo deletado!",
-            buttons: ['OK']
-        });
-        var alert = this.alertCtrl.create({
-            title: 'Tem certeza que quer excluir esse grupo?',
-            buttons: [
-                {
-                    text: 'Excluir',
-                    handler: function (data) {
-                        _this.groupService.deleteGroup(id_group).then(function () {
-                            alertDelete.present();
-                        }).catch(function (e) {
-                            alertDelete.setSubTitle("Erro ao excluir grupo!");
-                            alertDelete.present();
-                        });
-                    }
-                },
-                {
-                    text: 'Cancelar',
-                    role: 'cancel'
+        this.authService.login(user).then(function (user) {
+            if (user) {
+                _this.emailVerified = __WEBPACK_IMPORTED_MODULE_5_firebase__["auth"]().currentUser.emailVerified;
+                //firebase.auth().onAuthStateChanged(user=>{
+                if (_this.emailVerified == true) {
+                    _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_4__tabs_tabs__["a" /* TabsPage */]);
                 }
-            ]
+                else {
+                    alert.present();
+                    _this.navCtrl.setRoot('LoginFirebasePage');
+                }
+                //})
+            }
+            else {
+                console.log("Usuário não existe!");
+            }
+        }).catch(function (e) {
+            console.log("Erro ao se logar!");
         });
-        alert.present();
     };
-    ListsPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* Component */])({
-            selector: 'page-lists',template:/*ion-inline-start:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/lists/lists.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>{{ project_name }}</ion-title>\n    <ion-buttons end>\n        <button ion-button *ngIf="edit==false" icon-only (click)="showEdit()">\n          <ion-icon name="create" color="light"></ion-icon>\n        </button>\n\n        <button ion-button *ngIf="edit==true" icon-only (click)="showEdit()">\n            <ion-icon name="close" color="light"></ion-icon>\n          </button>\n\n        </ion-buttons>\n  </ion-navbar>\n\n  <ion-toolbar color="light">\n    <ion-segment style="color:black" [(ngModel)]="view">\n      <ion-segment-button value="lists">\n        Listas\n      </ion-segment-button>\n      <ion-segment-button value="group">\n        Grupo\n      </ion-segment-button>\n    </ion-segment>\n  </ion-toolbar>\n\n</ion-header>\n\n<ion-content padding>\n\n  <div [ngSwitch]="view">\n\n  <ion-list *ngSwitchCase="\'lists\'">\n\n    <ion-item *ngFor="let list of lists | async" >\n    <ion-label (click)="openTaskPage(list.id_list)">  {{ list.name }}</ion-label>\n\n    <button ion-button class="bt-tarefas" *ngIf="edit==false" icon-only clear item-end>\n        <ion-icon name="list" style="color:black"></ion-icon>\n      </button>\n\n      <button ion-button class="bt-tarefas" *ngIf="edit==true" (click)="editList(list.id_list)" icon-only clear item-end>\n        <ion-icon name="create" style="color:black"></ion-icon>\n      </button>\n\n      <button ion-button class="bt-tarefas" *ngIf="edit==true" (click)="deleteList(list.id_list, list.name)" icon-only clear item-end>\n        <ion-icon name="trash" color="danger"></ion-icon>\n      </button>\n    </ion-item>\n\n    <ion-fab right bottom (click)="openAddList()">\n      <button class="bt-default" ion-fab mini><ion-icon name="add"></ion-icon></button>\n    </ion-fab>\n  </ion-list>\n\n  <div *ngSwitchCase="\'group\'">\n    <div *ngFor="let group of groups | async">\n\n      <ion-label text-center><h3>{{ group.name }}</h3></ion-label>\n\n      <div *ngIf="group.members!=null">\n          <ion-item *ngFor="let member of group.members" no-lines>\n              <ion-avatar item-start>\n                  <img [src]="member.member_photo || \'../../../../assets/imgs/no-photo.jpg\'">\n                </ion-avatar>\n            <h2>{{ member.member_name }}</h2>\n\n            <button ion-button class="bt-tarefas" *ngIf="edit==true" icon-only clear item-end>\n              <ion-icon name="trash" color="danger"></ion-icon>\n            </button>\n          </ion-item>\n        </div>\n        <br>\n\n        <button ion-button color="danger" *ngIf="edit==true" (click)="deleteGroup(group.id_group)" icon-start full>\n          <ion-icon name="trash"></ion-icon>\n          Excluir grupo\n        </button>\n\n      <!-- <button ion-button class="bt-default" (click)="openSearchUser(group.id_group)" icon-start>\n        <ion-icon name="person-add"></ion-icon>\n        Adicionar membro\n      </button> -->\n      <ion-fab right bottom (click)="openSearchUser(group.id_group)">\n          <button class="bt-default" ion-fab mini><ion-icon name="person-add"></ion-icon></button>\n        </ion-fab>\n    </div>\n\n    <!-- <ion-fab *ngIf="groupCollection==null" right bottom (click)="openAddGroup()">\n        <button class="bt-default" ion-fab mini><ion-icon name="add"></ion-icon></button>\n      </ion-fab> -->\n\n\n   </div>\n\n</div>\n</ion-content>\n'/*ion-inline-end:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/lists/lists.html"*/,
+    LoginFirebasePage.prototype.resetPassword = function (email) {
+        this.authService.resetPassword(email);
+    };
+    LoginFirebasePage.prototype.openRegister = function () {
+        this.navCtrl.push('RegisterFirebasePage');
+    };
+    LoginFirebasePage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-login-firebase',template:/*ion-inline-start:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/login-firebase/login-firebase.html"*/'<ion-content padding>\n  <ion-img class="logo" src="./../../assets/imgs/logo-app.png"></ion-img>\n\n  <form [formGroup]="loginForm">\n    <ion-item>\n      <ion-label>\n        <ion-icon name="mail"></ion-icon>\n      </ion-label>\n      <ion-input type="email" [(ngModel)]="user.email" formControlName="email" placeholder="E-mail" required></ion-input>\n    </ion-item>\n\n    <br>\n\n    <ion-item>\n      <ion-label>\n        <ion-icon name="lock"></ion-icon>\n      </ion-label>\n      <ion-input type="password" [(ngModel)]="user.password" formControlName="password" placeholder="Senha" required></ion-input>\n    </ion-item>\n\n    <a (click)="resetPassword()"><p style="text-align: right; text-decoration: underline">Esqueceu sua senha?</p></a>\n\n    <button ion-button class="bt-default" full type="submit" (click)="login(user)" [disabled]="!loginForm.valid">Entrar</button>\n  </form>\n\n  <p class="text-pag">Não possui conta? <a (click)="openRegister()" style="text-decoration: underline">Cadastre-se</a></p>\n\n</ion-content>\n'/*ion-inline-end:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/login-firebase/login-firebase.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore__["AngularFirestore"], __WEBPACK_IMPORTED_MODULE_4__providers_group_service__["a" /* GroupService */],
-            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_1__angular_core__["j" /* ChangeDetectorRef */],
-            __WEBPACK_IMPORTED_MODULE_0__providers_list_service__["a" /* ListService */]])
-    ], ListsPage);
-    return ListsPage;
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_3__providers_auth_service__["a" /* AuthService */],
+            __WEBPACK_IMPORTED_MODULE_7_angularfire2_auth__["AngularFireAuth"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */]])
+    ], LoginFirebasePage);
+    return LoginFirebasePage;
 }());
 
-//# sourceMappingURL=lists.js.map
+//# sourceMappingURL=login-firebase.js.map
 
 /***/ }),
 
-/***/ 854:
+/***/ 868:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ListsPageModule", function() { return ListsPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginFirebasePageModule", function() { return LoginFirebasePageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(139);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lists__ = __webpack_require__(1117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_firebase__ = __webpack_require__(1130);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -195,23 +127,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var ListsPageModule = /** @class */ (function () {
-    function ListsPageModule() {
+var LoginFirebasePageModule = /** @class */ (function () {
+    function LoginFirebasePageModule() {
     }
-    ListsPageModule = __decorate([
+    LoginFirebasePageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__lists__["a" /* ListsPage */],
+                __WEBPACK_IMPORTED_MODULE_2__login_firebase__["a" /* LoginFirebasePage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__lists__["a" /* ListsPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__login_firebase__["a" /* LoginFirebasePage */]),
             ],
         })
-    ], ListsPageModule);
-    return ListsPageModule;
+    ], LoginFirebasePageModule);
+    return LoginFirebasePageModule;
 }());
 
-//# sourceMappingURL=lists.module.js.map
+//# sourceMappingURL=login-firebase.module.js.map
 
 /***/ })
 

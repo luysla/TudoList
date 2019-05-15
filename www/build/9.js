@@ -1,20 +1,18 @@
 webpackJsonp([9],{
 
-/***/ 1118:
+/***/ 1131:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginFirebasePage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyProjectsPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(139);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(38);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_auth_service__ = __webpack_require__(231);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__tabs_tabs__ = __webpack_require__(243);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase__ = __webpack_require__(547);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_firebase_auth__ = __webpack_require__(140);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angularfire2_auth__ = __webpack_require__(148);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angularfire2_auth___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_angularfire2_auth__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_project_service__ = __webpack_require__(536);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_firebase_app__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_firebase_app___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_firebase_app__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase_auth__ = __webpack_require__(143);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -30,94 +28,131 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-
-var LoginFirebasePage = /** @class */ (function () {
-    function LoginFirebasePage(navCtrl, navParams, formBuilder, authService, afAuth, alertCtrl, toastCtrl) {
+var MyProjectsPage = /** @class */ (function () {
+    function MyProjectsPage(navCtrl, navParams, cdr, afs, projectService, alertCtrl) {
+        var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.formBuilder = formBuilder;
-        this.authService = authService;
-        this.afAuth = afAuth;
+        this.cdr = cdr;
+        this.afs = afs;
+        this.projectService = projectService;
         this.alertCtrl = alertCtrl;
-        this.toastCtrl = toastCtrl;
-        this.user = {};
-        var emailRegex = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
-        this.loginForm = this.formBuilder.group({
-            email: ['', __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].compose([__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].pattern(emailRegex)])],
-            password: ['', [__WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* Validators */].minLength(6)]]
+        this.edit = false;
+        var unsubscribe = __WEBPACK_IMPORTED_MODULE_4_firebase_app__["auth"]().onAuthStateChanged(function (user) {
+            if (user) {
+                _this.projectCollection = _this.afs.collection("projects", function (ref) { return ref.where('user_admin', '==', user.uid); });
+                _this.projects = _this.projectCollection.valueChanges();
+                _this.cdr.detectChanges();
+                unsubscribe();
+            }
         });
     }
-    LoginFirebasePage.prototype.login = function (user) {
-        var _this_1 = this;
+    MyProjectsPage.prototype.viewEdit = function () {
+        this.edit = !this.edit;
+        this.cdr.detectChanges();
+    };
+    MyProjectsPage.prototype.openListPage = function (id_project, project_name) {
+        this.navCtrl.push('ListsPage', {
+            idProject: id_project,
+            nameProject: project_name
+        });
+    };
+    MyProjectsPage.prototype.editProject = function (id_project) {
         var _this = this;
         var alert = this.alertCtrl.create({
-            title: 'Atenção',
-            message: "Você precisa verificar seu e-mail antes do login! Caso queira receber o e-mail de verificação novamente, clique no botão de Reenviar e-mail",
-            buttons: [
+            title: 'Editar',
+            inputs: [
                 {
-                    text: 'Reenviar e-mail',
-                    handler: function (data) {
-                        _this_1.authService.sendEmailVerification();
-                    }
+                    name: 'new_project_name',
+                    placeholder: 'Novo nome do projeto',
+                    type: 'text'
                 },
                 {
-                    text: 'Ok',
+                    name: 'new_description_project',
+                    placeholder: 'Nova descrição',
+                    type: 'text'
+                }
+            ],
+            buttons: [
+                {
+                    text: "Cancelar",
+                    role: "cancel"
+                },
+                {
+                    text: "Ok",
+                    handler: function (data) {
+                        _this.projectService.editProject(id_project, data.new_project_name, data.new_description_project);
+                    }
+                }
+            ]
+        });
+        alert.present();
+    };
+    MyProjectsPage.prototype.deleteProject = function (id_project, project_name) {
+        var _this = this;
+        var alertDelete = this.alertCtrl.create({
+            subTitle: "Projeto deletado!",
+            buttons: ['OK']
+        });
+        var alert = this.alertCtrl.create({
+            title: 'Tem certeza que quer excluir esse projeto?',
+            message: 'Ao excluir, todos os dados armazenados até agora vão ser perdidos!',
+            inputs: [
+                {
+                    name: 'project_name',
+                    placeholder: 'Digite o nome do projeto pra continuar'
+                },
+            ],
+            buttons: [
+                {
+                    text: 'Excluir',
+                    handler: function (data) {
+                        if (data.project_name == project_name) {
+                            _this.projectService.deleteProject(id_project).then(function () {
+                                alertDelete.present();
+                            }).catch(function (e) {
+                                alertDelete.setSubTitle("Erro ao excluir o projeto!");
+                                alertDelete.present();
+                            });
+                        }
+                        else {
+                            alertDelete.setSubTitle("O texto digitado não corresponde ao nome do projeto!");
+                            alertDelete.present();
+                        }
+                    },
+                },
+                {
+                    text: 'Cancelar',
                     role: 'cancel'
                 }
             ]
         });
-        this.authService.login(user).then(function (user) {
-            if (user) {
-                _this.emailVerified = __WEBPACK_IMPORTED_MODULE_5_firebase__["auth"]().currentUser.emailVerified;
-                //firebase.auth().onAuthStateChanged(user=>{
-                if (_this.emailVerified == true) {
-                    _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_4__tabs_tabs__["a" /* TabsPage */]);
-                }
-                else {
-                    alert.present();
-                    _this.navCtrl.setRoot('LoginFirebasePage');
-                }
-                //})
-            }
-            else {
-                console.log("Usuário não existe!");
-            }
-        }).catch(function (e) {
-            console.log("Erro ao se logar!");
-        });
+        alert.present();
     };
-    LoginFirebasePage.prototype.resetPassword = function (email) {
-        this.authService.resetPassword(email);
-    };
-    LoginFirebasePage.prototype.openRegister = function () {
-        this.navCtrl.push('RegisterFirebasePage');
-    };
-    LoginFirebasePage = __decorate([
+    MyProjectsPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-login-firebase',template:/*ion-inline-start:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/login-firebase/login-firebase.html"*/'<ion-content padding>\n  <ion-img class="logo" src="./../../assets/imgs/logo-app.png"></ion-img>\n\n  <form [formGroup]="loginForm">\n    <ion-item>\n      <ion-label>\n        <ion-icon name="mail"></ion-icon>\n      </ion-label>\n      <ion-input type="email" [(ngModel)]="user.email" formControlName="email" placeholder="E-mail" required></ion-input>\n    </ion-item>\n\n    <br>\n\n    <ion-item>\n      <ion-label>\n        <ion-icon name="lock"></ion-icon>\n      </ion-label>\n      <ion-input type="password" [(ngModel)]="user.password" formControlName="password" placeholder="Senha" required></ion-input>\n    </ion-item>\n\n    <a (click)="resetPassword()"><p style="text-align: right; text-decoration: underline">Esqueceu sua senha?</p></a>\n\n    <button ion-button class="bt-default" full type="submit" (click)="login(user)" [disabled]="!loginForm.valid">Entrar</button>\n  </form>\n\n  <p class="text-pag">Não possui conta? <a (click)="openRegister()" style="text-decoration: underline">Cadastre-se</a></p>\n\n</ion-content>\n'/*ion-inline-end:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/login-firebase/login-firebase.html"*/,
+            selector: 'page-my-projects',template:/*ion-inline-start:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/my-projects/my-projects.html"*/'<ion-header>\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu" color="light"></ion-icon>\n    </button>\n    <ion-title>Meus projetos</ion-title>\n    <ion-buttons end>\n      <button ion-button *ngIf="edit==false" (click)="viewEdit()" icon-only clear>\n        <ion-icon name="create" color="light"></ion-icon>\n      </button>\n      <button ion-button *ngIf="edit==true" (click)="viewEdit()" icon-only clear>\n        <ion-icon name="close" color="light"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <ion-item  *ngFor="let project of projects | async">\n\n    <ion-label *ngIf="project.star==1" (click)="openListPage(project.id_project, project.name)" text-wrap>\n      {{ project.name }} <ion-icon name="star" color="yellow"></ion-icon>\n    </ion-label>\n    <ion-label *ngIf="project.star==0">{{ project.name }}</ion-label>\n    <button ion-button class="bt-tarefas" *ngIf="edit==false" icon-only clear item-end>\n      <ion-icon name="list" color="dark"></ion-icon>\n    </button>\n    <button ion-button class="bt-tarefas" *ngIf="edit==true" (click)="editProject(project.id_project)" icon-only clear item-end>\n      <ion-icon name="create" color="dark"></ion-icon>\n    </button>\n    <button ion-button class="bt-tarefas" *ngIf="edit==true" (click)="deleteProject(project.id_project, project.name)" icon-only clear item-end>\n      <ion-icon name="trash" color="danger"></ion-icon>\n    </button>\n  </ion-item>\n\n</ion-content>\n'/*ion-inline-end:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/my-projects/my-projects.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_3__providers_auth_service__["a" /* AuthService */],
-            __WEBPACK_IMPORTED_MODULE_7_angularfire2_auth__["AngularFireAuth"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */]])
-    ], LoginFirebasePage);
-    return LoginFirebasePage;
+            __WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* ChangeDetectorRef */], __WEBPACK_IMPORTED_MODULE_2_angularfire2_firestore__["AngularFirestore"],
+            __WEBPACK_IMPORTED_MODULE_3__providers_project_service__["a" /* ProjectService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
+    ], MyProjectsPage);
+    return MyProjectsPage;
 }());
 
-//# sourceMappingURL=login-firebase.js.map
+//# sourceMappingURL=my-projects.js.map
 
 /***/ }),
 
-/***/ 855:
+/***/ 869:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginFirebasePageModule", function() { return LoginFirebasePageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MyProjectsPageModule", function() { return MyProjectsPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(139);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_firebase__ = __webpack_require__(1118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__my_projects__ = __webpack_require__(1131);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -127,23 +162,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var LoginFirebasePageModule = /** @class */ (function () {
-    function LoginFirebasePageModule() {
+var MyProjectsPageModule = /** @class */ (function () {
+    function MyProjectsPageModule() {
     }
-    LoginFirebasePageModule = __decorate([
+    MyProjectsPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__login_firebase__["a" /* LoginFirebasePage */],
+                __WEBPACK_IMPORTED_MODULE_2__my_projects__["a" /* MyProjectsPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__login_firebase__["a" /* LoginFirebasePage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__my_projects__["a" /* MyProjectsPage */]),
             ],
         })
-    ], LoginFirebasePageModule);
-    return LoginFirebasePageModule;
+    ], MyProjectsPageModule);
+    return MyProjectsPageModule;
 }());
 
-//# sourceMappingURL=login-firebase.module.js.map
+//# sourceMappingURL=my-projects.module.js.map
 
 /***/ })
 

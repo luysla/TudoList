@@ -8,6 +8,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { Calendar } from '@ionic-native/calendar';
 
+import { IonicImageLoader } from 'ionic-image-loader';
+
 /* Imports das paginas */
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -37,7 +39,8 @@ import { SubtaskService } from '../providers/subtask-service';
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule.enablePersistence(),
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    IonicImageLoader.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

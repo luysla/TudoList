@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Colaborador</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only *ngIf="search==false" (click)="showSearch()">
+        <ion-icon name="search" color="light"></ion-icon>
+      </button>
+      <ion-searchbar *ngIf="search==true"
+      [(ngModel)]="searchTerm"
+      placeholder = "Pesquisar usuários"
+      (ionInput)="getItem($event)">
+    </ion-searchbar>
+  </ion-buttons>
+</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  
+  <div *ngIf="search==true">
+    <ion-list *ngFor="let user of usersSearch">
+      <ion-item-sliding>
+        <ion-item (click)="addCollaborator(user)">
+          <ion-avatar item-start>
+            <img [src]="user.photo || '../../../../assets/imgs/no-photo.jpg'">
+          </ion-avatar>
+          <h2>{{ user.name }} (@{{ user.username }})</h2>
+        </ion-item>
+      </ion-item-sliding>
+    </ion-list>
+  </div>
+  
+  <p *ngIf="usersSearch == 0 && search==true">Nenhum usuario com esse nome foi encontrado...</p>
+  
+  <div *ngIf="search==false">
+    <ion-item *ngFor="let group of group | async" no-lines>
+      <p>{{ group.name }}</p>
+      <div *ngIf="group.members!=null">
+        <ion-item *ngFor="let member of group.members" no-lines (click)="addCollaborator(member)">
+          <ion-avatar item-start>
+            <img [src]="member.photo || '../../../../assets/imgs/no-photo.jpg'">
+          </ion-avatar>
+          <h2>{{ member.name }}</h2>
+        </ion-item>
+      </div>
+    </ion-item>
+  </div>
+</ion-content>
