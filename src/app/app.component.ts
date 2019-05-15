@@ -1,4 +1,4 @@
-import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Platform, App, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -35,19 +35,17 @@ export class MyApp {
       const unsubscribe = firebase.auth().onAuthStateChanged(user=>{
         if(user){
           //this.app.getRootNavs()[0].setRoot(TabsPage);
+          this.userCollection = this.afs.collection('users',ref => ref.where('user_uid','==',user.uid));
+          this.userDoc = this.userCollection.valueChanges();
           this.nav.setRoot(TabsPage);
+          console.log(user);
+          
           unsubscribe();
         }else{
           //this.app.getRootNavs()[0].setRoot('LoginFirebasePage');
           this.nav.setRoot('LoginFirebasePage');
+          console.log('Sem usuario');
           unsubscribe();
-        }
-      })
-
-      firebase.auth().onAuthStateChanged(user=>{
-        if(user){
-          this.userCollection = this.afs.collection('users',ref => ref.where('user_uid','==',user.uid));
-          this.userDoc = this.userCollection.valueChanges();    
         }
       })
 
@@ -70,8 +68,10 @@ export class MyApp {
 
     logout(): void{
       this.authService.logout().then(()=>{
-        this.platform.exitApp();
-        this.app.getRootNavs()[0].setRoot('LoginFirebasePage');
+        //this.platform.exitApp();
+        //this.app.getRootNavs()[0].setRoot('LoginFirebasePage');
+        window.location.reload();
+        this.nav.setRoot('LoginFirebasePage');
       }).catch((e)=>{
         alert("Erro ao sair do aplicativo!");
       })
@@ -86,14 +86,7 @@ export class MyApp {
       if (this.nav.getActiveChildNav() && page.index != undefined) {
         this.nav.getActiveChildNav().select(page.index);
       } else {
-        // Tabs are not active, so reset the root page
-        // In this case: moving to or from SpecialPage
         this.nav.setRoot(page.component, params);
       }
-      /* this.nav.setRoot(TabsPage, {componentFromNavParams: page.component});
-      //this.nav.setRoot(page.component);
-      console.log(page.nome); */
     }
-
-
   }
