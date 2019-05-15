@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -27,7 +27,8 @@ export class RegisterFirebasePage {
   registerForm: FormGroup;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public formBuilder: FormBuilder, public authService: AuthService) {
+    public formBuilder: FormBuilder, public authService: AuthService,
+    public toastCtrl: ToastController) {
 
       let emailRegex = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
 
@@ -45,18 +46,34 @@ export class RegisterFirebasePage {
 
     let _this = this;
 
-    this.authService.newUser(user).then(()=>{
+    const toast = this.toastCtrl.create({
+      message: 'Cadastro criado!',
+      position: 'top',
+      duration: 3000
+    });
 
+    this.authService.newUser(user).then(()=>{
       profile.user_uid = firebase.auth().currentUser.uid;
       _this.authService.setProfile(profile);
 
       _this.authService.sendEmailVerification();
+      
+      toast.setMessage('Verifique seu e-mail antes de se logar!');
+      toast.present();
 
-      alert("Conta criada com sucesso!");
       _this.navCtrl.pop();
 
-    }).catch((e)=>{
-      alert("Erro ao criar conta: " + e);
+    }).catch(function(error: firebase.FirebaseError){
+      if(error.code === 'auth/weak-password'){
+        toast.setMessage('Senha muito fraca :/');
+        toast.present();
+      }if(error.code === 'auth/invalid-email'){
+        toast.setMessage('E-mail inválido :#');
+        toast.present();
+      }else{
+        toast.setMessage('Esse e-mail já possui conta :O');
+        toast.present();
+      }
     })
   }
 

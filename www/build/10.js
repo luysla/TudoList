@@ -67,6 +67,11 @@ var LoginFirebasePage = /** @class */ (function () {
                 }
             ]
         });
+        var toast = this.toastCtrl.create({
+            message: 'Erro ao se logar! Verifique se inseriu seu e-mail/senha corretamente',
+            duration: 5000,
+            position: 'top'
+        });
         this.authService.login(user).then(function (user) {
             if (user) {
                 _this.emailVerified = __WEBPACK_IMPORTED_MODULE_5_firebase__["auth"]().currentUser.emailVerified;
@@ -84,7 +89,7 @@ var LoginFirebasePage = /** @class */ (function () {
                 console.log("Usuário não existe!");
             }
         }).catch(function (e) {
-            console.log("Erro ao se logar!");
+            toast.present();
         });
     };
     LoginFirebasePage.prototype.resetPassword = function () {

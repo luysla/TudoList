@@ -63,6 +63,12 @@ export class LoginFirebasePage {
         ]
     });
 
+    const toast = this.toastCtrl.create({
+      message: 'Erro ao se logar! Verifique se inseriu seu e-mail/senha corretamente',
+      duration: 5000,
+      position: 'top'
+    });
+
     this.authService.login(user).then(function(user){
       if(user){
 
@@ -80,7 +86,7 @@ export class LoginFirebasePage {
         console.log("Usuário não existe!");
       }
     }).catch((e)=>{
-      console.log("Erro ao se logar!");
+      toast.present();
     });
   }
 
