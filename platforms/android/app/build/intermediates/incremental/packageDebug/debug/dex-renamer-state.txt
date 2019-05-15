@@ -1,4 +1,4 @@
-#Wed May 15 09:50:41 BRT 2019
+#Wed May 15 10:03:27 BRT 2019
 base.0=/home/hinata/Documentos/2019.1/dev/TudoList/platforms/android/app/build/intermediates/transforms/dexMerger/debug/0
 path.0=classes.dex
 renamed.0=classes.dex
