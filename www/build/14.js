@@ -7,7 +7,7 @@ webpackJsonp([14],{
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AddProjectPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_project_service__ = __webpack_require__(536);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_project_service__ = __webpack_require__(537);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(74);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__(38);
@@ -34,12 +34,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var AddProjectPage = /** @class */ (function () {
-    function AddProjectPage(navCtrl, navParams, formBuilder, projectService, afs) {
+    function AddProjectPage(navCtrl, navParams, formBuilder, projectService, afs, toastCtrl) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.formBuilder = formBuilder;
         this.projectService = projectService;
         this.afs = afs;
+        this.toastCtrl = toastCtrl;
         this.project = {};
         this.projectForm = this.formBuilder.group({
             name: ['', [__WEBPACK_IMPORTED_MODULE_4__angular_forms__["f" /* Validators */].required, __WEBPACK_IMPORTED_MODULE_4__angular_forms__["f" /* Validators */].minLength(3)]],
@@ -48,6 +49,11 @@ var AddProjectPage = /** @class */ (function () {
     }
     AddProjectPage.prototype.addProject = function (project) {
         var _this = this;
+        var toast = this.toastCtrl.create({
+            message: 'Projeto criado com sucesso!',
+            duration: 3000,
+            position: 'top'
+        });
         project.user_admin = __WEBPACK_IMPORTED_MODULE_5_firebase__["auth"]().currentUser.uid;
         this.projectService.newProject(project).then(function (doc) {
             _this.afs.collection('projects').doc("" + doc.id).update({
@@ -56,10 +62,11 @@ var AddProjectPage = /** @class */ (function () {
                 star: 0
             });
             _this.idProject = doc.id;
-            alert("Projeto criado com sucesso!");
+            toast.present();
             _this.navCtrl.pop();
         }).catch(function (e) {
-            alert("Erro ao criar projeto!" + e);
+            toast.setMessage("Erro ao criar projeto!");
+            toast.present();
         });
     };
     AddProjectPage.prototype.openSearchUser = function () {
@@ -71,7 +78,7 @@ var AddProjectPage = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["i" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_1__providers_project_service__["a" /* ProjectService */],
-            __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__["AngularFirestore"]])
+            __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__["AngularFirestore"], __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["k" /* ToastController */]])
     ], AddProjectPage);
     return AddProjectPage;
 }());

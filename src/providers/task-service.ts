@@ -62,7 +62,8 @@ export class TaskService {
         name: user.name,
         username: user.username,
         photo: user.photo
-      }]
+      }],
+      id_collaborator: user.user_uid
     })
   }
 

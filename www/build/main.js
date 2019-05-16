@@ -227,67 +227,6 @@ module.exports = webpackAsyncContext;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export ProjectServiceModule */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectService; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var ProjectServiceModule = /** @class */ (function () {
-    function ProjectServiceModule() {
-    }
-    ProjectServiceModule = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* NgModule */])({ providers: [Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_14" /* forwardRef */])(function () { return ProjectService; })] })
-    ], ProjectServiceModule);
-    return ProjectServiceModule;
-}());
-
-var ProjectService = /** @class */ (function () {
-    function ProjectService(afs) {
-        this.afs = afs;
-    }
-    ProjectService.prototype.newProject = function (project) {
-        return this.afs.collection("projects").add(project);
-    };
-    ProjectService.prototype.starProject = function (id_project, flag) {
-        return this.afs.collection("projects").doc("" + id_project).update({
-            star: flag
-        });
-    };
-    ProjectService.prototype.editProject = function (id_project, new_name, new_description) {
-        return this.afs.collection("projects").doc("" + id_project).update({
-            name: new_name,
-            description: new_description
-        });
-    };
-    ProjectService.prototype.deleteProject = function (id_project) {
-        return this.afs.collection("projects").doc("" + id_project).delete();
-    };
-    ProjectService = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__["AngularFirestore"]])
-    ], ProjectService);
-    return ProjectService;
-}());
-
-//# sourceMappingURL=project-service.js.map
-
-/***/ }),
-
-/***/ 537:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* unused harmony export TaskServiceModule */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TaskService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
@@ -358,7 +297,8 @@ var TaskService = /** @class */ (function () {
                     name: user.name,
                     username: user.username,
                     photo: user.photo
-                }]
+                }],
+            id_collaborator: user.user_uid
         });
     };
     TaskService = __decorate([
@@ -369,6 +309,67 @@ var TaskService = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=task-service.js.map
+
+/***/ }),
+
+/***/ 537:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export ProjectServiceModule */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var ProjectServiceModule = /** @class */ (function () {
+    function ProjectServiceModule() {
+    }
+    ProjectServiceModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["I" /* NgModule */])({ providers: [Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_14" /* forwardRef */])(function () { return ProjectService; })] })
+    ], ProjectServiceModule);
+    return ProjectServiceModule;
+}());
+
+var ProjectService = /** @class */ (function () {
+    function ProjectService(afs) {
+        this.afs = afs;
+    }
+    ProjectService.prototype.newProject = function (project) {
+        return this.afs.collection("projects").add(project);
+    };
+    ProjectService.prototype.starProject = function (id_project, flag) {
+        return this.afs.collection("projects").doc("" + id_project).update({
+            star: flag
+        });
+    };
+    ProjectService.prototype.editProject = function (id_project, new_name, new_description) {
+        return this.afs.collection("projects").doc("" + id_project).update({
+            name: new_name,
+            description: new_description
+        });
+    };
+    ProjectService.prototype.deleteProject = function (id_project) {
+        return this.afs.collection("projects").doc("" + id_project).delete();
+    };
+    ProjectService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0_angularfire2_firestore__["AngularFirestore"]])
+    ], ProjectService);
+    return ProjectService;
+}());
+
+//# sourceMappingURL=project-service.js.map
 
 /***/ }),
 
@@ -424,10 +425,9 @@ var GroupService = /** @class */ (function () {
             members: __WEBPACK_IMPORTED_MODULE_2_firebase_app__["firestore"].FieldValue.arrayRemove({ 'user_uid': member.user_uid, 'name': member.name, 'username': member.username, 'photo': member.photo })
         });
     };
-    var _a;
     GroupService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_angularfire2_firestore__["AngularFirestore"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angularfire2_firestore__["AngularFirestore"]) === "function" ? _a : Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_angularfire2_firestore__["AngularFirestore"]])
     ], GroupService);
     return GroupService;
 }());
@@ -531,15 +531,11 @@ var SubtaskService = /** @class */ (function () {
         return this.afs.collection('subtasks').add(subtask);
     };
     SubtaskService.prototype.doneSubtask = function (id_subtask) {
-        return this.afs.collection('tasks').doc("" + id_subtask).update({
-            done: 1
-        });
+        return this.afs.collection('subtasks').doc("" + id_subtask).delete();
     };
-    SubtaskService.prototype.restoreSubtask = function (id_subtask) {
-        return this.afs.collection('tasks').doc("" + id_subtask).update({
-            done: 0
-        });
-    };
+    /*  restoreSubtask(id_subtask: string): Promise<any>{
+       return this.afs.collection('subtasks').doc(`${id_subtask}`).delete();
+     } */
     SubtaskService.prototype.addPrioritySubtask = function (id_subtask, priority, color) {
         return this.afs.collection('subtasks').doc("" + id_subtask).update({
             priority: priority,
@@ -608,10 +604,10 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_angularfire2_auth___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_angularfire2_auth__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__angular_fire_storage__ = __webpack_require__(857);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__providers_auth_service__ = __webpack_require__(233);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__providers_project_service__ = __webpack_require__(536);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__providers_project_service__ = __webpack_require__(537);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__providers_list_service__ = __webpack_require__(557);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__providers_group_service__ = __webpack_require__(553);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__providers_task_service__ = __webpack_require__(537);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__providers_task_service__ = __webpack_require__(536);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__providers_subtask_service__ = __webpack_require__(559);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;

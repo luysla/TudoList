@@ -58,10 +58,11 @@ var AddGroupPage = /** @class */ (function () {
                 user_admin: __WEBPACK_IMPORTED_MODULE_5_firebase_app__["auth"]().currentUser.uid
             });
             toast.present();
-            _this.navCtrl.push('SearchUserPage', {
-                idProject: _this.id_project,
-                idGroup: doc.id
-            });
+            _this.navCtrl.pop();
+            /* this.navCtrl.push('SearchUserPage',{
+              idProject: this.id_project,
+              idGroup: doc.id
+            }); */
         }).catch(function (e) {
             toast.setMessage("Erro ao criar grupo! Tente novamente...");
             toast.present();

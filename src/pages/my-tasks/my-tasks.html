@@ -8,5 +8,16 @@
 </ion-header>
 
 <ion-content padding>
-  
+  <p *ngIf="(myTasks | async)?.length == 0">Nenhuma tarefa foi encontrada!</p>
+  <div *ngFor="let task of myTasks | async">
+    <ion-item no-lines>
+      <ion-label text-wrap>{{ task.name }}</ion-label>
+      <ion-checkbox color="dark" (click)="doneTask(task.id_task,task.subtask)"></ion-checkbox>
+      
+      <button ion-button class="bt-tarefas" (click)="openDetailsTask(task.id_task)" clear icon-only item-end>
+        <ion-icon name="arrow-round-forward" color="dark"></ion-icon>
+      </button>
+    </ion-item>
+
+  </div>
 </ion-content>

@@ -22,16 +22,12 @@ export class SubtaskService {
   }
 
   doneSubtask(id_subtask: string): Promise<any>{
-    return this.afs.collection('tasks').doc(`${id_subtask}`).update({
-      done: 1
-    })
+    return this.afs.collection('subtasks').doc(`${id_subtask}`).delete();
   }
 
-  restoreSubtask(id_subtask: string): Promise<any>{
-    return this.afs.collection('tasks').doc(`${id_subtask}`).update({
-      done: 0
-    });
-  }
+ /*  restoreSubtask(id_subtask: string): Promise<any>{
+    return this.afs.collection('subtasks').doc(`${id_subtask}`).delete();
+  } */
 
 
   addPrioritySubtask(id_subtask: string, priority: number, color: string): Promise<any>{

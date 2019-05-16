@@ -23,7 +23,7 @@ import { Calendar } from '@ionic-native/calendar';
 export class SubtasksPage {
 
   id_task: string;
-  subtask_number: number;
+  subtask_number = 0;
 
   subtask_number_up: number;
 
@@ -42,7 +42,9 @@ export class SubtasksPage {
     public toastCtrl: ToastController, public calendar: Calendar ) {
 
       this.id_task = this.navParams.get('idTask');
-      this.subtask_number = this.navParams.get('subtask');
+      this.subtask_number_up = this.navParams.get('subtask');
+
+      console.log(this.subtask_number, this.id_task);
 
 
       this.subtaskForm = this.formBuilder.group({
@@ -64,16 +66,17 @@ export class SubtasksPage {
       })
     })
 
-    this.subtask_number_up = this.subtask_number++;
-
+    this.subtaskForm.reset();
+    
+    this.subtask_number++;
+    
     this.afs.collection('tasks').doc(`${this.id_task}`).update({
       subtask: this.subtask_number
     })
-
-    this.subtaskForm.reset();
+    
+    this.subtask_number_up = this.subtask_number;
 
     console.log(this.subtask_number_up);
-
 
   }
 
@@ -193,10 +196,13 @@ export class SubtasksPage {
     this.subtaskService.doneSubtask(id_subtask);
 
     this.subtask_number_up = this.subtask_number_up - 1;
+      
+      console.log(this.subtask_number_up, this.id_task);
+      
+      this.afs.collection('tasks').doc(`${this.id_task}`).update({
+        subtask: this.subtask_number_up
+      })
 
-    this.afs.collection('tasks').doc(`${this.id_task}`).update({
-      subtask: this.subtask_number_up
-    })
 
 
   }

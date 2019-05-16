@@ -67,6 +67,11 @@ var LoginFirebasePage = /** @class */ (function () {
                 }
             ]
         });
+        var toast = this.toastCtrl.create({
+            message: 'Erro ao se logar! Verifique se inseriu seu e-mail/senha corretamente',
+            duration: 5000,
+            position: 'top'
+        });
         this.authService.login(user).then(function (user) {
             if (user) {
                 _this.emailVerified = __WEBPACK_IMPORTED_MODULE_5_firebase__["auth"]().currentUser.emailVerified;
@@ -84,11 +89,44 @@ var LoginFirebasePage = /** @class */ (function () {
                 console.log("Usuário não existe!");
             }
         }).catch(function (e) {
-            console.log("Erro ao se logar!");
+            toast.present();
         });
     };
-    LoginFirebasePage.prototype.resetPassword = function (email) {
-        this.authService.resetPassword(email);
+    LoginFirebasePage.prototype.resetPassword = function () {
+        var _this_1 = this;
+        var toast = this.toastCtrl.create({
+            message: 'Verifique seu e-mail!',
+            duration: 3000,
+            position: 'top'
+        });
+        var alert = this.alertCtrl.create({
+            title: 'Redefinir senha',
+            message: 'Digite seu e-mail cadastrado para receber o link',
+            inputs: [
+                {
+                    name: 'email',
+                    placeholder: 'E-mail'
+                },
+            ],
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel'
+                },
+                {
+                    text: 'Ok',
+                    handler: function (data) {
+                        _this_1.authService.resetPassword(data.email).then(function () {
+                            toast.present();
+                        }).catch(function () {
+                            toast.setMessage('Erro: E-mail não cadastrado');
+                            toast.present();
+                        });
+                    }
+                }
+            ]
+        });
+        alert.present();
     };
     LoginFirebasePage.prototype.openRegister = function () {
         this.navCtrl.push('RegisterFirebasePage');

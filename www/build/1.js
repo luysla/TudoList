@@ -8072,7 +8072,7 @@ var HotObservable = /*@__PURE__*/ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_task_service__ = __webpack_require__(537);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_task_service__ = __webpack_require__(536);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8088,13 +8088,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var SearchUserCollaboratorPage = /** @class */ (function () {
-    function SearchUserCollaboratorPage(navCtrl, navParams, afs, taskService, cdr) {
+    function SearchUserCollaboratorPage(navCtrl, navParams, afs, taskService, cdr, toastCtrl) {
         var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.afs = afs;
         this.taskService = taskService;
         this.cdr = cdr;
+        this.toastCtrl = toastCtrl;
         this.search = false;
         this.startAt = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Subject"]();
         this.endAt = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__["Subject"]();
@@ -8136,11 +8137,17 @@ var SearchUserCollaboratorPage = /** @class */ (function () {
     };
     SearchUserCollaboratorPage.prototype.addCollaborator = function (user) {
         var _this = this;
+        var toast = this.toastCtrl.create({
+            message: 'Colaborador adicionado com sucesso!',
+            duration: 3000,
+            position: 'top'
+        });
         this.taskService.addUserCollaborator(this.id_task, user).then(function () {
-            alert("Colaborador adicionado com sucesso!");
+            toast.present();
             _this.navCtrl.pop();
         }).catch(function (e) {
-            console.log("Erro ao adicionar colaborador" + e);
+            toast.setMessage("Erro ao adicionar colaborador");
+            toast.present();
         });
     };
     SearchUserCollaboratorPage.prototype.showSearch = function () {
@@ -8153,7 +8160,7 @@ var SearchUserCollaboratorPage = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_3_angularfire2_firestore__["AngularFirestore"], __WEBPACK_IMPORTED_MODULE_4__providers_task_service__["a" /* TaskService */],
-            __WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* ChangeDetectorRef */]])
+            __WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* ChangeDetectorRef */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */]])
     ], SearchUserCollaboratorPage);
     return SearchUserCollaboratorPage;
 }());

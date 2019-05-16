@@ -28,11 +28,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var RegisterFirebasePage = /** @class */ (function () {
-    function RegisterFirebasePage(navCtrl, navParams, formBuilder, authService) {
+    function RegisterFirebasePage(navCtrl, navParams, formBuilder, authService, toastCtrl) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.formBuilder = formBuilder;
         this.authService = authService;
+        this.toastCtrl = toastCtrl;
         this.user = {};
         this.profile = {};
         var emailRegex = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
@@ -46,14 +47,31 @@ var RegisterFirebasePage = /** @class */ (function () {
     }
     RegisterFirebasePage.prototype.registerUser = function (user, profile) {
         var _this = this;
+        var toast = this.toastCtrl.create({
+            message: 'Cadastro criado!',
+            position: 'top',
+            duration: 3000
+        });
         this.authService.newUser(user).then(function () {
             profile.user_uid = __WEBPACK_IMPORTED_MODULE_4_firebase__["auth"]().currentUser.uid;
             _this.authService.setProfile(profile);
             _this.authService.sendEmailVerification();
-            alert("Conta criada com sucesso!");
+            toast.setMessage('Verifique seu e-mail antes de se logar!');
+            toast.present();
             _this.navCtrl.pop();
-        }).catch(function (e) {
-            alert("Erro ao criar conta: " + e);
+        }).catch(function (error) {
+            if (error.code === 'auth/weak-password') {
+                toast.setMessage('Senha muito fraca :/');
+                toast.present();
+            }
+            if (error.code === 'auth/invalid-email') {
+                toast.setMessage('E-mail inválido :#');
+                toast.present();
+            }
+            else {
+                toast.setMessage('Esse e-mail já possui conta :O');
+                toast.present();
+            }
         });
     };
     RegisterFirebasePage = __decorate([
@@ -61,7 +79,8 @@ var RegisterFirebasePage = /** @class */ (function () {
             selector: 'page-register-firebase',template:/*ion-inline-start:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/register-firebase/register-firebase.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Cadastro</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <form style="margin-top: 100px;" [formGroup]="registerForm">\n    <ion-item>\n      <ion-label>\n        <ion-icon name="person"></ion-icon>\n      </ion-label>\n      <ion-input type="text" [(ngModel)]="profile.name" [formControl]="registerForm.controls[\'name\']" placeholder="Nome*" required></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>\n        <ion-icon name="at"></ion-icon>\n      </ion-label>\n      <ion-input type="text" [(ngModel)]="profile.username" [formControl]="registerForm.controls[\'username\']" placeholder="Nome de usuário*" required></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>\n        <ion-icon name="mail"></ion-icon>\n      </ion-label>\n      <ion-input type="email" [(ngModel)]="user.email" [formControl]="registerForm.controls[\'email\']" placeholder="E-mail*" required></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>\n        <ion-icon name="lock"></ion-icon>\n      </ion-label>\n      <ion-input type="password" [(ngModel)]="user.password" [formControl]="registerForm.controls[\'password\']" placeholder="Senha*" required></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>\n        <ion-icon name="lock"></ion-icon>\n      </ion-label>\n      <ion-input type="password" [(ngModel)]="user.password_confirmation" [formControl]="registerForm.controls[\'password_confirmation\']" placeholder="Confirme sua senha*" required></ion-input>\n      </ion-item>\n      <p style="color:red" *ngIf="registerForm.get(\'password\').value != registerForm.get(\'password_confirmation\').value">*Atenção: As senhas não coincidem</p>\n    <br>\n    <button ion-button class="bt-default" type="submit" full item-right (click)="registerUser(user,profile)" [disabled]="!registerForm.valid">Pronto :)</button>\n  </form>\n</ion-content>\n'/*ion-inline-end:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/register-firebase/register-firebase.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_3__providers_auth_service__["a" /* AuthService */]])
+            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormBuilder */], __WEBPACK_IMPORTED_MODULE_3__providers_auth_service__["a" /* AuthService */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */]])
     ], RegisterFirebasePage);
     return RegisterFirebasePage;
 }());

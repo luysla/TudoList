@@ -8091,11 +8091,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var SearchUserPage = /** @class */ (function () {
-    function SearchUserPage(navCtrl, navParams, afs, groupService) {
+    function SearchUserPage(navCtrl, navParams, afs, groupService, toastCtrl) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.afs = afs;
         this.groupService = groupService;
+        this.toastCtrl = toastCtrl;
         this.startAt = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["Subject"]();
         this.endAt = new __WEBPACK_IMPORTED_MODULE_2_rxjs_Subject__["Subject"]();
         this.startobs = this.startAt.asObservable();
@@ -8132,13 +8133,19 @@ var SearchUserPage = /** @class */ (function () {
             return this.users = this.usersCollection.valueChanges();
         }
     };
-    SearchUserPage.prototype.addMemberGroup = function (user_uid, user_name, user_photo) {
+    SearchUserPage.prototype.addMemberGroup = function (user) {
         var _this = this;
-        this.groupService.addMemberGroup(this.id_group, user_uid, user_name, user_photo).then(function () {
-            alert('Membro adicionado!');
+        var toast = this.toastCtrl.create({
+            message: 'Membro adicionado!',
+            duration: 3000,
+            position: 'top'
+        });
+        this.groupService.addMemberGroup(this.id_group, user).then(function () {
+            toast.present();
             _this.navCtrl.pop();
         }).catch(function (e) {
-            alert('Erro ao adicionar membro!' + e);
+            toast.setMessage('Erro ao adicionar membro!');
+            toast.present();
         });
     };
     SearchUserPage = __decorate([
@@ -8146,7 +8153,8 @@ var SearchUserPage = /** @class */ (function () {
             selector: 'page-search-user',template:/*ion-inline-start:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/search-user/search-user.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-searchbar [(ngModel)]="searchTerm"\n    placeholder = "Pesquisar usuários"\n    (ionInput)="getItem($event)">\n  </ion-searchbar>\n</ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <ion-list *ngFor="let user of usersSearch">\n    <ion-item-sliding>\n      <ion-item (click)="addMemberGroup(user)">\n        <ion-avatar item-start>\n          <img [src]="user.photo || \'../../../../assets/imgs/no-photo.jpg\'">\n        </ion-avatar>\n        <h2>{{ user.name }} (@{{ user.username }})</h2>\n      </ion-item>\n    </ion-item-sliding>\n  </ion-list>\n\n  <p *ngIf="usersSearch == 0">Nenhum usuário com esse nome foi encontrado...</p>\n\n</ion-content>\n'/*ion-inline-end:"/home/hinata/Documentos/2019.1/dev/TudoList/src/pages/search-user/search-user.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_4_angularfire2_firestore__["AngularFirestore"], __WEBPACK_IMPORTED_MODULE_5__providers_group_service__["a" /* GroupService */]])
+            __WEBPACK_IMPORTED_MODULE_4_angularfire2_firestore__["AngularFirestore"], __WEBPACK_IMPORTED_MODULE_5__providers_group_service__["a" /* GroupService */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* ToastController */]])
     ], SearchUserPage);
     return SearchUserPage;
 }());

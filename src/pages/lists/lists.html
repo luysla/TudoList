@@ -56,6 +56,7 @@
   </ion-list>
 
   <div *ngSwitchCase="'group'">
+    <p *ngIf="(groups | async)?.length==0">Crie um grupo para o seu projeto!</p>
     <div *ngFor="let group of groups | async">
 
       <ion-label text-center><h3>{{ group.name }}</h3></ion-label>
@@ -78,8 +79,6 @@
           <ion-icon name="trash"></ion-icon>
           Excluir grupo
         </button>
-  
-        <p *ngIf="(groups | async)?.length==0">Crie um grupo para o seu projeto!</p>
 
         <ion-fab *ngIf="(groups | async)?.length != 0" right bottom (click)="openSearchUser(group.id_group)">
             <button class="bt-default" ion-fab mini><ion-icon name="person-add"></ion-icon></button>
@@ -89,9 +88,6 @@
     <ion-fab *ngIf="(groups | async)?.length == 0" right bottom (click)="openAddGroup()">
         <button class="bt-default" ion-fab mini><ion-icon name="add"></ion-icon></button>
       </ion-fab>
-
-      
-
 
    </div>
 
