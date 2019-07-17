@@ -1,0 +1,5 @@
+.sourcemaps
+.vscode
+node_modules/
+platforms/
+plugins/
